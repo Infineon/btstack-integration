@@ -56,16 +56,21 @@ void host_stack_exception_handler(uint16_t code, char* msg, void* ptr)
     SPIF_TRACE_ERROR("[Exception] code = 0x%x, msg = %s", code, msg);
 }
 
+BTSTACK_PORTING_SECTION_BEGIN
 void host_stack_mutex_lock(void * p_lock_context)
 {
     cy_rtos_get_mutex(&bt_stack_mutex, CY_RTOS_NEVER_TIMEOUT);
 }
+BTSTACK_PORTING_SECTION_END
 
+BTSTACK_PORTING_SECTION_BEGIN
 void host_stack_mutex_unlock(void * p_lock_context)
 {
     cy_rtos_set_mutex(&bt_stack_mutex);
 }
+BTSTACK_PORTING_SECTION_END
 
+BTSTACK_PORTING_SECTION_BEGIN
 uint8_t *host_stack_get_acl_to_lower_buffer(wiced_bt_transport_t transport, uint32_t size)
 {
     uint8_t *p_bt_msg;
@@ -83,7 +88,9 @@ uint8_t *host_stack_get_acl_to_lower_buffer(wiced_bt_transport_t transport, uint
 
     return (p_bt_msg);
 }
+BTSTACK_PORTING_SECTION_END
 
+BTSTACK_PORTING_SECTION_BEGIN
 wiced_result_t host_stack_send_acl_to_lower(wiced_bt_transport_t transport,
                                             uint8_t *p_data,
                                             uint16_t len
@@ -126,7 +133,62 @@ wiced_result_t host_stack_send_acl_to_lower(wiced_bt_transport_t transport,
 
     return (ret_val);
 }
+BTSTACK_PORTING_SECTION_END
 
+wiced_result_t host_stack_send_iso_to_lower(uint8_t *p_data,
+                                            uint16_t len
+                                            )
+{
+    cybt_result_t result;
+    wiced_result_t ret_val = WICED_SUCCESS;
+    uint8_t *p_bt_msg;
+
+    const cybt_platform_config_t *p_bt_platform_cfg = cybt_platform_get_config();
+
+    if(CYBT_HCI_IPC != p_bt_platform_cfg->hci_config.hci_transport)
+    {
+        SPIF_TRACE_ERROR("send_iso_to_lower(): Unknown transport (%d)",
+                         p_bt_platform_cfg->hci_config.hci_transport
+                         );
+        return WICED_ERROR;
+    }
+
+    SPIF_TRACE_DEBUG("send_iso_to_lower(): p_data = %p, len = %d",
+                     p_data,
+                     len
+                     );
+
+    if(NULL == p_data || 0 == len)
+    {
+        SPIF_TRACE_ERROR("send_iso_to_lower(): Invalid data(%p) or length(%d)",
+                         p_data,
+                         len
+                         );
+        return WICED_ERROR;
+    }
+
+    p_bt_msg = cybt_platform_hci_get_buffer(HCI_PACKET_TYPE_ISO, len);
+
+    if(NULL == p_bt_msg)
+    {
+        SPIF_TRACE_ERROR("send_iso_to_lower(): get buffer failure ");
+        return WICED_ERROR;
+    }
+
+    memcpy(p_bt_msg, p_data, len);
+
+    result = cybt_platform_hci_write(HCI_PACKET_TYPE_ISO, p_bt_msg, len);
+
+    if(CYBT_SUCCESS != result)
+    {
+        SPIF_TRACE_ERROR("send_iso_to_lower(): hci write failed (ret = 0x%x)",
+                         result
+                         );
+        ret_val = WICED_ERROR;
+    }
+
+    return (ret_val);
+}
 
 wiced_result_t host_stack_send_cmd_to_lower(uint8_t *p_cmd, uint16_t cmd_len)
 {
@@ -236,6 +298,7 @@ void host_stack_platform_interface_init(void)
     platform_interface.pf_write_cmd_to_lower      = host_stack_send_cmd_to_lower;
     platform_interface.pf_get_sco_to_lower_buffer = host_stack_get_sco_to_lower_buffer;
     platform_interface.pf_write_sco_to_lower      = host_stack_send_sco_to_lower;
+    platform_interface.pf_write_iso_to_lower      = host_stack_send_iso_to_lower;
     platform_interface.pf_hci_trace_cback_t       = NULL;
     platform_interface.pf_debug_trace             = host_stack_print_trace_log;
     platform_interface.trace_buffer               = bt_trace_buf;

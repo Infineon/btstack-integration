@@ -143,6 +143,10 @@ static void handle_hci_rx_packet(void *event)
         case HCI_PACKET_TYPE_SCO:
             //NA
             break;
+        case HCI_PACKET_TYPE_ISO:
+            wiced_bt_process_isoc_data(&packet_buffer[0], length);
+            break;
+
 #ifdef ENABLE_BT_SPY_LOG
         case HCI_PACKET_TYPE_DIAG:
             //sent packet to tracing uart

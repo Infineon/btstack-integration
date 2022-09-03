@@ -188,6 +188,7 @@ void cybt_platform_hci_wait_for_boot_fully_up(bool is_from_isr)
     cy_rtos_get_semaphore(&hci_cb.boot_fully_up, CY_RTOS_NEVER_TIMEOUT, is_from_isr);
 }
 
+BTSTACK_PORTING_SECTION_BEGIN
 uint8_t *cybt_platform_hci_get_buffer(hci_packet_type_t pti, uint32_t size)
 {
     static uint8_t short_msg[MAX_SHORT_MESG_LENGTH] = {0};
@@ -215,6 +216,7 @@ uint8_t *cybt_platform_hci_get_buffer(hci_packet_type_t pti, uint32_t size)
 
     return (p_txbuffer);
 }
+BTSTACK_PORTING_SECTION_END
 
 void cybt_platform_hci_post_stack_init(void)
 {
@@ -349,6 +351,7 @@ cybt_result_t cybt_platform_hci_open(void)
     return  CYBT_SUCCESS;
 }
 
+BTSTACK_PORTING_SECTION_BEGIN
 cybt_result_t cybt_platform_hci_write(hci_packet_type_t pti,
                                       uint8_t *p_data,
                                       uint32_t length
@@ -365,15 +368,28 @@ cybt_result_t cybt_platform_hci_write(hci_packet_type_t pti,
 
         if(CY_RSLT_SUCCESS == result)
         {
+            int retries = 10;
+            
             HCIDRV_TRACE_DEBUG("\nMCU: HCI -> BLE:  pti 0x%x, ptr  %p. length %ld\n", hci_pti, p_data, length);
 
-            ipc_status = Cy_BTIPC_HCI_Write(&hci_cb.ipc_context, (cy_en_btipc_hcipti_t)pti, p_data, length);
-
-            if (ipc_status)
+            do
             {
-                HCIDRV_TRACE_ERROR("MCU Error: IPC HCI Write to BLE failed 0x%x!\n", ipc_status);
-                status = CYBT_ERR_HCI_WRITE_FAILED;
-            }
+                ipc_status = Cy_BTIPC_HCI_Write(&hci_cb.ipc_context, (cy_en_btipc_hcipti_t)pti, p_data, length);
+
+                if (ipc_status)
+                {
+                    /* adding a delay before retrying */
+                    {
+                        volatile int delay = 1000;
+                        while(delay--);
+                    }
+                    HCIDRV_TRACE_ERROR("MCU Error: IPC HCI Write to BLE failed 0x%x!\n", ipc_status);
+                    status = CYBT_ERR_HCI_WRITE_FAILED;
+                }else{
+                    status = CYBT_SUCCESS;
+                    break;
+                }
+            }while(--retries);
 
             cy_rtos_set_mutex(&hci_cb.tx_atomic);
         }
@@ -391,6 +407,7 @@ cybt_result_t cybt_platform_hci_write(hci_packet_type_t pti,
     CONTROLLER_SLEEP(UNLOCK); // after get_ipc_write_buffer and ipc_write
     return status;
 }
+BTSTACK_PORTING_SECTION_END
 
 uint16_t cybt_platfrom_hci_get_rx_fifo_count(void)
 {
@@ -399,6 +416,7 @@ uint16_t cybt_platfrom_hci_get_rx_fifo_count(void)
     return (Cy_BTIPC_HCI_FIFOCount(&hci_cb.ipc_context));
 }
 
+BTSTACK_PORTING_SECTION_BEGIN
 cybt_result_t cybt_platform_hci_read(void *event,
                                      hci_packet_type_t *pti,
                                      uint8_t  *p_data,
@@ -446,6 +464,7 @@ cybt_result_t cybt_platform_hci_read(void *event,
 
     return status;
 }
+BTSTACK_PORTING_SECTION_END
 
 cybt_result_t cybt_platform_hci_close(void)
 {

@@ -89,7 +89,7 @@ void cybt_platform_deinit(void)
 
 void cybt_platform_log_print(const char *fmt_str, ...)
 {
-    char buffer[CYBT_TRACE_BUFFER_SIZE];
+    static char buffer[CYBT_TRACE_BUFFER_SIZE];
     va_list ap;
     int len;
     cy_time_t time;

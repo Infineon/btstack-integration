@@ -3,8 +3,13 @@ AIROC&trade; BT/BLE stack provides Bluetooth&reg; functionality with high perfor
 
 ### What's Included?
 This release of AIROC&trade; BT/BLE stack solution package includes as following:
-* Infineon Bluetooth&reg; chip firmware (CYW4343W,CYW43012, 20829)
+* Infineon Bluetooth&reg; BT controller firmware (CYW4343W, CYW43012, 20829)
 * Platform and Operating system porting layers for P6+43xx, 20829 and P6+BLESS.
+
+#### v4.1.0
+btstack-integration v4.1.0 contains below updates:
+* Updated BT controller firmware for 20829 and P6+BLESS
+* Added ISOC support for 20829
 
 #### v4.0.0
 * Initial release of btstack-integration which has HCI-UART, BLESS-IPC & BTSS-IPC components

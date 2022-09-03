@@ -251,7 +251,7 @@ static void cybt_debug_rx_task(void *arg)
                 head += expectedlength;
                 break;
         }
-        if(data_counter==0 && (process_rx_cmd != NULL))
+        if(data_counter==0 && (head != 0) && (process_rx_cmd != NULL))
         {
             phase = HEADER_PHASE;
             process_rx_cmd(wiced_rx_cmd+1, head-1);
