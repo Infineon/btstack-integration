@@ -488,9 +488,6 @@ cybt_result_t cybt_platform_hci_open(void)
     if((CYBT_SLEEP_MODE_ENABLED == p_bt_platform_cfg->controller_config.sleep_mode.sleep_mode_enabled)
       && (NC != p_bt_platform_cfg->controller_config.sleep_mode.host_wakeup_pin))
     {
-    #if defined(CYCFG_BT_LP_ENABLED)
-        cyhal_gpio_free(p_bt_platform_cfg->controller_config.sleep_mode.host_wakeup_pin);
-    #endif
         result = cyhal_gpio_init(p_bt_platform_cfg->controller_config.sleep_mode.host_wakeup_pin,
                                  CYHAL_GPIO_DIR_INPUT,
                                  CYHAL_GPIO_DRIVE_NONE,
@@ -542,9 +539,6 @@ cybt_result_t cybt_platform_hci_open(void)
     if((CYBT_SLEEP_MODE_ENABLED == p_bt_platform_cfg->controller_config.sleep_mode.sleep_mode_enabled)
         && (NC != p_bt_platform_cfg->controller_config.sleep_mode.device_wakeup_pin))
     {
-    #if defined(CYCFG_BT_LP_ENABLED)
-        cyhal_gpio_free(p_bt_platform_cfg->controller_config.sleep_mode.device_wakeup_pin);
-    #endif
         result = cyhal_gpio_init(p_bt_platform_cfg->controller_config.sleep_mode.device_wakeup_pin,
                                  CYHAL_GPIO_DIR_OUTPUT,
                                  CYHAL_GPIO_DRIVE_STRONG,
