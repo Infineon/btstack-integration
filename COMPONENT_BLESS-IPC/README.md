@@ -31,7 +31,7 @@ Please refer to cybt_debug_uart.h.
 * The received ptrs in events from controller , can be mapped to IPC_CNTR_MSG , processed in bt_task. After processing the event , HOST needs to a post a msg to Controller to free up the memory.
 
 ## API Reference Manual
- - [Bluetooth platform API manual](https://cypresssemiconductorco.github.io/bluetooth-mbed/api_reference_manual/html/index.html)
- - [Bluetooth stack BLE API manual](https://cypresssemiconductorco.github.io/btstack/ble/api_reference_manual/html/index.html)
+ - [Bluetooth platform API manual](https://infineon.github.io/bluetooth-freertos/api_reference_manual/html/index.html)
+ - [Bluetooth stack BLE API manual](https://infineon.github.io/btstack/ble/api_reference_manual/html/index.html)
     
 © Cypress Semiconductor Corporation, 2020.

@@ -177,9 +177,6 @@ typedef struct
 } cy_stc_ble_stack_params_t;
 
 
-#define CY_BLE_STACK_CONTROLLER_RAM_SIZE 7168
-CY_ALIGN(sizeof(uint32_t)) CY_NOINIT uint8_t cy_ble_stackControllerMemoryRam[CY_BLE_STACK_CONTROLLER_RAM_SIZE];
-
 #define CY_GPIO_PACKAGE_TYPE            CY_GPIO_PACKAGE_BGA
 #define CY_GPIO_PIN_COUNT               116u
 
@@ -219,7 +216,6 @@ CY_ALIGN(sizeof(uint32_t)) CY_NOINIT uint8_t cy_ble_stackControllerMemoryRam[CY_
 #define CY_BLE_RESOLVABLE_DEV_LIST_SIZE 16
 #define CY_BLE_BONDED_DEV_LIST_SIZE 16
 #define CY_BLE_WHITE_LIST_SIZE 16
-#define CY_BLE_CONN_COUNT 2
 
 cy_stc_ble_stack_params_t stackParam =
 {
@@ -227,13 +223,13 @@ cy_stc_ble_stack_params_t stackParam =
     .memoryHeapPtr = NULL,
 
     /** Controller memory heap pointer  */
-    .controllerMemoryHeapPtr = cy_ble_stackControllerMemoryRam,
+    .controllerMemoryHeapPtr = NULL,
 
     /** Memory heap size for host side */
-    .totalHeapSz = CY_BLE_STACK_CONTROLLER_RAM_SIZE,
+    .totalHeapSz = 0,
 
     /** Memory heap size for controller side */
-    .controllerTotalHeapSz = CY_BLE_STACK_CONTROLLER_RAM_SIZE,
+    .controllerTotalHeapSz = 0,
 
     /** Configuration for the L2CAP buffer for data transmission */
     .l2capBufferPerConn = CY_BLE_L2CAP_Q_DEPTH_PER_CONN,
@@ -257,7 +253,7 @@ cy_stc_ble_stack_params_t stackParam =
     .maxWhiteListSize = CY_BLE_WHITE_LIST_SIZE,
 
     /** Maximum number of BLE connections */
-    .maxConnCount = CY_BLE_CONN_COUNT,
+    .maxConnCount = 0,
 
     /** Tx 5dbm mode enable */
     .tx5dbmModeEn = false,

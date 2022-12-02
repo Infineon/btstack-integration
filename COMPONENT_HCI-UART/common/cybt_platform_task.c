@@ -72,13 +72,14 @@ cybt_task_mem_cb_t  task_mem_cb = {0};
 /******************************************************************************
  *                           Function Definitions
  ******************************************************************************/
-cybt_result_t cybt_platform_task_init(void)
+cybt_result_t cybt_platform_task_init(void *p_arg)
 {
     extern void cybt_hci_tx_task(cy_thread_arg_t arg);
     extern void cybt_hci_rx_task(cy_thread_arg_t arg);
 
     cy_rslt_t cy_result;
     cybt_result_t task_result;
+    UNUSED(p_arg);
     const cybt_platform_config_t *p_bt_platform_cfg = cybt_platform_get_config();
 
     uint32_t total_mem_pool_size =

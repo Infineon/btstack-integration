@@ -26,6 +26,7 @@
 #include "cybt_platform_interface.h"
 #include "cybt_platform_trace.h"
 #include "PSoC6IPC.h"
+#include "wiced_bt_cfg.h"
 
 /******************************************************************************
  *                                Constants
@@ -193,7 +194,7 @@ cybt_result_t cybt_platform_hci_read(void *event,hci_packet_type_t *pti,
         return CYBT_ERR_BADARG;
     }
 
-    *pti = evt->msg.pkt_type;
+    *pti = (hci_packet_type_t)evt->msg.pkt_type;
     memcpy(p_data, evt->msg.data, evt->msg.pkt_len);
     *p_length = evt->msg.pkt_len;
 
@@ -245,44 +246,51 @@ static void Cy_BLE_IPC_HostMsgFlushRecvCallBack(uint32_t *msgPtr)
     /*Free HOST memory if any allocated and send to controller*/
 }
 
-cybt_result_t cybt_platform_hci_open(void)
+cybt_result_t cybt_platform_hci_open(void *p_arg)
 {
     uint32_t ipcStatus;
     uint32_t rTimeout = 2000u;
+    wiced_bt_cfg_settings_t * p_bt_cfg_settings_Bless = (wiced_bt_cfg_settings_t*)p_arg ;
+    if (hci_cb.inited == false)
+    {
 
-	if (hci_cb.inited == false)
-	{
+    	stackParam.maxConnCount = p_bt_cfg_settings_Bless->p_ble_cfg->ble_max_simultaneous_links;
+    	stackParam.controllerTotalHeapSz = (stackParam.maxConnCount *1532) + 3476 ;
+    	stackParam.totalHeapSz = stackParam.controllerTotalHeapSz;
+    	if(stackParam.controllerMemoryHeapPtr == NULL)
+    	{
+    		stackParam.controllerMemoryHeapPtr = (uint8_t *)cybt_platform_malloc(stackParam.controllerTotalHeapSz);
+    	}
+    	controllerMsg.data = (uint32_t) &stackParam;
 
-	    controllerMsg.data = (uint32_t) &stackParam;
+    	do
+    	{
+    		ipcStatus = Cy_IPC_Pipe_SendMessage(CY_IPC_EP_CYPIPE_CM0_ADDR, CY_IPC_EP_CYPIPE_CM4_ADDR,
+    				(void *)&controllerMsg, NULL);
+    		Cy_SysLib_DelayUs(1u);
+    		rTimeout--;
 
-	    do
-	    {
-	        ipcStatus = Cy_IPC_Pipe_SendMessage(CY_IPC_EP_CYPIPE_CM0_ADDR, CY_IPC_EP_CYPIPE_CM4_ADDR,
-	                                            (void *)&controllerMsg, NULL);
-	        Cy_SysLib_DelayUs(1u);
-	        rTimeout--;
+    	}while((ipcStatus != CY_IPC_PIPE_SUCCESS) && (rTimeout != 0u));
 
-	    }while((ipcStatus != CY_IPC_PIPE_SUCCESS) && (rTimeout != 0u));
-
-	    rTimeout = 2000u;
-	    do
-	    {
-	        Cy_SysLib_Delay(1u);
-	        rTimeout--;
-	    } while ((!controllerMsg.controllerStarted) && (rTimeout != 0u));
+    	rTimeout = 2000u;
+    	do
+    	{
+    		Cy_SysLib_Delay(1u);
+    		rTimeout--;
+    	} while ((!controllerMsg.controllerStarted) && (rTimeout != 0u));
 
 
-	    HCIDRV_TRACE_DEBUG("Controller started %d result %s",
-	                       controllerMsg.controllerStarted, (controllerMsg.data==0)?"SUCCESS":"FAIL");
+    	HCIDRV_TRACE_DEBUG("Controller started %d result %s",
+    			controllerMsg.controllerStarted, (controllerMsg.data==0)?"SUCCESS":"FAIL");
 
-	    Cy_IPC_Pipe_RegisterCallback	(CY_IPC_EP_CYPIPE_CM4_ADDR,
-	                                         &Cy_BLE_IPC_HostMsgRecvCallBack,CY_BLE_CYPIPE_MSG_SEND_ID);
-	    Cy_IPC_Pipe_RegisterCallback	(CY_IPC_EP_CYPIPE_CM4_ADDR,
-	                                         &Cy_BLE_IPC_HostMsgFlushRecvCallBack,CY_BLE_CYPIPE_MSG_COMPLETE_ID);
-		
-        hci_cb.inited = true;
-        cy_rtos_init_event(&hci_task_event);
-	}
+    	Cy_IPC_Pipe_RegisterCallback	(CY_IPC_EP_CYPIPE_CM4_ADDR,
+    			&Cy_BLE_IPC_HostMsgRecvCallBack,CY_BLE_CYPIPE_MSG_SEND_ID);
+    	Cy_IPC_Pipe_RegisterCallback	(CY_IPC_EP_CYPIPE_CM4_ADDR,
+    			&Cy_BLE_IPC_HostMsgFlushRecvCallBack,CY_BLE_CYPIPE_MSG_COMPLETE_ID);
+
+    	hci_cb.inited = true;
+    	cy_rtos_init_event(&hci_task_event);
+    }
 
     HCIDRV_TRACE_DEBUG("hci_open(): Done");
 
@@ -301,6 +309,7 @@ cybt_result_t cybt_platform_hci_write(hci_packet_type_t pti,
                                       )
 {
     cy_en_ipc_pipe_status_t result = CY_IPC_PIPE_ERROR_NO_IPC;
+    cybt_result_t status = CYBT_SUCCESS;
     IPC_HOST_MSG *host_msg;
     uint8_t* ipc_tx_buffer;
     uint32_t wait_for = HCI_TASK_EVENT;
@@ -328,12 +337,14 @@ cybt_result_t cybt_platform_hci_write(hci_packet_type_t pti,
 
     result = Cy_IPC_Pipe_SendMessage(CY_BLE_IPC_CONTROLLER_ADDR,CY_BLE_IPC_HOST_ADDR, (uint32_t *)host_msg,
                                      &cybt_platform_ipc_pipe_release_cb);
+    if(result != CY_IPC_PIPE_SUCCESS)
+    	status = CYBT_ERR_GENERIC;
 
 
     //TODO: Instead of blocking wait, manage this by buffer queue or a new thread
     cy_rtos_waitbits_event(&hci_task_event, &wait_for, true, false, CY_RTOS_NEVER_TIMEOUT);
 
-    return result;
+    return status;
 }
 
 uint16_t cybt_platfrom_hci_get_rx_fifo_count(void)

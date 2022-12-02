@@ -26,6 +26,7 @@
 #define CYBT_PLATFORM_TRACE_H
 
 #include <stdio.h>
+#include <stdint.h>
 
 /**
  *  @addtogroup    platform_trace   Bluetooth Platform Trace

@@ -31,7 +31,7 @@ Please refer to cybt_debug_uart.h.
 
 
 ## API Reference Manual
- - [Bluetooth platform API manual](https://cypresssemiconductorco.github.io/bluetooth-mbed/api_reference_manual/html/index.html)
- - [Bluetooth stack BLE API manual](https://cypresssemiconductorco.github.io/btstack/ble/api_reference_manual/html/index.html)
+ - [Bluetooth platform API manual](https://infineon.github.io/bluetooth-freertos/api_reference_manual/html/index.html)
+ - [Bluetooth stack BLE API manual](https://infineon.github.io/btstack/ble/api_reference_manual/html/index.html)
     
 © Cypress Semiconductor Corporation, 2020.

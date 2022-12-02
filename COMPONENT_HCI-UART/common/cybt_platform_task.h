@@ -150,12 +150,14 @@ extern "C"
 /**
  * Initialize Bluetooth related OS tasks.
  *
+ * @param[in] p_arg: pointer to an argument if any
+ *
  * @returns  CYBT_SUCCESS
  *           CYBT_ERR_INIT_MEMPOOL_FAILED
  *           CYBT_ERR_INIT_QUEUE_FAILED
  *           CYBT_ERR_CREATE_TASK_FAILED
  */
-cybt_result_t cybt_platform_task_init(void);
+cybt_result_t cybt_platform_task_init(void *p_arg);
 
 
 /**

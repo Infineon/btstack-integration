@@ -12,5 +12,6 @@ var group__debug__uart__cfg =
     [ "cybt_debug_uart_init", "group__debug__uart__cfg.html#ga16bde8710d82bdc7086fa44f6103ccf3", null ],
     [ "cybt_debug_uart_send_trace", "group__debug__uart__cfg.html#ga138649c1c5091bd65757aa23db3b55a4", null ],
     [ "cybt_debug_uart_send_hci_trace", "group__debug__uart__cfg.html#ga7a64b5c537dd7068dcbaf5efa6ed57be", null ],
-    [ "cybt_debug_uart_send_data", "group__debug__uart__cfg.html#gaa5b2fd8df23a303ef08508db24792e24", null ]
+    [ "cybt_debug_uart_send_data", "group__debug__uart__cfg.html#gaa5b2fd8df23a303ef08508db24792e24", null ],
+    [ "cybt_send_coredump_hci_trace", "group__debug__uart__cfg.html#gab95329f3931af04a9e15431f51f47498", null ]
 ];

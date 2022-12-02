@@ -272,7 +272,7 @@ void cybt_hci_tx_task(cy_thread_arg_t arg)
 
     hci_tx_status = CYBT_HCI_TX_NORMAL;
 
-    cybt_platform_hci_open();
+    cybt_platform_hci_open(NULL);
 
     while(1)
     {

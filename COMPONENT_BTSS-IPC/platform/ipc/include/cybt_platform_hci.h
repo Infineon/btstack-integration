@@ -100,10 +100,10 @@ extern "C"
 
 /**
  * Initialize and open HCI transport.
- *
+ * @param[in] p_arg: Pointer to an argument if any 
  * @return the status of open operation
  */
-cybt_result_t cybt_platform_hci_open(void);
+cybt_result_t cybt_platform_hci_open(void *p_arg);
 
 
 /**
@@ -169,9 +169,6 @@ cybt_result_t cybt_platform_hci_close(void);
  */
 cybt_result_t cybt_platform_hci_set_baudrate(uint32_t baudrate);
 
-#ifdef ENABLE_BT_SPY_LOG
-cybt_result_t cybt_debug_uart_send_hci_trace(uint8_t type, uint16_t length, uint8_t* p_data);
-#endif // ENABLE_BT_SPY_LOG
 
 #ifdef __cplusplus
 } /* extern "C" */

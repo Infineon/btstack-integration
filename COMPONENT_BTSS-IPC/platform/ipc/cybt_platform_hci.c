@@ -58,8 +58,6 @@
 typedef struct
 {
     bool            inited;
-    cy_mutex_t      tx_atomic;
-    cy_mutex_t      rx_atomic;
     cy_semaphore_t  boot_fully_up;
     /* Context for MCU IPC */
     cy_stc_ipc_bt_context_t ipc_context;
@@ -250,11 +248,77 @@ cybt_result_t cybt_platform_msg_to_bt_task(const uint16_t msg, bool is_from_isr)
     return (result);
 }
 
-cybt_result_t cybt_platform_hci_open(void)
+
+cy_en_syspm_status_t cybt_platform_syspm_DeepSleepCallback(cy_stc_syspm_callback_params_t* callbackParams,
+                                                 cy_en_syspm_callback_mode_t mode)
+{
+    cy_en_syspm_status_t retVal = CY_SYSPM_FAIL;
+
+    CY_UNUSED_PARAMETER(callbackParams);
+
+    switch (mode)
+    {
+        case CY_SYSPM_CHECK_READY:
+        {
+            retVal = CY_SYSPM_SUCCESS;
+            break;
+        }
+
+        case CY_SYSPM_CHECK_FAIL:
+        {
+            retVal = CY_SYSPM_SUCCESS;
+            break;
+        }
+
+        case CY_SYSPM_BEFORE_TRANSITION:
+        {
+            retVal = CY_SYSPM_SUCCESS;
+            break;
+        }
+
+        case CY_SYSPM_AFTER_TRANSITION:
+        {
+            Cy_BTSS_PowerDep(true);
+            Cy_BTIPC_WarmInit(&hci_cb.ipc_context, (cy_stc_ipc_bt_config_t *) 0xFFFFFFFF);
+            Cy_BTSS_PowerDep(false);
+
+            retVal = CY_SYSPM_SUCCESS;
+            break;
+        }
+
+        default:
+            break;
+    }
+
+    return retVal;
+}
+
+
+static cy_rslt_t cybt_platform_register_syspm_callback(void)
+{
+    cybt_result_t result = CYBT_SUCCESS;
+    static cy_stc_syspm_callback_params_t cybt_syspm_callback_param = { NULL, NULL };
+    static cy_stc_syspm_callback_t        cybt_syspm_callback       =
+    {
+        .callback       = &cybt_platform_syspm_DeepSleepCallback,
+        .type           = CY_SYSPM_MODE_DEEPSLEEP_RAM,
+        .callbackParams = &cybt_syspm_callback_param,
+        .order          = 255u,
+    };
+
+    if (!Cy_SysPm_RegisterCallback(&cybt_syspm_callback))
+    {
+        result = CYBT_ERR_BADARG;
+    }
+    return result;
+}
+
+cybt_result_t cybt_platform_hci_open(void *p_arg)
 {
     cy_stc_ipc_bt_config_t btIpcHciConfig_mcu;
     cy_en_btipcdrv_status_t ipc_status;
     cy_stc_ipc_hcp_cb_t hpc_cb_params;
+    UNUSED(p_arg);
 
     if(true == hci_cb.inited)
     {
@@ -268,9 +332,6 @@ cybt_result_t cybt_platform_hci_open(void)
     (void)cy_pd_pdcm_set_dependency(CY_PD_PDCM_MAIN, CY_PD_PDCM_BTSS); /* Suppress a compiler warning about unused return value */
 
     memset(&hci_cb, 0, sizeof(hci_interface_t));
-
-    cy_rtos_init_mutex(&hci_cb.tx_atomic);
-    cy_rtos_init_mutex(&hci_cb.rx_atomic);
 
     /* MCU IPC Config */
     btIpcHciConfig_mcu.ulChannelHCI = MCU_IPC_HCI_UL; /* HCI Uplink channel from MCU to BLE */
@@ -342,6 +403,12 @@ cybt_result_t cybt_platform_hci_open(void)
         CY_ASSERT(0);
     }
 
+    if (CYBT_SUCCESS != cybt_platform_register_syspm_callback())
+    {
+    	HCIDRV_TRACE_ERROR("MCU Error: Syspm Callback registering failed 0x%x!\n", ipc_status);
+        CY_ASSERT(0);
+    }
+
     hci_cb.inited = true;
 
     HCIDRV_TRACE_DEBUG("hci_open(): Done");
@@ -357,51 +424,30 @@ cybt_result_t cybt_platform_hci_write(hci_packet_type_t pti,
                                       uint32_t length
                                       )
 {
-    cy_rslt_t result;
     cybt_result_t status =  CYBT_SUCCESS;
     cy_en_btipcdrv_status_t ipc_status;
-    cy_en_btipc_hcipti_t hci_pti = (cy_en_btipc_hcipti_t) pti;
 
-    if((true == hci_cb.inited) && (NULL != p_data))
+    int retries = 10;
+
+    do
     {
-        result = cy_rtos_get_mutex(&hci_cb.tx_atomic, CY_RTOS_NEVER_TIMEOUT);
+        ipc_status = Cy_BTIPC_HCI_Write(&hci_cb.ipc_context, (cy_en_btipc_hcipti_t)pti, p_data, length);
 
-        if(CY_RSLT_SUCCESS == result)
+        if (ipc_status)
         {
-            int retries = 10;
-            
-            HCIDRV_TRACE_DEBUG("\nMCU: HCI -> BLE:  pti 0x%x, ptr  %p. length %ld\n", hci_pti, p_data, length);
-
-            do
+            /* adding a delay before retrying */
             {
-                ipc_status = Cy_BTIPC_HCI_Write(&hci_cb.ipc_context, (cy_en_btipc_hcipti_t)pti, p_data, length);
+                volatile int delay = 1000;
+                while(delay--);
+            }
 
-                if (ipc_status)
-                {
-                    /* adding a delay before retrying */
-                    {
-                        volatile int delay = 1000;
-                        while(delay--);
-                    }
-                    HCIDRV_TRACE_ERROR("MCU Error: IPC HCI Write to BLE failed 0x%x!\n", ipc_status);
-                    status = CYBT_ERR_HCI_WRITE_FAILED;
-                }else{
-                    status = CYBT_SUCCESS;
-                    break;
-                }
-            }while(--retries);
-
-            cy_rtos_set_mutex(&hci_cb.tx_atomic);
+            HCIDRV_TRACE_ERROR("MCU Error: IPC HCI Write to BLE failed 0x%x!\n", ipc_status);
+            status = CYBT_ERR_HCI_WRITE_FAILED;
+        }else{
+            status = CYBT_SUCCESS;
+            break;
         }
-        else
-        {
-            status = CYBT_ERR_HCI_GET_TX_MUTEX_FAILED;
-        }
-    }
-    else
-    {
-        status = CYBT_ERR_HCI_NOT_INITIALIZE;
-    }
+    }while(--retries);
 
     /* Sleep unlock which was already locked in cybt_platform_hci_get_buffer */
     CONTROLLER_SLEEP(UNLOCK); // after get_ipc_write_buffer and ipc_write
@@ -424,7 +470,6 @@ cybt_result_t cybt_platform_hci_read(void *event,
                                      )
 {
     cybt_result_t status =  CYBT_SUCCESS;
-    cy_rslt_t result;
     uint8_t *ptr_rx_hci;
     uint32_t *p_msg;
 
@@ -436,13 +481,6 @@ cybt_result_t cybt_platform_hci_read(void *event,
         return  CYBT_ERR_HCI_NOT_INITIALIZE;
     }
 
-    result = cy_rtos_get_mutex(&hci_cb.rx_atomic, CY_RTOS_NEVER_TIMEOUT);
-    if(CY_RSLT_SUCCESS != result)
-    {
-        HCIDRV_TRACE_ERROR("hci_read(): Get mutex error (0x%x)\n", result);
-        return  CYBT_ERR_HCI_GET_RX_MUTEX_FAILED;
-    }
-
     CONTROLLER_SLEEP(LOCK); // before ipc_read
 
     /* cybt_platform_hci_read only be called when FIFO count is non-zero.
@@ -452,15 +490,10 @@ cybt_result_t cybt_platform_hci_read(void *event,
     Cy_BTIPC_HCI_getPTI ((cy_en_btipc_hcipti_t *)pti, p_length, p_msg);
     Cy_BTIPC_HCI_GetReadBufPtr (&hci_cb.ipc_context, (void**)&ptr_rx_hci, (size_t*)p_length);
 
-    HCIDRV_TRACE_DEBUG("MCU: Read %ld bytes\n",*p_length);
-    HCIDRV_TRACE_DEBUG("MCU: notify data: ");
-
     memcpy((uint8_t*)p_data, ptr_rx_hci, *p_length);
     status = ipc_hci_release_buffer(p_msg);
 
     CONTROLLER_SLEEP(UNLOCK); // after ipc_read
-
-    cy_rtos_set_mutex(&hci_cb.rx_atomic);
 
     return status;
 }
@@ -480,9 +513,6 @@ cybt_result_t cybt_platform_hci_close(void)
         HCIDRV_TRACE_ERROR("hci_close(): Cy_BTIPC_Deinit failed\n");
         status = CYBT_ERR_HCI_IPC_DEINIT_FAILED;
     }
-
-    cy_rtos_deinit_mutex(&hci_cb.tx_atomic);
-    cy_rtos_deinit_mutex(&hci_cb.rx_atomic);
 
     memset(&hci_cb, 0, sizeof(hci_interface_t));
 

@@ -455,7 +455,7 @@ void cybt_host_wake_irq_handler(void *callback_arg, cyhal_gpio_event_t event)
     }
 }
 
-cybt_result_t cybt_platform_hci_open(void)
+cybt_result_t cybt_platform_hci_open(void *p_arg)
 {
     cyhal_uart_event_t enable_irq_event = (cyhal_uart_event_t)(CYHAL_UART_IRQ_RX_DONE
                                            | CYHAL_UART_IRQ_TX_DONE
@@ -464,6 +464,7 @@ cybt_result_t cybt_platform_hci_open(void)
     uint32_t actual_baud_rate;
     cy_rslt_t result;
     cyhal_uart_cfg_t bt_uart_cfg = {0};
+    UNUSED(p_arg);
     const cybt_platform_config_t *p_bt_platform_cfg = cybt_platform_get_config();
 
     if(true == hci_uart_cb.inited)
@@ -931,6 +932,7 @@ cybt_result_t cybt_send_action_to_sleep_task(sleep_action_t action)
                                          0,
                                          is_from_isr
                                         );
+    UNUSED_VARIABLE(is_from_isr);
 
     if(CY_RSLT_SUCCESS != result)
     {

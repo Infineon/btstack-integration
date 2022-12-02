@@ -102,5 +102,16 @@ cybt_result_t cybt_debug_uart_send_hci_trace (uint8_t type, uint16_t length, uin
  * @note This can be used from register callback of wiced_bt_dev_register_hci_trace function.
  */
 cybt_result_t cybt_debug_uart_send_data (uint16_t opcode, uint16_t data_size, uint8_t *p_data);
+
+/**
+ * Sends coredump HCI traces over Debug UART
+ *
+ * @param[in] length: Length of the data
+ * @param[in] p_data: data pointer
+ *
+ * @returns  CYBT_SUCCESS if success else error reason.
+ */
+cybt_result_t cybt_send_coredump_hci_trace (uint16_t data_size, uint8_t *p_data);
+
 /**@} */
 

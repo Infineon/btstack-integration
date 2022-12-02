@@ -59,6 +59,7 @@
 #endif
 #define INITIAL_TRACE_LEVEL_APP           (CYBT_TRACE_LEVEL_ERROR)
 
+#define UNUSED(x)      ( (void)(x) )
 
 /*****************************************************************************
  *                             Type Definitions

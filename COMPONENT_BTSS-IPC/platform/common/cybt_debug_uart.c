@@ -18,8 +18,8 @@
 #define DEBUG_UART_TX_QUEUE_ITEM_SIZE    (sizeof(void *))
 #define DEBUG_UART_TX_TASK_QUEUE         cybt_debug_uart_tx_queue
 #define DEBUG_UART_TX_TASK_PRIORITY      (CY_RTOS_PRIORITY_ABOVENORMAL)
-#define MAX_TRACE_DATA_LEN               600
-#define DEBUG_UART_MEMORY_SIZE      (MAX_TRACE_DATA_LEN * DEBUG_UART_TX_TASK_QUEUE_COUNT)
+#define MAX_TRACE_DATA_LEN               (600)
+#define DEBUG_UART_MEMORY_SIZE           (6144)
 
 wiced_bt_heap_t *debug_task_heap = NULL;
 #endif
@@ -38,6 +38,7 @@ wiced_bt_heap_t *debug_task_heap = NULL;
 #define HCI_CONTROL_EVENT_WICED_TRACE                       ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0x02 )    /* WICED trace packet */
 #define HCI_CONTROL_EVENT_HCI_TRACE                         ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0x03 )    /* Bluetooth protocol trace */
 #define INVALID_TYPE 0xFF
+#define GENERIC_TYPE 0x00
 
 enum
 {
@@ -476,6 +477,11 @@ cybt_result_t cybt_debug_uart_send_hci_trace (uint8_t type, uint16_t data_size, 
 #else
     return cybt_handle_received_tx_data((uint16_t)type, HCI_CONTROL_EVENT_HCI_TRACE, data_size, p_data);
 #endif
+}
+
+cybt_result_t cybt_send_coredump_hci_trace (uint16_t data_size, uint8_t *p_data)
+{
+    return cybt_trans_write(GENERIC_TYPE, HCI_CONTROL_EVENT_HCI_TRACE, data_size, p_data);
 }
 
 cybt_result_t cybt_trans_write (uint8_t type, uint16_t op, uint16_t data_size, uint8_t *p_data)

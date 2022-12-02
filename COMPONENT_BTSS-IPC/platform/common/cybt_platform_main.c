@@ -51,6 +51,13 @@
 #define BT_SLEEP_TXD_CONFIG                  (1)
 #define BT_SLEEP_BT_WAKE_IDLE_TIME           (50)
 
+#define HCI_EVT_COREDUMPTYPE_END             (0xFF)  // Value for 'Core Dump End'
+#define HCI_EVT_COREDUMPTYPE_INDEX           (6)     // Index for CoreDumpType
+
+#ifdef RESET_LOCAL_SUPPORT_FEATURE
+#define CONNECTION_PARAMETER_REQUEST_PROCEDURE (1) // Feature bit position for Connection Parameters Request Procedure
+#endif
+
 /*****************************************************************************
  *                           Type Definitions
  *****************************************************************************/
@@ -71,8 +78,13 @@ cybt_platform_main_cb_t cybt_main_cb = {0};
  *                          Function Declarations
  ******************************************************************************/
 extern void host_stack_platform_interface_init(void);
+#ifdef ENABLE_BT_SPY_LOG
+extern cybt_result_t cybt_send_coredump_hci_trace (uint16_t data_size, uint8_t *p_data);
+#endif
 
-
+#ifdef RESET_LOCAL_SUPPORT_FEATURE
+extern void wiced_bt_btm_ble_reset_local_supported_features(uint32_t feature);
+#endif
 /******************************************************************************
  *                           Function Definitions
  ******************************************************************************/
@@ -153,6 +165,9 @@ void wiced_post_stack_init_cback( void )
     if(cybt_main_cb.p_app_management_callback)
     {
         cybt_main_cb.p_app_management_callback(BTM_ENABLED_EVT, &event_data);
+#ifdef RESET_LOCAL_SUPPORT_FEATURE
+        wiced_bt_btm_ble_reset_local_supported_features(CONNECTION_PARAMETER_REQUEST_PROCEDURE);
+#endif
     }
 
     if(CYBT_SLEEP_MODE_ENABLED == p_sleep_config->sleep_mode_enabled)
@@ -228,7 +243,6 @@ wiced_result_t wiced_bt_stack_init(wiced_bt_management_cback_t *p_bt_management_
 
     cybt_main_cb.p_app_management_callback = p_bt_management_cback;
 
-
     host_stack_platform_interface_init();
 
     /* Configure the stack */
@@ -237,7 +251,7 @@ wiced_result_t wiced_bt_stack_init(wiced_bt_management_cback_t *p_bt_management_
         MAIN_TRACE_ERROR("wiced_bt_set_stack_config(): Failed\n");
     }
 
-    cybt_platform_task_init();
+    cybt_platform_task_init((void *)p_bt_cfg_settings);
 
     return WICED_BT_SUCCESS;
 }
@@ -278,6 +292,25 @@ static void trace_exception(cybt_exception_t error, uint8_t *info, uint32_t leng
         case CYBT_CONTROLLER_RESTARTED:
             MAIN_TRACE_ERROR("Exception: case: BT restarted again");
             break;
+        case CYBT_CONTROLLER_CORE_DUMP:
+            MAIN_TRACE_ERROR("Exception: case: %x [CoreDump], len:%d reason:0x%x", error, length, *(uint32_t *)info);
+
+#ifdef ENABLE_BT_SPY_LOG
+            cybt_send_coredump_hci_trace(length, &info[0]);
+#else
+            for (uint32_t i = 0; i < length; i++)
+            {
+                MAIN_TRACE_ERROR("%x ", *(uint8_t *)(info + i));
+            }
+#endif
+
+            if(HCI_EVT_COREDUMPTYPE_END == *(uint8_t *)(info + HCI_EVT_COREDUMPTYPE_INDEX))
+            {
+                MAIN_TRACE_ERROR("End of CoreDump. Going to Assert ");
+                cy_rtos_delay_milliseconds(10);
+                CY_ASSERT(0);
+            }
+            break;
         default:
             MAIN_TRACE_ERROR("Exception: case: %x [unknown]", error);
             break;
@@ -301,7 +334,9 @@ void cybt_platform_exception_handler(cybt_exception_t error, uint8_t *info, uint
         CY_ASSERT(0);
     }
 #else
-    CY_ASSERT(0);
+    /* We might get more core dump packets. Do not assert from here. */
+    if(CYBT_CONTROLLER_CORE_DUMP != error)
+        CY_ASSERT(0);
 #endif
     return;
 }

@@ -6,6 +6,14 @@ This release of AIROC&trade; BT/BLE stack solution package includes as following
 * Infineon Bluetooth&reg; BT controller firmware (CYW4343W, CYW43012, 20829)
 * Platform and Operating system porting layers for P6+43xx, 20829 and P6+BLESS.
 
+#### v4.2.0
+btstack-integration v4.2.0 contains below updates:
+* Updated BT controller firmware for 20829
+* Enabled FW core dump for 20829
+* Added DSRAM (DeepSleep RAM) callback registration APIs for 20829
+* Reduced debug UART (used for gettig HCI traces) memory size from 30K to 6K for 20829 and P6+BLESS
+* Instead of using hardcoded value, read maximum number of connection count set by Application in BT configurator and use it in P6+BLESS porting layer
+
 #### v4.1.1
 btstack-integration v4.1.1 contains below update:
 * Updated porting layer of P6+43xx to work with the changes done in HAL library

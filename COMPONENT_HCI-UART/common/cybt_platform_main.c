@@ -211,7 +211,7 @@ wiced_result_t wiced_bt_stack_init(wiced_bt_management_cback_t *p_bt_management_
     /* Configure the stack */
     wiced_bt_set_stack_config(p_bt_cfg_settings);
 
-    cybt_platform_task_init();
+    cybt_platform_task_init((void *)p_bt_cfg_settings);
 
     return WICED_BT_SUCCESS;
 }

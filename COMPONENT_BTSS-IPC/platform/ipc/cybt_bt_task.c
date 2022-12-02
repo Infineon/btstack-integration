@@ -166,7 +166,7 @@ void bt_task_handler(cy_thread_arg_t arg)
     uint32_t wait_for;
     void* event = NULL;
 
-    cybt_platform_hci_open();
+    cybt_platform_hci_open(arg);
 
     for( ; ; )
     {
@@ -253,7 +253,7 @@ void bt_task_handler(cy_thread_arg_t arg)
     } // for(;;)
 }
 
-cybt_result_t cybt_bttask_init(void)
+cybt_result_t cybt_bttask_init(void* p_arg)
 {
     cy_rslt_t cy_result;
     cy_result = cy_rtos_init_event(&bt_task_event);
@@ -279,7 +279,7 @@ cybt_result_t cybt_bttask_init(void)
                                       NULL,
                                       BTU_TASK_STACK_SIZE,
                                       BTU_TASK_PRIORITY,
-                                      (cy_thread_arg_t) NULL
+                                      p_arg
                                       );
     if(CY_RSLT_SUCCESS != cy_result)
     {

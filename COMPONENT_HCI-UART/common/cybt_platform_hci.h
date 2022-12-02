@@ -103,9 +103,11 @@ extern "C"
 /**
  * Initialize and open HCI transport.
  *
+ * @param[in] p_arg: pointer to an arguement if any
+ *
  * @return the status of open operation
  */
-cybt_result_t cybt_platform_hci_open(void);
+cybt_result_t cybt_platform_hci_open(void *p_arg);
 
 
 /**

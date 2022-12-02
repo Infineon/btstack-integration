@@ -5,6 +5,7 @@ var NAVTREEINDEX0 =
 "group__debug__uart__cfg.html#ga16bde8710d82bdc7086fa44f6103ccf3":[0,0,2],
 "group__debug__uart__cfg.html#ga7a64b5c537dd7068dcbaf5efa6ed57be":[0,0,4],
 "group__debug__uart__cfg.html#gaa5b2fd8df23a303ef08508db24792e24":[0,0,5],
+"group__debug__uart__cfg.html#gab95329f3931af04a9e15431f51f47498":[0,0,6],
 "group__debug__uart__cfg.html#gad9ac57d78f046b0d5dbcf3f32e54e1fd":[0,0,1],
 "group__platform__cfg.html":[0,1],
 "group__platform__cfg.html#ga1ff2a9935b27efb9639974d6ddc1894a":[0,1,8],
