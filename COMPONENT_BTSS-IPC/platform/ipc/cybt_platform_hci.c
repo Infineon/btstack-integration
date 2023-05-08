@@ -52,7 +52,7 @@
 #define IPC_INTR_BLE            (0)
 #define IPC_INTR_MCU            (1)
 
-#define MAX_IPC_RETRIES         (10)
+#define MAX_IPC_RETRIES         (20)
 
 #define RECORD_IPC_STATS
 
