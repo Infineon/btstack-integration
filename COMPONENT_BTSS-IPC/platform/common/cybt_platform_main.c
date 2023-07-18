@@ -243,7 +243,7 @@ wiced_result_t cybt_core_management_cback( wiced_bt_management_evt_t event, wice
     switch(event)
     {
         case BTM_ENABLED_EVT:
-            #if (!defined(DISABLE_DEFAULT_BTSTACK_INIT) || (DISABLE_DEFAULT_BTSTACK_INIT == 1))
+            #if ((!defined(DISABLE_DEFAULT_BTSTACK_INIT)) || (DISABLE_DEFAULT_BTSTACK_INIT == 0))
             app_initialize_btstack_modules();
             #endif
         

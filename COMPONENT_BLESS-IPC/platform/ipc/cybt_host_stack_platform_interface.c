@@ -122,6 +122,7 @@ wiced_result_t host_stack_send_acl_to_lower(wiced_bt_transport_t transport,
 }
 BTSTACK_PORTING_SECTION_END
 
+BTSTACK_PORTING_SECTION_BEGIN
 wiced_result_t host_stack_send_iso_to_lower(uint8_t *p_data,
                                             uint16_t len
                                             )
@@ -166,6 +167,7 @@ wiced_result_t host_stack_send_iso_to_lower(uint8_t *p_data,
 
     return (ret_val);
 }
+BTSTACK_PORTING_SECTION_END
 
 wiced_result_t host_stack_send_cmd_to_lower(uint8_t *p_cmd, uint16_t cmd_len)
 {

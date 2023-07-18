@@ -229,8 +229,6 @@
     <member refid="cybt__result_8h_1acbed65803741994c7aafa1ee3a93952dab0448872188f38473d8019d7d1a2b489" kind="enumvalue"><name>CYBT_ERR_HCI_IPC_GET_FIFO_FAILED</name></member>
     <member refid="cybt__result_8h_1acbed65803741994c7aafa1ee3a93952da9e995d19919ca570dc4fe76c57f34e3a" kind="enumvalue"><name>CYBT_ERR_INIT_EVENT_FAILED</name></member>
   </compound>
-  <compound refid="_r_e_a_d_m_e__20829_8md" kind="file"><name>README_20829.md</name>
-  </compound>
   <compound refid="group__debug__uart__cfg" kind="group"><name>debug_uart_cfg</name>
     <member refid="group__debug__uart__cfg_1gad9ac57d78f046b0d5dbcf3f32e54e1fd" kind="typedef"><name>cybt_debug_uart_data_handler_t</name></member>
     <member refid="group__debug__uart__cfg_1ga16bde8710d82bdc7086fa44f6103ccf3" kind="function"><name>cybt_debug_uart_init</name></member>
@@ -351,10 +349,14 @@
     <member refid="group__platform__trace_1ga0b6c96c5a43972c74fabc52924076055" kind="define"><name>BTTASK_TRACE_EVENT</name></member>
     <member refid="group__platform__trace_1ga7958ef6857cf47126bbb17b02ce8f8c6" kind="define"><name>BTTASK_TRACE_DEBUG</name></member>
   </compound>
-  <compound refid="dir_36588e4213a630c1bb8e076a76be9366" kind="dir"><name>include</name>
+  <compound refid="dir_9d21f36cd566679d106dc1c45c01f3d3" kind="dir"><name>btstack-integration</name>
   </compound>
-  <compound refid="dir_c5a52a81292cf9a5167198f4f346d6d9" kind="dir"><name>platform</name>
+  <compound refid="dir_baa9e4403c7085d301be88e5427bdef2" kind="dir"><name>COMPONENT_BTSS-IPC</name>
   </compound>
-  <compound refid="indexpage" kind="page"><name>index</name>
+  <compound refid="dir_764f9f1cee58e096f8d4dfd8f6b02c05" kind="dir"><name>deploy</name>
+  </compound>
+  <compound refid="dir_64de864d8034b31c09bd2046a1cba133" kind="dir"><name>include</name>
+  </compound>
+  <compound refid="dir_34e803d99873a86059d1e7b87624b119" kind="dir"><name>platform</name>
   </compound>
 </doxygenindex>

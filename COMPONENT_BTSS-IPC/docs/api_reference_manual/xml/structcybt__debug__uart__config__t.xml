@@ -16,7 +16,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/builds/repo/btstack-port-cyal/platform/include/cybt_debug_uart.h" line="48" column="1" bodyfile="/builds/repo/btstack-port-cyal/platform/include/cybt_debug_uart.h" bodystart="48" bodyend="-1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="48" column="1" bodyfile="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" bodystart="48" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structcybt__debug__uart__config__t_1a109bf7ff2f78d5c2b3d8447ecefbc3e5" prot="public" static="no" mutable="no">
         <type>cyhal_gpio_t</type>
@@ -30,7 +30,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/builds/repo/btstack-port-cyal/platform/include/cybt_debug_uart.h" line="49" column="1" bodyfile="/builds/repo/btstack-port-cyal/platform/include/cybt_debug_uart.h" bodystart="49" bodyend="-1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="49" column="1" bodyfile="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" bodystart="49" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structcybt__debug__uart__config__t_1a1442253ba42008c899c18fa135bfeb21" prot="public" static="no" mutable="no">
         <type>cyhal_gpio_t</type>
@@ -44,7 +44,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/builds/repo/btstack-port-cyal/platform/include/cybt_debug_uart.h" line="50" column="1" bodyfile="/builds/repo/btstack-port-cyal/platform/include/cybt_debug_uart.h" bodystart="50" bodyend="-1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="50" column="1" bodyfile="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" bodystart="50" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structcybt__debug__uart__config__t_1ad2a825e22ae429addfec61fe09f3451b" prot="public" static="no" mutable="no">
         <type>cyhal_gpio_t</type>
@@ -58,7 +58,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/builds/repo/btstack-port-cyal/platform/include/cybt_debug_uart.h" line="51" column="1" bodyfile="/builds/repo/btstack-port-cyal/platform/include/cybt_debug_uart.h" bodystart="51" bodyend="-1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="51" column="1" bodyfile="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" bodystart="51" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structcybt__debug__uart__config__t_1a60d99e8cf844de2b090ac19c3291ee03" prot="public" static="no" mutable="no">
         <type>uint32_t</type>
@@ -72,7 +72,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/builds/repo/btstack-port-cyal/platform/include/cybt_debug_uart.h" line="53" column="1" bodyfile="/builds/repo/btstack-port-cyal/platform/include/cybt_debug_uart.h" bodystart="53" bodyend="-1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="53" column="1" bodyfile="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" bodystart="53" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structcybt__debug__uart__config__t_1adf606b6502f0bb0fdd741edf575599ec" prot="public" static="no" mutable="no">
         <type>bool</type>
@@ -86,7 +86,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/builds/repo/btstack-port-cyal/platform/include/cybt_debug_uart.h" line="55" column="1" bodyfile="/builds/repo/btstack-port-cyal/platform/include/cybt_debug_uart.h" bodystart="55" bodyend="-1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="55" column="1" bodyfile="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" bodystart="55" bodyend="-1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -94,7 +94,7 @@
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/builds/repo/btstack-port-cyal/platform/include/cybt_debug_uart.h" line="47" column="1" bodyfile="/builds/repo/btstack-port-cyal/platform/include/cybt_debug_uart.h" bodystart="46" bodyend="56"/>
+    <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="47" column="1" bodyfile="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" bodystart="46" bodyend="56"/>
     <listofallmembers>
       <member refid="structcybt__debug__uart__config__t_1a60d99e8cf844de2b090ac19c3291ee03" prot="public" virt="non-virtual"><scope>cybt_debug_uart_config_t</scope><name>baud_rate</name></member>
       <member refid="structcybt__debug__uart__config__t_1adf606b6502f0bb0fdd741edf575599ec" prot="public" virt="non-virtual"><scope>cybt_debug_uart_config_t</scope><name>flow_control</name></member>

@@ -68,7 +68,6 @@ uint8_t                 hci_rx_pending_inds = 0;
 extern void cybt_core_stack_init(void);
 extern void host_stack_platform_interface_deinit(void);
 
-
 /******************************************************************************
  *                           Function Definitions
  ******************************************************************************/
@@ -432,6 +431,11 @@ void cybt_hci_rx_task(cy_thread_arg_t arg)
             case BT_IND_TO_HCI_DATA_READY_EVT:
                 handle_hci_rx_event();
                 break;
+#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x03080000))
+            case BT_IND_TO_APP_SERIALIZATION:
+                cybt_call_app_in_stack_context();
+                break;
+#endif // BTSTACK_VER
             default:
                 HCIRXTASK_TRACE_ERROR("hci_rx_task(): Unknown message (0x%x)",
                                       bt_ind_msg

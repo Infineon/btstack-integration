@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.15">
-  <compounddef id="dir_c5a52a81292cf9a5167198f4f346d6d9" kind="dir">
-    <compoundname>platform</compoundname>
-    <innerdir refid="dir_36588e4213a630c1bb8e076a76be9366">include</innerdir>
+  <compounddef id="dir_764f9f1cee58e096f8d4dfd8f6b02c05" kind="dir">
+    <compoundname>deploy</compoundname>
+    <innerdir refid="dir_9d21f36cd566679d106dc1c45c01f3d3">btstack-integration</innerdir>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/builds/repo/btstack-port-cyal/platform/"/>
+    <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/"/>
   </compounddef>
 </doxygen>

@@ -35,6 +35,8 @@
 
 #include "cybt_result.h"
 
+#include "wiced_bt_version.h"
+
 /*****************************************************************************
  *                                Constants
  *****************************************************************************/
@@ -85,7 +87,12 @@ typedef uint16_t bt_task_event_t;
 #define OFFSET_DATA_READY_SCO               (3)
 #define OFFSET_DATA_READY_EVT               (4)
 #define OFFSET_TIMER                        (5)
+#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x03080000))
+#define OFFSET_APP_SERIALIZATION            (6)
+#define BT_IND_TOTAL_NUM                    (7)
+#else
 #define BT_IND_TOTAL_NUM                    (6)
+#endif // BTSTACK_VER
 
 #define BT_IND_ID_MASK                      (0x00000FFF)
 
@@ -95,6 +102,9 @@ typedef uint16_t bt_task_event_t;
 #define BT_IND_TO_HCI_DATA_READY_SCO        (BT_IND_BASE + OFFSET_DATA_READY_SCO)
 #define BT_IND_TO_HCI_DATA_READY_EVT        (BT_IND_BASE + OFFSET_DATA_READY_EVT)
 #define BT_IND_TO_BTS_TIMER                 (BT_IND_BASE + OFFSET_TIMER)
+#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x03080000))
+#define BT_IND_TO_APP_SERIALIZATION         (BT_IND_BASE + OFFSET_APP_SERIALIZATION)
+#endif // BTSTACK_VER
 #define BT_IND_END                          (BT_IND_BASE + BT_IND_TOTAL_NUM)
 
 #define BT_IND_INVALID                      (0xFFFFFFFF)

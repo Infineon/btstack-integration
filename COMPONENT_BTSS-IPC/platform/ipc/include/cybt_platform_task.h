@@ -33,6 +33,8 @@
 
 #include "cybt_result.h"
 
+#include "wiced_bt_version.h"
+
 /*****************************************************************************
  *                                Macros
  *****************************************************************************/
@@ -55,6 +57,9 @@
 #define BT_EVT_TASK_SHUTDOWN               (BT_EVT_STATIC_GROUP | 0x0101)
 #define BT_EVT_TASK_RESET_COMPLETE         (BT_EVT_STATIC_GROUP | 0x0102)
 
+#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x03080000))
+#define BT_EVT_APP_SERIALIZATION           (BT_EVT_STATIC_GROUP | 0x0801)
+#endif // BTSTACK_VER
 
 #define IS_BT_EVT_STATIC(e)                ( ( (e) & (BT_EVT_STATIC_GROUP) ) ? true : false )
 
