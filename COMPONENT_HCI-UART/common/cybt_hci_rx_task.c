@@ -124,9 +124,17 @@ void handle_hci_rx_event(void)
     }
 
     p_hci_evt_header = (hci_event_packet_header_t *)p;
-    p+= sizeof(hci_event_packet_header_t);
+    p += sizeof(hci_event_packet_header_t);
 
     read_len = p_hci_evt_header->content_length;
+
+    if((read_len + sizeof(hci_event_packet_header_t)) > CYBT_RX_MEM_MIN_SIZE)
+    {
+        HCIRXTASK_TRACE_ERROR("handle_hci_rx_event(): read length too large (%d)", read_len);
+
+        CY_ASSERT(0);
+    }
+
     result = cybt_platform_hci_read(HCI_PACKET_TYPE_EVENT,
                                     p,
                                     &read_len,
@@ -174,9 +182,17 @@ void handle_hci_rx_acl(void)
     }
 
     p_hci_acl_header = (hci_acl_packet_header_t *)p;
-    p+= sizeof(hci_acl_packet_header_t);
+    p += sizeof(hci_acl_packet_header_t);
 
     read_len = p_hci_acl_header->content_length;
+
+    if ((read_len + sizeof(hci_acl_packet_header_t)) > CYBT_RX_MEM_MIN_SIZE)
+    {
+        HCIRXTASK_TRACE_ERROR("handle_hci_rx_acl(): read length too large (%d)", read_len);
+
+        CY_ASSERT(0);
+    }
+
     result = cybt_platform_hci_read(HCI_PACKET_TYPE_ACL,
                                     p,
                                     &read_len,
@@ -200,7 +216,6 @@ void handle_hci_rx_sco(void)
     uint32_t         read_len = 0;
     uint8_t          *p;
     uint8_t          *p_hci_sco_packet;
-    hci_sco_packet_header_t  *p_hci_sco_header;
 
     p_hci_sco_packet = (uint8_t *)cybt_platform_task_get_rx_mem();
     if(NULL == p_hci_sco_packet)
@@ -210,7 +225,7 @@ void handle_hci_rx_sco(void)
     }
 
     p = p_hci_sco_packet;
-    read_len = sizeof(hci_sco_packet_header_t);
+    read_len = HCI_SCO_PREAMBLE_SIZE;
     result = cybt_platform_hci_read(HCI_PACKET_TYPE_SCO,
                                     p,
                                     &read_len,
@@ -223,10 +238,16 @@ void handle_hci_rx_sco(void)
         return;
     }
 
-    p_hci_sco_header = (hci_sco_packet_header_t *)p;
-    p+= sizeof(hci_sco_packet_header_t);
+    read_len = p[HCI_SCO_PREAMBLE_SIZE - 1];
+    p += HCI_SCO_PREAMBLE_SIZE;
 
-    read_len = p_hci_sco_header->content_length;
+    if((read_len + HCI_SCO_PREAMBLE_SIZE) > CYBT_RX_MEM_MIN_SIZE)
+    {
+        HCIRXTASK_TRACE_ERROR("handle_hci_rx_sco(): read length too large (%d)", read_len);
+
+        CY_ASSERT(0);
+    }
+
     result = cybt_platform_hci_read(HCI_PACKET_TYPE_SCO,
                                     p,
                                     &read_len,
@@ -240,7 +261,7 @@ void handle_hci_rx_sco(void)
     }
 
     wiced_bt_process_sco_data(p_hci_sco_packet,
-                              HCI_DATA_PREAMBLE_SIZE + p_hci_sco_header->content_length
+                              HCI_SCO_PREAMBLE_SIZE + read_len
                              );
 }
 

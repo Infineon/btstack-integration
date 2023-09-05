@@ -7,6 +7,7 @@
     <includes local="yes">cyhal_gpio.h</includes>
     <includes local="yes">cybt_platform_hci.h</includes>
     <includes local="yes">cyhal_lptimer.h</includes>
+    <includes refid="cybt__platform__config_8h" local="yes">cybt_platform_config.h</includes>
     <incdepgraph>
       <node id="12">
         <label>cybt_platform_hci.h</label>
@@ -45,7 +46,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="64" column="11" bodyfile="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" bodystart="64" bodyend="-1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="66" column="11" bodyfile="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" bodystart="66" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="cybt__platform__interface_8h_1ab6311c3fcc2976e287a70a13da2d6c67" prot="public" static="no">
         <name>BTSTACK_PORTING_SECTION_BEGIN</name>
@@ -56,7 +57,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="89" column="13" bodyfile="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" bodystart="89" bodyend="-1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="91" column="13" bodyfile="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" bodystart="91" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="cybt__platform__interface_8h_1ad4d237830a4ce62f60a879518158631a" prot="public" static="no">
         <name>BTSTACK_PORTING_SECTION_END</name>
@@ -66,7 +67,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="90" column="13" bodyfile="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" bodystart="90" bodyend="-1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="92" column="13" bodyfile="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" bodystart="92" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="func">
@@ -89,7 +90,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="110" column="1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="112" column="1"/>
       </memberdef>
       <memberdef kind="function" id="cybt__platform__interface_8h_1a73131701e0d1653e6fdb63bc36d4c7f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -110,7 +111,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="121" column="1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="123" column="1"/>
       </memberdef>
       <memberdef kind="function" id="cybt__platform__interface_8h_1aaef264551ca15981fba97c1ca977234b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void *</type>
@@ -140,7 +141,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="131" column="1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="133" column="1"/>
       </memberdef>
       <memberdef kind="function" id="cybt__platform__interface_8h_1ab782a749df60843b6d1d93b325d4c783" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -170,7 +171,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="142" column="1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="144" column="1"/>
       </memberdef>
       <memberdef kind="function" id="cybt__platform__interface_8h_1a468663a5855cc06d3271660eced728be" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -190,7 +191,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="150" column="1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="152" column="1"/>
       </memberdef>
       <memberdef kind="function" id="cybt__platform__interface_8h_1aec7366686a7423709a938935ef435232" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -210,7 +211,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="158" column="1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="160" column="1"/>
       </memberdef>
       <memberdef kind="function" id="cybt__platform__interface_8h_1a63266c3ba4e8863a8cedf129798dc6cf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -244,7 +245,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="170" column="1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="172" column="1"/>
       </memberdef>
       <memberdef kind="function" id="cybt__platform__interface_8h_1a8dcac5f34f5a4068d759ebf6bf30e95e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>uint64_t</type>
@@ -265,7 +266,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="179" column="1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="181" column="1"/>
       </memberdef>
       <memberdef kind="function" id="cybt__platform__interface_8h_1a7878e8cc760de1837b637733901ca979" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -295,7 +296,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="190" column="1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h" line="192" column="1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -346,86 +347,88 @@
 <codeline lineno="51"><highlight class="normal"></highlight></codeline>
 <codeline lineno="55"><highlight class="preprocessor">#include<sp/>&quot;cyhal_lptimer.h&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="56"><highlight class="normal"></highlight></codeline>
-<codeline lineno="57"><highlight class="normal"></highlight></codeline>
-<codeline lineno="58"><highlight class="normal"></highlight><highlight class="comment">/******************************************************************************</highlight></codeline>
-<codeline lineno="59"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Constants</highlight></codeline>
-<codeline lineno="60"><highlight class="comment"><sp/>******************************************************************************/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="61"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ENABLE_DEBUG_UART</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="62"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/><sp/>CYBT_TRACE_BUFFER_SIZE<sp/><sp/><sp/><sp/>(256)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="63"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="64"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/><sp/>CYBT_TRACE_BUFFER_SIZE<sp/><sp/><sp/><sp/>(128)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="65"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//ENABLE_DEBUG_UART</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="66"><highlight class="normal"></highlight></codeline>
-<codeline lineno="67"><highlight class="normal"></highlight></codeline>
-<codeline lineno="69"><highlight class="preprocessor">#if<sp/>defined(__ARMCC_VERSION)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="70"><highlight class="normal"></highlight></codeline>
-<codeline lineno="74"><highlight class="preprocessor"><sp/><sp/><sp/>#define<sp/>BTSTACK_PORTING_SECTION_BEGIN<sp/>__attribute__((section(&quot;.text.cy_btstack_porting&quot;)))</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="75"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/>#define<sp/>BTSTACK_PORTING_SECTION_END</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="76"><highlight class="normal"></highlight></codeline>
-<codeline lineno="77"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(__ICCARM__)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="78"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/>#define<sp/>BTSTACK_PORTING_SECTION_BEGIN<sp/>_Pragma(&quot;default_function_attributes<sp/>=<sp/>@\&quot;.text.cy_btstack_porting\&quot;&quot;)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="79"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/>#define<sp/>BTSTACK_PORTING_SECTION_END<sp/>_Pragma(&quot;default_function_attributes<sp/>=<sp/>&quot;)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="80"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(__GNUC__)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="81"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#if<sp/>defined(__clang__)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="82"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#define<sp/>BTSTACK_PORTING_SECTION_BEGIN<sp/>__attribute__((section(&quot;__DATA,<sp/>.text.cy_btstack_porting&quot;)))</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="83"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#define<sp/>BTSTACK_PORTING_SECTION_END</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="84"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#else</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="85"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#define<sp/>BTSTACK_PORTING_SECTION_BEGIN<sp/>__attribute__((section(&quot;.text.cy_btstack_porting&quot;)))</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="86"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#define<sp/>BTSTACK_PORTING_SECTION_END</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="87"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#endif</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="88"><highlight class="normal"></highlight><highlight class="preprocessor">#else<sp/>//<sp/>if<sp/>defined(__ARMCC_VERSION)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="89"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#define<sp/>BTSTACK_PORTING_SECTION_BEGIN</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="90"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#define<sp/>BTSTACK_PORTING_SECTION_END</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="91"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>(__ARMCC_VERSION)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="92"><highlight class="normal"></highlight></codeline>
-<codeline lineno="93"><highlight class="normal"></highlight></codeline>
-<codeline lineno="94"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="95"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="96"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="97"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="98"><highlight class="normal"></highlight></codeline>
-<codeline lineno="99"><highlight class="normal"></highlight><highlight class="comment">/*****************************************************************************</highlight></codeline>
-<codeline lineno="100"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Function<sp/>Declarations</highlight></codeline>
-<codeline lineno="101"><highlight class="comment"><sp/>*****************************************************************************/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="102"><highlight class="normal"></highlight></codeline>
-<codeline lineno="110"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>cybt_platform_init(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
-<codeline lineno="111"><highlight class="normal"></highlight></codeline>
-<codeline lineno="112"><highlight class="normal"></highlight></codeline>
-<codeline lineno="121"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>cybt_platform_deinit(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
-<codeline lineno="122"><highlight class="normal"></highlight></codeline>
-<codeline lineno="123"><highlight class="normal"></highlight></codeline>
-<codeline lineno="131"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*cybt_platform_malloc(uint32_t<sp/>req_size);</highlight></codeline>
-<codeline lineno="132"><highlight class="normal"></highlight></codeline>
-<codeline lineno="133"><highlight class="normal"></highlight></codeline>
-<codeline lineno="142"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>cybt_platform_free(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*p_mem_block);</highlight></codeline>
-<codeline lineno="143"><highlight class="normal"></highlight></codeline>
-<codeline lineno="144"><highlight class="normal"></highlight></codeline>
-<codeline lineno="150"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>cybt_platform_disable_irq(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
-<codeline lineno="151"><highlight class="normal"></highlight></codeline>
-<codeline lineno="152"><highlight class="normal"></highlight></codeline>
-<codeline lineno="158"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>cybt_platform_enable_irq(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
-<codeline lineno="159"><highlight class="normal"></highlight></codeline>
-<codeline lineno="160"><highlight class="normal"></highlight></codeline>
-<codeline lineno="170"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>cybt_platform_log_print(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*fmt_str,<sp/>...);</highlight></codeline>
-<codeline lineno="171"><highlight class="normal"></highlight></codeline>
-<codeline lineno="172"><highlight class="normal"></highlight></codeline>
-<codeline lineno="179"><highlight class="normal">uint64_t<sp/>cybt_platform_get_tick_count_us(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
-<codeline lineno="180"><highlight class="normal"></highlight></codeline>
-<codeline lineno="181"><highlight class="normal"></highlight></codeline>
-<codeline lineno="190"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>cybt_platform_set_next_timeout(uint64_t<sp/>abs_tick_us_to_expire);</highlight></codeline>
-<codeline lineno="191"><highlight class="normal"></highlight></codeline>
-<codeline lineno="192"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>(defined(BTSTACK_VER)<sp/>&amp;&amp;<sp/>(BTSTACK_VER<sp/>&gt;=<sp/>0x03080000))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;cybt_platform_config.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight><highlight class="comment">/******************************************************************************</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Constants</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"><sp/>******************************************************************************/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ENABLE_DEBUG_UART</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/><sp/>CYBT_TRACE_BUFFER_SIZE<sp/><sp/><sp/><sp/>(256)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/><sp/>CYBT_TRACE_BUFFER_SIZE<sp/><sp/><sp/><sp/>(128)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//ENABLE_DEBUG_UART</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="preprocessor">#if<sp/>defined(__ARMCC_VERSION)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="preprocessor"><sp/><sp/><sp/>#define<sp/>BTSTACK_PORTING_SECTION_BEGIN<sp/>__attribute__((section(&quot;.text.cy_btstack_porting&quot;)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/>#define<sp/>BTSTACK_PORTING_SECTION_END</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(__ICCARM__)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/>#define<sp/>BTSTACK_PORTING_SECTION_BEGIN<sp/>_Pragma(&quot;default_function_attributes<sp/>=<sp/>@\&quot;.text.cy_btstack_porting\&quot;&quot;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/>#define<sp/>BTSTACK_PORTING_SECTION_END<sp/>_Pragma(&quot;default_function_attributes<sp/>=<sp/>&quot;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(__GNUC__)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#if<sp/>defined(__clang__)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#define<sp/>BTSTACK_PORTING_SECTION_BEGIN<sp/>__attribute__((section(&quot;__DATA,<sp/>.text.cy_btstack_porting&quot;)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#define<sp/>BTSTACK_PORTING_SECTION_END</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#define<sp/>BTSTACK_PORTING_SECTION_BEGIN<sp/>__attribute__((section(&quot;.text.cy_btstack_porting&quot;)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#define<sp/>BTSTACK_PORTING_SECTION_END</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight><highlight class="preprocessor">#else<sp/>//<sp/>if<sp/>defined(__ARMCC_VERSION)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#define<sp/>BTSTACK_PORTING_SECTION_BEGIN</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#define<sp/>BTSTACK_PORTING_SECTION_END</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>(__ARMCC_VERSION)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight><highlight class="comment">/*****************************************************************************</highlight></codeline>
+<codeline lineno="102"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Function<sp/>Declarations</highlight></codeline>
+<codeline lineno="103"><highlight class="comment"><sp/>*****************************************************************************/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>cybt_platform_init(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>cybt_platform_deinit(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*cybt_platform_malloc(uint32_t<sp/>req_size);</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>cybt_platform_free(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*p_mem_block);</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>cybt_platform_disable_irq(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>cybt_platform_enable_irq(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>cybt_platform_log_print(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*fmt_str,<sp/>...);</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal">uint64_t<sp/>cybt_platform_get_tick_count_us(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>cybt_platform_set_next_timeout(uint64_t<sp/>abs_tick_us_to_expire);</highlight></codeline>
 <codeline lineno="193"><highlight class="normal"></highlight></codeline>
-<codeline lineno="200"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>cybt_call_app_in_stack_context(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
-<codeline lineno="201"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>BTSTACK_VER</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="202"><highlight class="normal"></highlight></codeline>
-<codeline lineno="203"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="204"><highlight class="normal">}<sp/></highlight><highlight class="comment">/*<sp/>extern<sp/>&quot;C&quot;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="205"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="206"><highlight class="normal"></highlight></codeline>
+<codeline lineno="194"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>(defined(BTSTACK_VER)<sp/>&amp;&amp;<sp/>(BTSTACK_VER<sp/>&gt;=<sp/>0x03080000))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>cybt_call_app_in_stack_context(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>BTSTACK_VER</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="204"><highlight class="normal"></highlight></codeline>
+<codeline lineno="205"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="206"><highlight class="normal">}<sp/></highlight><highlight class="comment">/*<sp/>extern<sp/>&quot;C&quot;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="207"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="208"><highlight class="normal"></highlight></codeline>
+<codeline lineno="209"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="210"><highlight class="normal"></highlight></codeline>
     </programlisting>
-    <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h"/>
+    <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_interface.h"/>
   </compounddef>
 </doxygen>

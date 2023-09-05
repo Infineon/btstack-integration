@@ -26,6 +26,7 @@
 #include <stdarg.h>
 #include "cybt_platform_interface.h"
 #include "cybt_platform_trace.h"
+#include "cybt_platform_config.h"
 
 #ifdef ENABLE_DEBUG_UART
 #include "cybt_debug_uart.h"

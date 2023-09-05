@@ -5,14 +5,14 @@
     <includes refid="cybt__result_8h" local="yes">cybt_result.h</includes>
     <includes local="yes">wiced_bt_dev.h</includes>
     <incdepgraph>
+      <node id="1">
+        <label>wiced_bt_dev.h</label>
+      </node>
       <node id="0">
         <label>cybt_debug_uart.h</label>
         <link refid="cybt__debug__uart_8h"/>
         <childnode refid="1" relation="include">
         </childnode>
-      </node>
-      <node id="1">
-        <label>wiced_bt_dev.h</label>
       </node>
     </incdepgraph>
     <innerclass refid="structcybt__debug__uart__config__t" prot="public">cybt_debug_uart_config_t</innerclass>
@@ -47,7 +47,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="43" column="1" bodyfile="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" bodystart="43" bodyend="-1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="43" column="1" bodyfile="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" bodystart="43" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="func">
@@ -94,7 +94,24 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="68" column="1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="68" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="group__debug__uart__cfg_1gaa2f546e40b8fee6ef02e605cc74f8efc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void cybt_debug_uart_deinit</definition>
+        <argsstring>()</argsstring>
+        <name>cybt_debug_uart_deinit</name>
+        <briefdescription>
+<para>De-initialize Debug UART. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>: Debug UART Must be initialized to send traces over Debug UART. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="75" column="1"/>
       </memberdef>
       <memberdef kind="function" id="group__debug__uart__cfg_1ga138649c1c5091bd65757aa23db3b55a4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>cybt_result_t</type>
@@ -136,7 +153,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="79" column="1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="86" column="1"/>
       </memberdef>
       <memberdef kind="function" id="group__debug__uart__cfg_1ga7a64b5c537dd7068dcbaf5efa6ed57be" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>cybt_result_t</type>
@@ -190,7 +207,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="91" column="1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="98" column="1"/>
       </memberdef>
       <memberdef kind="function" id="group__debug__uart__cfg_1gaa5b2fd8df23a303ef08508db24792e24" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>cybt_result_t</type>
@@ -246,7 +263,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="104" column="1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="111" column="1"/>
       </memberdef>
       <memberdef kind="function" id="group__debug__uart__cfg_1gab95329f3931af04a9e15431f51f47498" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>cybt_result_t</type>
@@ -288,7 +305,39 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="114" column="1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="121" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="group__debug__uart__cfg_1gab7da69550114fa8ec2063d2ee8394bb4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>cybt_result_t</type>
+        <definition>cybt_result_t cybt_debug_uart_send_wiced_hci_buf</definition>
+        <argsstring>(void *p_buf)</argsstring>
+        <name>cybt_debug_uart_send_wiced_hci_buf</name>
+        <param>
+          <type>void *</type>
+          <declname>p_buf</declname>
+        </param>
+        <briefdescription>
+<para>Sends a WICED HCI packet in a WICED buffer over Debug UART. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">p_pkt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pointer to the WICED HCI packet in a wiced_bt_buffer</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>CYBT_SUCCESS if the transmission is started, else error reason.</para>
+</simplesect>
+<simplesect kind="note"><para>the buffer should be obtained using wiced_bt_get_buffer(). If this function returns error, the buffer is not freed. After transmission, the the buffer is freed using a call to wiced_bt_free_buffer(). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="134" column="1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -335,15 +384,19 @@
 <codeline lineno="56"><highlight class="normal">}<sp/><ref refid="structcybt__debug__uart__config__t" kindref="compound">cybt_debug_uart_config_t</ref>;</highlight></codeline>
 <codeline lineno="68"><highlight class="normal">cybt_result_t<sp/><ref refid="group__debug__uart__cfg_1ga16bde8710d82bdc7086fa44f6103ccf3" kindref="member">cybt_debug_uart_init</ref>(<ref refid="structcybt__debug__uart__config__t" kindref="compound">cybt_debug_uart_config_t</ref>*<sp/>config,<sp/><ref refid="group__debug__uart__cfg_1gad9ac57d78f046b0d5dbcf3f32e54e1fd" kindref="member">cybt_debug_uart_data_handler_t</ref><sp/>p_data_handler);</highlight></codeline>
 <codeline lineno="69"><highlight class="normal"></highlight></codeline>
-<codeline lineno="79"><highlight class="normal">cybt_result_t<sp/><ref refid="group__debug__uart__cfg_1ga138649c1c5091bd65757aa23db3b55a4" kindref="member">cybt_debug_uart_send_trace</ref><sp/>(uint16_t<sp/>length,<sp/>uint8_t*<sp/>p_data);</highlight></codeline>
-<codeline lineno="80"><highlight class="normal"></highlight></codeline>
-<codeline lineno="91"><highlight class="normal">cybt_result_t<sp/><ref refid="group__debug__uart__cfg_1ga7a64b5c537dd7068dcbaf5efa6ed57be" kindref="member">cybt_debug_uart_send_hci_trace</ref><sp/>(uint8_t<sp/>type,<sp/>uint16_t<sp/>length,<sp/>uint8_t*<sp/>p_data);</highlight></codeline>
-<codeline lineno="92"><highlight class="normal"></highlight></codeline>
-<codeline lineno="104"><highlight class="normal">cybt_result_t<sp/><ref refid="group__debug__uart__cfg_1gaa5b2fd8df23a303ef08508db24792e24" kindref="member">cybt_debug_uart_send_data</ref><sp/>(uint16_t<sp/>opcode,<sp/>uint16_t<sp/>data_size,<sp/>uint8_t<sp/>*p_data);</highlight></codeline>
-<codeline lineno="105"><highlight class="normal"></highlight></codeline>
-<codeline lineno="114"><highlight class="normal">cybt_result_t<sp/><ref refid="group__debug__uart__cfg_1gab95329f3931af04a9e15431f51f47498" kindref="member">cybt_send_coredump_hci_trace</ref><sp/>(uint16_t<sp/>data_size,<sp/>uint8_t<sp/>*p_data);</highlight></codeline>
-<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="group__debug__uart__cfg_1gaa2f546e40b8fee6ef02e605cc74f8efc" kindref="member">cybt_debug_uart_deinit</ref>();</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal">cybt_result_t<sp/><ref refid="group__debug__uart__cfg_1ga138649c1c5091bd65757aa23db3b55a4" kindref="member">cybt_debug_uart_send_trace</ref><sp/>(uint16_t<sp/>length,<sp/>uint8_t*<sp/>p_data);</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal">cybt_result_t<sp/><ref refid="group__debug__uart__cfg_1ga7a64b5c537dd7068dcbaf5efa6ed57be" kindref="member">cybt_debug_uart_send_hci_trace</ref><sp/>(uint8_t<sp/>type,<sp/>uint16_t<sp/>length,<sp/>uint8_t*<sp/>p_data);</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal">cybt_result_t<sp/><ref refid="group__debug__uart__cfg_1gaa5b2fd8df23a303ef08508db24792e24" kindref="member">cybt_debug_uart_send_data</ref><sp/>(uint16_t<sp/>opcode,<sp/>uint16_t<sp/>data_size,<sp/>uint8_t<sp/>*p_data);</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal">cybt_result_t<sp/><ref refid="group__debug__uart__cfg_1gab95329f3931af04a9e15431f51f47498" kindref="member">cybt_send_coredump_hci_trace</ref><sp/>(uint16_t<sp/>data_size,<sp/>uint8_t<sp/>*p_data);</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal">cybt_result_t<sp/><ref refid="group__debug__uart__cfg_1gab7da69550114fa8ec2063d2ee8394bb4" kindref="member">cybt_debug_uart_send_wiced_hci_buf</ref><sp/>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*p_buf);</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight></codeline>
     </programlisting>
-    <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h"/>
+    <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h"/>
   </compounddef>
 </doxygen>

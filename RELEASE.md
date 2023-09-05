@@ -6,6 +6,14 @@ This release of AIROC&trade; BT/BLE stack solution package includes as following
 * Infineon Bluetooth&reg; BT controller firmware (CYW4343W, CYW43012, 20829)
 * Platform and Operating system porting layers for P6+43xx, 20829 and P6+BLESS.
 
+#### v4.5.0
+btstack-integration v4.5.0 contains below updates:
+* Updated BT Controller FW patch for 20829B0
+* Minor modifications to adhere MISRA C compliance
+* Fixes related to SCO handling in P6+43xx platform
+* Changes to support DMA on 20829 and P6+BLESS platforms
+* Modified debug UART for 20829 and P6+BLESS platforms
+
 #### v4.4.0
 btstack-integration v4.4.0 contains below updates:
 * Added BT Controller FW patch for 43022

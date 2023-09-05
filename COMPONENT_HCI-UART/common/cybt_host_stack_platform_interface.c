@@ -366,6 +366,8 @@ wiced_result_t host_stack_send_sco_to_lower(uint8_t* p_sco_data, uint8_t len)
         SPIF_TRACE_ERROR("send_sco_to_lower(): Send hci queue failed (ret = 0x%x)",
                          result
                         );
+        cybt_lock_hci_tx(CYBT_HCI_TX_BLOCKED_QUEUE_FULL_SCO);
+        cybt_platform_task_mempool_free(p_msg_hdr);
         return WICED_ERROR;
     }
 }

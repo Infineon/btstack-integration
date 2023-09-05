@@ -68,6 +68,7 @@ void cybt_lock_hci_tx(cybt_hci_tx_status_t reason)
         case CYBT_HCI_TX_BLOCKED_HEAP_RAN_OUT:
         case CYBT_HCI_TX_BLOCKED_QUEUE_FULL_CMD:
         case CYBT_HCI_TX_BLOCKED_QUEUE_FULL_ACL:
+        case CYBT_HCI_TX_BLOCKED_QUEUE_FULL_SCO:
             hci_tx_status |= reason;
             break;
         default:

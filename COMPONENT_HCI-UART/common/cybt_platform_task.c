@@ -38,14 +38,7 @@
 /*****************************************************************************
  *                                Constants
  *****************************************************************************/
-#define CYBT_RX_MEM_MIN_SIZE         (1040)
-#define CYBT_TX_CMD_MEM_MIN_SIZE     (264)
-#define CYBT_TX_HEAP_MIN_SIZE        (1040)
 
-#define CYBT_TASK_MINIMUM_POOL_SIZE  (CYBT_RX_MEM_MIN_SIZE \
-                                      + CYBT_TX_CMD_MEM_MIN_SIZE \
-                                      + CYBT_TX_HEAP_MIN_SIZE \
-                                     )
 
 /*****************************************************************************
  *                           Type Definitions

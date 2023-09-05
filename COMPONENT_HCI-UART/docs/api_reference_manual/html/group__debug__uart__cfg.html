@@ -115,6 +115,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga16bde8710d82bdc7086fa44f6103ccf3"><td class="memItemLeft" align="right" valign="top">cybt_result_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__debug__uart__cfg.html#ga16bde8710d82bdc7086fa44f6103ccf3">cybt_debug_uart_init</a> (<a class="el" href="structcybt__debug__uart__config__t.html">cybt_debug_uart_config_t</a> *config, <a class="el" href="group__debug__uart__cfg.html#gad9ac57d78f046b0d5dbcf3f32e54e1fd">cybt_debug_uart_data_handler_t</a> p_data_handler)</td></tr>
 <tr class="memdesc:ga16bde8710d82bdc7086fa44f6103ccf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize Debug UART.  <a href="#ga16bde8710d82bdc7086fa44f6103ccf3">More...</a><br /></td></tr>
 <tr class="separator:ga16bde8710d82bdc7086fa44f6103ccf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa2f546e40b8fee6ef02e605cc74f8efc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__debug__uart__cfg.html#gaa2f546e40b8fee6ef02e605cc74f8efc">cybt_debug_uart_deinit</a> ()</td></tr>
+<tr class="memdesc:gaa2f546e40b8fee6ef02e605cc74f8efc"><td class="mdescLeft">&#160;</td><td class="mdescRight">De-initialize Debug UART.  <a href="#gaa2f546e40b8fee6ef02e605cc74f8efc">More...</a><br /></td></tr>
+<tr class="separator:gaa2f546e40b8fee6ef02e605cc74f8efc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga138649c1c5091bd65757aa23db3b55a4"><td class="memItemLeft" align="right" valign="top">cybt_result_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__debug__uart__cfg.html#ga138649c1c5091bd65757aa23db3b55a4">cybt_debug_uart_send_trace</a> (uint16_t length, uint8_t *p_data)</td></tr>
 <tr class="memdesc:ga138649c1c5091bd65757aa23db3b55a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends traces over Debug UART.  <a href="#ga138649c1c5091bd65757aa23db3b55a4">More...</a><br /></td></tr>
 <tr class="separator:ga138649c1c5091bd65757aa23db3b55a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,6 +130,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gab95329f3931af04a9e15431f51f47498"><td class="memItemLeft" align="right" valign="top">cybt_result_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__debug__uart__cfg.html#gab95329f3931af04a9e15431f51f47498">cybt_send_coredump_hci_trace</a> (uint16_t data_size, uint8_t *p_data)</td></tr>
 <tr class="memdesc:gab95329f3931af04a9e15431f51f47498"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends coredump HCI traces over Debug UART.  <a href="#gab95329f3931af04a9e15431f51f47498">More...</a><br /></td></tr>
 <tr class="separator:gab95329f3931af04a9e15431f51f47498"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab7da69550114fa8ec2063d2ee8394bb4"><td class="memItemLeft" align="right" valign="top">cybt_result_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__debug__uart__cfg.html#gab7da69550114fa8ec2063d2ee8394bb4">cybt_debug_uart_send_wiced_hci_buf</a> (void *p_buf)</td></tr>
+<tr class="memdesc:gab7da69550114fa8ec2063d2ee8394bb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a WICED HCI packet in a WICED buffer over Debug UART.  <a href="#gab7da69550114fa8ec2063d2ee8394bb4">More...</a><br /></td></tr>
+<tr class="separator:gab7da69550114fa8ec2063d2ee8394bb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="gad9ac57d78f046b0d5dbcf3f32e54e1fd"></a>
@@ -189,6 +195,26 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>CYBT_SUCCESS if success else error reason.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>: Debug UART Must be initialized to send traces over Debug UART. </dd></dl>
+
+</div>
+</div>
+<a id="gaa2f546e40b8fee6ef02e605cc74f8efc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa2f546e40b8fee6ef02e605cc74f8efc">&#9670;&nbsp;</a></span>cybt_debug_uart_deinit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void cybt_debug_uart_deinit </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>De-initialize Debug UART. </p>
 <dl class="section note"><dt>Note</dt><dd>: Debug UART Must be initialized to send traces over Debug UART. </dd></dl>
 
 </div>
@@ -357,6 +383,34 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>CYBT_SUCCESS if success else error reason. </dd></dl>
+
+</div>
+</div>
+<a id="gab7da69550114fa8ec2063d2ee8394bb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab7da69550114fa8ec2063d2ee8394bb4">&#9670;&nbsp;</a></span>cybt_debug_uart_send_wiced_hci_buf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">cybt_result_t cybt_debug_uart_send_wiced_hci_buf </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>p_buf</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sends a WICED HCI packet in a WICED buffer over Debug UART. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">p_pkt</td><td>pointer to the WICED HCI packet in a wiced_bt_buffer</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>CYBT_SUCCESS if the transmission is started, else error reason.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>the buffer should be obtained using wiced_bt_get_buffer(). If this function returns error, the buffer is not freed. After transmission, the the buffer is freed using a call to wiced_bt_free_buffer(). </dd></dl>
 
 </div>
 </div>

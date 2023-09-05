@@ -6,6 +6,8 @@
     <includes local="no">stdbool.h</includes>
     <includes local="yes">cyhal_gpio.h</includes>
     <includes local="yes">cyhal_uart.h</includes>
+    <includedby refid="cybt__platform__interface_8h" local="yes">cybt_platform_interface.h</includedby>
+    <includedby refid="cybt__platform__trace_8h" local="yes">cybt_platform_trace.h</includedby>
     <incdepgraph>
       <node id="5">
         <label>stdbool.h</label>
@@ -47,7 +49,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" line="51" column="9" bodyfile="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" bodystart="51" bodyend="-1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" line="51" column="9" bodyfile="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" bodystart="51" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="group__platform__cfg_1gad9d80ecaf5864c704c87bd0cf7490659" prot="public" static="no">
         <name>CYBT_SLEEP_MODE_ENABLED</name>
@@ -58,7 +60,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" line="52" column="9" bodyfile="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" bodystart="52" bodyend="-1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" line="52" column="9" bodyfile="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" bodystart="52" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="group__platform__cfg_1gaf7d41be05e1c430256f65d1219abd831" prot="public" static="no">
         <name>CYBT_WAKE_ACTIVE_LOW</name>
@@ -69,7 +71,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" line="54" column="9" bodyfile="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" bodystart="54" bodyend="-1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" line="54" column="9" bodyfile="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" bodystart="54" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="group__platform__cfg_1gad8d6dd4f2d7b07a29af54ebf34d9be6e" prot="public" static="no">
         <name>CYBT_WAKE_ACTIVE_HIGH</name>
@@ -80,7 +82,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" line="55" column="9" bodyfile="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" bodystart="55" bodyend="-1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" line="55" column="9" bodyfile="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" bodystart="55" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="enum">
@@ -118,7 +120,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" line="64" column="1" bodyfile="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" bodystart="63" bodyend="68"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" line="64" column="1" bodyfile="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" bodystart="63" bodyend="68"/>
       </memberdef>
       <memberdef kind="enum" id="group__platform__cfg_1gab887149c4cb3cd34b2984638c6c1aebb" prot="public" static="no" strong="no">
         <type></type>
@@ -170,7 +172,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" line="74" column="1" bodyfile="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" bodystart="73" bodyend="80"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" line="74" column="1" bodyfile="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" bodystart="73" bodyend="80"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="typedef">
@@ -215,7 +217,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" line="116" column="1" bodyfile="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" bodystart="116" bodyend="-1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" line="116" column="1" bodyfile="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" bodystart="116" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="func">
@@ -247,7 +249,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" line="228" column="1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h" line="228" column="1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -387,6 +389,6 @@
 <codeline lineno="237"><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="238"><highlight class="normal"></highlight></codeline>
     </programlisting>
-    <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h"/>
+    <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_config.h"/>
   </compounddef>
 </doxygen>

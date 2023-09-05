@@ -201,7 +201,7 @@ wiced_result_t cybt_core_management_cback( wiced_bt_management_evt_t event, wice
     switch(event)
     {
         case BTM_ENABLED_EVT:
-#if ((!defined(DISABLE_DEFAULT_BTSTACK_INIT)) || (DISABLE_DEFAULT_BTSTACK_INIT == 0))
+#ifndef DISABLE_DEFAULT_BTSTACK_INIT
             app_initialize_btstack_modules(); // initialize all layers
 #endif
             wiced_bt_init_resolution(); // To be removed, only required for non-privacy controllers

@@ -54,6 +54,8 @@
  */
 #include "cyhal_lptimer.h"
 
+#include "cybt_platform_config.h"
+
 
 /******************************************************************************
  *                                Constants

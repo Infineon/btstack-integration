@@ -533,8 +533,8 @@ cybt_result_t cybt_platform_hci_read(void *event,
                                      )
 {
     cybt_result_t status =  CYBT_SUCCESS;
-    uint8_t *ptr_rx_hci;
-    uint32_t *p_msg;
+    uint8_t *ptr_rx_hci = NULL;
+    uint32_t *p_msg = NULL;
 
     UNUSED_VARIABLE(event);
 

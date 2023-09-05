@@ -35,7 +35,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="43" column="1" bodyfile="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" bodystart="43" bodyend="-1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="43" column="1" bodyfile="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" bodystart="43" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="func">
@@ -82,7 +82,24 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="68" column="1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="68" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="group__debug__uart__cfg_1gaa2f546e40b8fee6ef02e605cc74f8efc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void cybt_debug_uart_deinit</definition>
+        <argsstring>()</argsstring>
+        <name>cybt_debug_uart_deinit</name>
+        <briefdescription>
+<para>De-initialize Debug UART. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>: Debug UART Must be initialized to send traces over Debug UART. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="75" column="1"/>
       </memberdef>
       <memberdef kind="function" id="group__debug__uart__cfg_1ga138649c1c5091bd65757aa23db3b55a4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>cybt_result_t</type>
@@ -124,7 +141,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="79" column="1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="86" column="1"/>
       </memberdef>
       <memberdef kind="function" id="group__debug__uart__cfg_1ga7a64b5c537dd7068dcbaf5efa6ed57be" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>cybt_result_t</type>
@@ -178,7 +195,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="91" column="1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="98" column="1"/>
       </memberdef>
       <memberdef kind="function" id="group__debug__uart__cfg_1gaa5b2fd8df23a303ef08508db24792e24" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>cybt_result_t</type>
@@ -234,7 +251,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="104" column="1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="111" column="1"/>
       </memberdef>
       <memberdef kind="function" id="group__debug__uart__cfg_1gab95329f3931af04a9e15431f51f47498" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>cybt_result_t</type>
@@ -276,7 +293,39 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="114" column="1"/>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="121" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="group__debug__uart__cfg_1gab7da69550114fa8ec2063d2ee8394bb4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>cybt_result_t</type>
+        <definition>cybt_result_t cybt_debug_uart_send_wiced_hci_buf</definition>
+        <argsstring>(void *p_buf)</argsstring>
+        <name>cybt_debug_uart_send_wiced_hci_buf</name>
+        <param>
+          <type>void *</type>
+          <declname>p_buf</declname>
+        </param>
+        <briefdescription>
+<para>Sends a WICED HCI packet in a WICED buffer over Debug UART. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">p_pkt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pointer to the WICED HCI packet in a wiced_bt_buffer</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>CYBT_SUCCESS if the transmission is started, else error reason.</para>
+</simplesect>
+<simplesect kind="note"><para>the buffer should be obtained using wiced_bt_get_buffer(). If this function returns error, the buffer is not freed. After transmission, the the buffer is freed using a call to wiced_bt_free_buffer(). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/var/tmp/gitlab-runner2/builds/AzUexz8o/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_debug_uart.h" line="134" column="1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>

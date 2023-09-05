@@ -59,6 +59,15 @@
 #define HCI_TX_UNLOCK_THRESHOLD_TX_HEAP_IN_PERCENT    (50)
 #define HCI_TX_UNLOCK_THRESHOLD_HCITX_Q_IN_PERCENT    (50)
 
+#define CYBT_RX_MEM_MIN_SIZE               (1040)
+#define CYBT_TX_CMD_MEM_MIN_SIZE           (264)
+#define CYBT_TX_HEAP_MIN_SIZE              (1040)
+
+#define CYBT_TASK_MINIMUM_POOL_SIZE        (CYBT_RX_MEM_MIN_SIZE \
+                                            + CYBT_TX_CMD_MEM_MIN_SIZE \
+                                            + CYBT_TX_HEAP_MIN_SIZE \
+                                           )
+
 /*****************************************************************************
  *                           Type Definitions
  *****************************************************************************/
@@ -146,6 +155,7 @@ extern cy_queue_t  cybt_task_queue[];
 #define CYBT_HCI_TX_BLOCKED_HEAP_RAN_OUT      (1 << 0)
 #define CYBT_HCI_TX_BLOCKED_QUEUE_FULL_CMD    (1 << 1)
 #define CYBT_HCI_TX_BLOCKED_QUEUE_FULL_ACL    (1 << 2)
+#define CYBT_HCI_TX_BLOCKED_QUEUE_FULL_SCO    (1 << 3)
 typedef uint8_t cybt_hci_tx_status_t;
 
 #ifdef __cplusplus

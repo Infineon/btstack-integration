@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "wiced_data_types.h"
+#include "cybt_platform_config.h"
 
 /**
  *  @addtogroup    platform_trace   Bluetooth Platform Trace

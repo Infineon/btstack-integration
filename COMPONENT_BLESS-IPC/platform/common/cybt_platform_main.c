@@ -243,11 +243,11 @@ wiced_result_t cybt_core_management_cback( wiced_bt_management_evt_t event, wice
     switch(event)
     {
         case BTM_ENABLED_EVT:
-            #if ((!defined(DISABLE_DEFAULT_BTSTACK_INIT)) || (DISABLE_DEFAULT_BTSTACK_INIT == 0))
+            #ifndef DISABLE_DEFAULT_BTSTACK_INIT
             app_initialize_btstack_modules();
             #endif
         
-           wiced_bt_init_resolution(); /* to be removed subsequently. only required for non-privacy controllers */
+            wiced_bt_init_resolution(); /* to be removed subsequently. only required for non-privacy controllers */
         break;
     }
 #endif // BTSTACK_VER

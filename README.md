@@ -18,10 +18,10 @@ Please refer IPC (Inter Process Communication) section of https://infineon.githu
 
 ## Updates from code size optimization 
 ### Code size optimizations for Mesh/Beaconing Apps 
-Applications which do not create GATT/ACL connections or those which do not need SMP may override the default initializations done in the stack by defining the macro **DISABLE_DEFAULT_BTSTACK_INIT** to 1 in the application Makefile
+Applications which do not create GATT/ACL connections or those which do not need SMP may override the default initializations done in the stack by defining the macro **DISABLE_DEFAULT_BTSTACK_INIT** in the application Makefile
 ```
-  #Set DISABLE_DEFAULT_BTSTACK_INIT=1 
-  DEFINES+=DISABLE_DEFAULT_BTSTACK_INIT=1
+  #Define DISABLE_DEFAULT_BTSTACK_INIT
+  DEFINES+=DISABLE_DEFAULT_BTSTACK_INIT
 ```
 
 ### Requirements for enabling GATT Robust Caching 

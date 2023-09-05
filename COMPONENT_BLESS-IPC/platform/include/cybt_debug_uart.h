@@ -68,6 +68,13 @@ typedef struct
 cybt_result_t cybt_debug_uart_init(cybt_debug_uart_config_t* config, cybt_debug_uart_data_handler_t p_data_handler);
 
 /**
+ * De-initialize Debug UART.
+ *
+ * @note : Debug UART Must be initialized to send traces over Debug UART.
+ */
+void cybt_debug_uart_deinit();
+
+/**
  * Sends traces over Debug UART
  *
  * @param[in] length: Length of the data
@@ -112,6 +119,19 @@ cybt_result_t cybt_debug_uart_send_data (uint16_t opcode, uint16_t data_size, ui
  * @returns  CYBT_SUCCESS if success else error reason.
  */
 cybt_result_t cybt_send_coredump_hci_trace (uint16_t data_size, uint8_t *p_data);
+
+/**
+* Sends a WICED HCI packet in a WICED buffer over Debug UART
+*
+* @param[in] p_pkt: pointer to the WICED HCI packet in a wiced_bt_buffer
+*
+* @returns  CYBT_SUCCESS if the transmission is started, else error reason.
+*
+* @note the buffer should be obtained using wiced_bt_get_buffer(). If this
+* function returns error, the buffer is not freed. After transmission, the
+* the buffer is freed using a call to wiced_bt_free_buffer().
+*/
+cybt_result_t cybt_debug_uart_send_wiced_hci_buf (void *p_buf);
 
 /**@} */
 

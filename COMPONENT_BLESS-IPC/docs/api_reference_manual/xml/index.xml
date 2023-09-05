@@ -47,10 +47,12 @@
   <compound refid="cybt__debug__uart_8h" kind="file"><name>cybt_debug_uart.h</name>
     <member refid="group__debug__uart__cfg_1gad9ac57d78f046b0d5dbcf3f32e54e1fd" kind="typedef"><name>cybt_debug_uart_data_handler_t</name></member>
     <member refid="group__debug__uart__cfg_1ga16bde8710d82bdc7086fa44f6103ccf3" kind="function"><name>cybt_debug_uart_init</name></member>
+    <member refid="group__debug__uart__cfg_1gaa2f546e40b8fee6ef02e605cc74f8efc" kind="function"><name>cybt_debug_uart_deinit</name></member>
     <member refid="group__debug__uart__cfg_1ga138649c1c5091bd65757aa23db3b55a4" kind="function"><name>cybt_debug_uart_send_trace</name></member>
     <member refid="group__debug__uart__cfg_1ga7a64b5c537dd7068dcbaf5efa6ed57be" kind="function"><name>cybt_debug_uart_send_hci_trace</name></member>
     <member refid="group__debug__uart__cfg_1gaa5b2fd8df23a303ef08508db24792e24" kind="function"><name>cybt_debug_uart_send_data</name></member>
     <member refid="group__debug__uart__cfg_1gab95329f3931af04a9e15431f51f47498" kind="function"><name>cybt_send_coredump_hci_trace</name></member>
+    <member refid="group__debug__uart__cfg_1gab7da69550114fa8ec2063d2ee8394bb4" kind="function"><name>cybt_debug_uart_send_wiced_hci_buf</name></member>
   </compound>
   <compound refid="cybt__platform__config_8h" kind="file"><name>cybt_platform_config.h</name>
     <member refid="group__platform__cfg_1ga71a14bd3046f030353a91683577817a6" kind="define"><name>CYBT_SLEEP_MODE_DISABLED</name></member>
@@ -220,10 +222,12 @@
   <compound refid="group__debug__uart__cfg" kind="group"><name>debug_uart_cfg</name>
     <member refid="group__debug__uart__cfg_1gad9ac57d78f046b0d5dbcf3f32e54e1fd" kind="typedef"><name>cybt_debug_uart_data_handler_t</name></member>
     <member refid="group__debug__uart__cfg_1ga16bde8710d82bdc7086fa44f6103ccf3" kind="function"><name>cybt_debug_uart_init</name></member>
+    <member refid="group__debug__uart__cfg_1gaa2f546e40b8fee6ef02e605cc74f8efc" kind="function"><name>cybt_debug_uart_deinit</name></member>
     <member refid="group__debug__uart__cfg_1ga138649c1c5091bd65757aa23db3b55a4" kind="function"><name>cybt_debug_uart_send_trace</name></member>
     <member refid="group__debug__uart__cfg_1ga7a64b5c537dd7068dcbaf5efa6ed57be" kind="function"><name>cybt_debug_uart_send_hci_trace</name></member>
     <member refid="group__debug__uart__cfg_1gaa5b2fd8df23a303ef08508db24792e24" kind="function"><name>cybt_debug_uart_send_data</name></member>
     <member refid="group__debug__uart__cfg_1gab95329f3931af04a9e15431f51f47498" kind="function"><name>cybt_send_coredump_hci_trace</name></member>
+    <member refid="group__debug__uart__cfg_1gab7da69550114fa8ec2063d2ee8394bb4" kind="function"><name>cybt_debug_uart_send_wiced_hci_buf</name></member>
   </compound>
   <compound refid="group__platform__cfg" kind="group"><name>platform_cfg</name>
     <member refid="group__platform__cfg_1ga5f6850727c86459c4c6c11c84870d308" kind="enum"><name>cybt_hci_transport_t</name></member>

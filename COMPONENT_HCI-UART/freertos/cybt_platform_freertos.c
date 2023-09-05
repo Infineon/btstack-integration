@@ -750,6 +750,12 @@ cybt_result_t cybt_platform_hci_read(hci_packet_type_t type,
         return  CYBT_ERR_HCI_NOT_INITIALIZE;
     }
 
+    if (0 == req_len)
+    {
+        HCIDRV_TRACE_ERROR("hci_read(): Required length = 0\n");
+        return  CYBT_ERR_BADARG;
+    }
+
     result = cy_rtos_get_mutex(&hci_uart_cb.rx_atomic, timeout_ms);
     if(CY_RSLT_SUCCESS != result)
     {
