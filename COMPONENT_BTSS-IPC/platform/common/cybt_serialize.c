@@ -29,6 +29,7 @@
 #include "cybt_result.h"
 #include "cybt_platform_task.h"
 #include "wiced_bt_serialize.h"
+#include "cybt_platform_interface.h"
 
 /**
 *  @addtogroup    app_utils   Application Utility Functions
@@ -65,6 +66,7 @@ CYBT_SER_Q_t serial_q_struct = {0};
 *
 * @returns  WICED_BT_SUCCESS if success else error reason.
 */
+BTSTACK_PORTING_SECTION_BEGIN
 wiced_result_t wiced_bt_app_serialize_function (wiced_bt_serialized_app_func_t p_func, void *param)
 {
     CYBT_SER_Q_ENTRY_t   entry;
@@ -91,6 +93,7 @@ wiced_result_t wiced_bt_app_serialize_function (wiced_bt_serialized_app_func_t p
         return (WICED_QUEUE_ERROR);
     }
 }
+BTSTACK_PORTING_SECTION_END
 
 /**
 * Call back to the application in the BT stack context
@@ -99,6 +102,7 @@ wiced_result_t wiced_bt_app_serialize_function (wiced_bt_serialized_app_func_t p
 *
 * @returns  void
 */
+BTSTACK_PORTING_SECTION_BEGIN
 void cybt_call_app_in_stack_context (void)
 {
     CYBT_SER_Q_ENTRY_t   entry;
@@ -106,6 +110,7 @@ void cybt_call_app_in_stack_context (void)
     if (cy_rtos_get_queue(&serial_q_struct.serialQ, &entry, 0, false) == CY_RSLT_SUCCESS)
         (entry.pf)(entry.pp);
 }
+BTSTACK_PORTING_SECTION_END
 #endif // BTSTACK_VER
 
 /**@} */

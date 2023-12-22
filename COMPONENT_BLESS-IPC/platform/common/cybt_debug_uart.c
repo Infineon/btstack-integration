@@ -133,6 +133,19 @@ static void *cybt_platform_debug_task_mempool_alloc(uint32_t req_size)
 BTSTACK_PORTING_SECTION_END
 
 BTSTACK_PORTING_SECTION_BEGIN
+static void *cybt_memcpy (void *dest, const void *src, size_t len)
+{
+    uint8_t *pDest = (uint8_t*)dest;
+    const uint8_t *pSrc = (const uint8_t*)src;
+    while(len--)
+    {
+        *pDest++ = *pSrc++;
+    }
+    return dest;
+}
+BTSTACK_PORTING_SECTION_END
+
+BTSTACK_PORTING_SECTION_BEGIN
 static void cybt_platform_debug_task_mempool_free(void *p_mem_block)
 {
     wiced_bt_free_buffer((wiced_bt_buffer_t *) p_mem_block);
@@ -142,7 +155,7 @@ BTSTACK_PORTING_SECTION_END
 BTSTACK_PORTING_SECTION_BEGIN
 static cybt_result_t cybt_enqueue_tx_data (uint16_t type, uint16_t  opcode, uint16_t length, uint8_t* p_data)
 {
-    uint8_t     *p_buf, *p_buf_start;
+    uint8_t     *p_buf = NULL, *p_buf_start = NULL;
     cy_rslt_t   result = CYBT_ERR_GENERIC;
     size_t      count = 0;
 
@@ -187,7 +200,7 @@ static cybt_result_t cybt_enqueue_tx_data (uint16_t type, uint16_t  opcode, uint
         *p_buf++ = (uint8_t)(length >> 8);
     }
 
-    memcpy (p_buf, p_data, length);
+    cybt_memcpy (p_buf, p_data, length);
 
     result = cy_rtos_put_queue (&DEBUG_UART_TX_TASK_QUEUE, (void *) &p_buf_start, 0, false);
 

@@ -79,6 +79,12 @@ typedef struct {
 #endif
 
 /******************************************************************************
+ *                           Callback Prototypes
+ ******************************************************************************/
+cy_en_syspm_status_t cybt_platform_syspm_DeepSleepCallback(cy_stc_syspm_callback_params_t* callbackParams,
+                                                 cy_en_syspm_callback_mode_t mode);
+
+/******************************************************************************
  *                           Variables Definitions
  ******************************************************************************/
 static hci_interface_t   hci_cb;
@@ -87,11 +93,20 @@ static bt_task_event_t hci_core_msg = BT_EVT_CORE_HCI;
 static bt_task_event_t hci_boot_msg = BT_EVT_TASK_BOOT_COMPLETES;
 static bt_task_event_t shutdown_msg = BT_EVT_TASK_SHUTDOWN;
 static bt_task_event_t buffer_msg = BT_EVT_CORE_HCI_WRITE_BUF_AVAIL;
-
+static bt_task_event_t reset_msg = BT_EVT_TASK_RESET_COMPLETE;
 
 #ifdef RECORD_IPC_STATS
 static cybt_ipc_stats_t ipc_stats;
 #endif
+
+static cy_stc_syspm_callback_params_t cybt_syspm_callback_param = { NULL, NULL };
+static cy_stc_syspm_callback_t        cybt_syspm_callback       =
+{
+    .callback       = &cybt_platform_syspm_DeepSleepCallback,
+    .type           = (cy_en_syspm_callback_type_t) CY_SYSPM_MODE_DEEPSLEEP_RAM,
+    .callbackParams = &cybt_syspm_callback_param,
+    .order          = 253u,
+};
 
 
 /******************************************************************************
@@ -291,6 +306,7 @@ cybt_result_t cybt_platform_msg_to_bt_task(const uint16_t msg, bool is_from_isr)
             break;
         case BT_EVT_TASK_SHUTDOWN:
             result = cybt_send_msg_to_bt_task(&shutdown_msg, is_from_isr);
+            result = cybt_send_msg_to_bt_task(&reset_msg, is_from_isr);
             break;
         case BT_EVT_CORE_HCI_WRITE_BUF_AVAIL:
             result = cybt_send_msg_to_bt_task(&buffer_msg, is_from_isr);
@@ -345,26 +361,6 @@ cy_en_syspm_status_t cybt_platform_syspm_DeepSleepCallback(cy_stc_syspm_callback
     }
 
     return retVal;
-}
-
-
-static cy_rslt_t cybt_platform_register_syspm_callback(void)
-{
-    cybt_result_t result = CYBT_SUCCESS;
-    static cy_stc_syspm_callback_params_t cybt_syspm_callback_param = { NULL, NULL };
-    static cy_stc_syspm_callback_t        cybt_syspm_callback       =
-    {
-        .callback       = &cybt_platform_syspm_DeepSleepCallback,
-        .type           = (cy_en_syspm_callback_type_t) CY_SYSPM_MODE_DEEPSLEEP_RAM,
-        .callbackParams = &cybt_syspm_callback_param,
-        .order          = 253u,
-    };
-
-    if (!Cy_SysPm_RegisterCallback(&cybt_syspm_callback))
-    {
-        result = CYBT_ERR_BADARG;
-    }
-    return result;
 }
 
 cybt_result_t cybt_platform_hci_open(void *p_arg)
@@ -459,7 +455,7 @@ cybt_result_t cybt_platform_hci_open(void *p_arg)
 
     Cy_SysLib_ExitCriticalSection(interruptState);
 
-    if (CYBT_SUCCESS != cybt_platform_register_syspm_callback())
+    if (!Cy_SysPm_RegisterCallback(&cybt_syspm_callback))
     {
     	HCIDRV_TRACE_ERROR("MCU Error: Syspm Callback registering failed 0x%x!\n", ipc_status);
         CY_ASSERT(0);
@@ -575,6 +571,12 @@ cybt_result_t cybt_platform_hci_close(void)
     {
         HCIDRV_TRACE_ERROR("hci_close(): Cy_BTIPC_Deinit failed\n");
         status = CYBT_ERR_HCI_IPC_DEINIT_FAILED;
+    }
+
+    if (!Cy_SysPm_UnregisterCallback(&cybt_syspm_callback))
+    {
+        HCIDRV_TRACE_ERROR("MCU Error: Syspm Callback Unregistering failed!\n");
+        CY_ASSERT(0);
     }
 
     memset(&hci_cb, 0, sizeof(hci_interface_t));

@@ -112,6 +112,9 @@ cybt_result_t cybt_send_action_to_sleep_task(sleep_action_t action);
 void cybt_sleep_timer_task(cy_thread_arg_t arg);
 #endif
 
+#ifdef COMPONENT_55500
+static void cybt_enter_autobaud_mode(void);
+#endif //COMPONENT_55500
 /******************************************************************************
  *                           Function Definitions
  ******************************************************************************/
@@ -571,11 +574,15 @@ cybt_result_t cybt_platform_hci_open(void *p_arg)
                           );
         return CYBT_ERR_GPIO_POWER_INIT_FAILED;
     }
+#ifdef COMPONENT_55500
+    cybt_enter_autobaud_mode();
 
-    cyhal_gpio_write(p_bt_platform_cfg->controller_config.bt_power_pin,
-                     true
-                    );
-    cy_rtos_delay_milliseconds(500);
+#else
+        cyhal_gpio_write(p_bt_platform_cfg->controller_config.bt_power_pin,
+                         true
+                        );
+        cy_rtos_delay_milliseconds(500);
+#endif //COMPONENT_55500
 
     bt_uart_cfg.data_bits = p_bt_platform_cfg->hci_config.hci.hci_uart.data_bits;
     bt_uart_cfg.stop_bits = p_bt_platform_cfg->hci_config.hci.hci_uart.stop_bits;
@@ -661,6 +668,32 @@ cybt_result_t cybt_platform_hci_open(void *p_arg)
 
     return  CYBT_SUCCESS;
 }
+
+#ifdef COMPONENT_55500
+static void cybt_enter_autobaud_mode(void)
+{
+    const cybt_platform_config_t *p_bt_platform_cfg = cybt_platform_get_config();
+
+    /* Initialize UART RTS Pin to be controlled manually */
+    cyhal_gpio_init(p_bt_platform_cfg->hci_config.hci.hci_uart.uart_rts_pin,
+                    CYHAL_GPIO_DIR_OUTPUT,
+                    CYHAL_GPIO_DRIVE_STRONG,
+                    true
+                   );
+    /* Pull RTS line low */
+    cyhal_gpio_write(p_bt_platform_cfg->hci_config.hci.hci_uart.uart_rts_pin, false);
+
+    /* Toggle BT REG ON pin */
+    cyhal_gpio_write(p_bt_platform_cfg->controller_config.bt_power_pin, false);
+    cy_rtos_delay_milliseconds(500);
+
+    cyhal_gpio_write(p_bt_platform_cfg->controller_config.bt_power_pin, true);
+    cy_rtos_delay_milliseconds(500);
+
+    /* Release RTS pin to be used by UART block */
+    cyhal_gpio_free(p_bt_platform_cfg->hci_config.hci.hci_uart.uart_rts_pin);
+}
+#endif //COMPONENT_55500
 
 cybt_result_t cybt_platform_hci_set_baudrate(uint32_t baudrate)
 {
@@ -869,10 +902,7 @@ cybt_result_t cybt_platform_hci_close(void)
                                 true
                                );
  #if (CYHAL_API_VERSION >= 2)
-        cyhal_gpio_callback_data_t cb_data = { .callback = NULL, .callback_arg = NULL };
-        cyhal_gpio_register_callback(p_bt_platform_cfg->controller_config.sleep_mode.host_wakeup_pin,
-                                     &cb_data
-                                    );
+        cyhal_gpio_register_callback(p_bt_platform_cfg->controller_config.sleep_mode.host_wakeup_pin, NULL);
 #else
         cyhal_gpio_register_callback(p_bt_platform_cfg->controller_config.sleep_mode.host_wakeup_pin,
                                      NULL,

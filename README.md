@@ -57,15 +57,19 @@ The API **cybt_platform_config_init( )** shall be invoked prior to
 ## How to enable BTSpy logs?
 
 - BTSpy is a trace utility that can be used in the AIROC&trade; Bluetooth&reg; platforms to view HCI protocol and generic trace messages from the embedded device
-- Add macro ENABLE_BT_SPY_LOG in Makefile or command line
+- Add macro ENABLE_BT_SPY_LOG in Makefile or command line to get both generic traces and HCI protocol traces
   - `DEFINES+=ENABLE_BT_SPY_LOG`
   - This will automatically enable ENABLE_DEBUG_UART
+- If HCI protocol traces are not required but BTSpy utility is to be used
+for getting generic trace messages, then instead of ENABLE_BT_SPY_LOG add ENABLE_DEBUG_UART in Makefile or
+command line
+  - `DEFINES+=ENABLE_DEBUG_UART`
 - Call **cybt_debug_uart_init(&debug_uart_configuration, NULL);**
   - The first argument is the debug_uart_configurations structure pointer, which has hardware pin configurations (refer schematic for getting actual port_pin details) along with baud_rate and flow_control configurations. Recommended baudrate is 3000000, although 115200 is also supported by the BTSpy tool. The second argument is an optional callback function which can be set to NULL
   - Ensure retarget-io is not enabled on the same UART port as BTSpy. There is no need to initialize the retarget-io libray if the application wants to send both application messages and BT protocol traces to the same port through BTSpy
   - Compiler directives can be used to either initialize the retarget-io library or BTSpy logs depending on the debug macro setting. For example:
     ```
-    #ifdef ENABLE_BT_SPY_LOG
+    #if defined(ENABLE_BT_SPY_LOG) || defined(ENABLE_DEBUG_UART)
        {
            #define DEBUG_UART_BAUDRATE 3000000
            #define DEBUG_UART_RTS        (P5_2)
@@ -104,10 +108,7 @@ The API **cybt_platform_config_init( )** shall be invoked prior to
 
 - If ENABLE_BT_SPY_LOG is not defined in makefile, Application traces can be captured
  in Teraterm
-- If HCI protocol traces are not required but BTSpy utility is to be used
-for getting generic trace messages, then add ENABLE_DEBUG_UART in Makefile or
-command line
-  - `DEFINES+=ENABLE_DEBUG_UART`
+
 - Download and use [BTSPY](https://github.com/Infineon/btsdk-utils)
   - Click on serial port setup
   - Select "Enable Serial Port"
