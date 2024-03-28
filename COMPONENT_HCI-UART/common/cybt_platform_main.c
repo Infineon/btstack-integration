@@ -230,26 +230,30 @@ wiced_result_t wiced_bt_stack_init(wiced_bt_management_cback_t *p_bt_management_
                                            const wiced_bt_cfg_settings_t *p_bt_cfg_settings
                                           )
 {
+    wiced_result_t result;
+
     MAIN_TRACE_DEBUG("wiced_bt_stack_init()");
 
     cybt_main_cb.is_sleep_mode_enabled = false;
 
     cybt_platform_init();
 
-    cybt_main_cb.p_app_management_callback   = p_bt_management_cback;
+    cybt_main_cb.p_app_management_callback = p_bt_management_cback;
 
     host_stack_platform_interface_init();
 
     /* Configure the stack */
-    wiced_bt_set_stack_config(p_bt_cfg_settings);
+    if(0 == wiced_bt_set_stack_config(p_bt_cfg_settings))
+        return WICED_BT_ERROR;
 
-    cybt_platform_task_init((void *)p_bt_cfg_settings);
+    result = (wiced_result_t)cybt_platform_task_init((void *)p_bt_cfg_settings);
 
-    return WICED_BT_SUCCESS;
+    return result;
 }
 
 wiced_result_t wiced_bt_stack_deinit( void )
 {
+    wiced_result_t result;
     extern cy_thread_t cybt_task[BT_TASK_NUM];
 #if( configUSE_TICKLESS_IDLE != 0 )
     extern cy_thread_t sleep_timer_task;
@@ -278,7 +282,10 @@ wiced_result_t wiced_bt_stack_deinit( void )
     }
     else
     {
-        cybt_platform_task_deinit();
+        result = (wiced_result_t)cybt_platform_task_deinit();
+
+        if(WICED_BT_SUCCESS != result)
+            return result;
 
         cybt_platform_deinit();
 
@@ -291,7 +298,7 @@ wiced_result_t wiced_bt_stack_deinit( void )
     #endif
     }
 
-    return WICED_BT_SUCCESS;
+    return result;
 }
 
 void cybt_platform_config_init(const cybt_platform_config_t *p_bt_platform_cfg)

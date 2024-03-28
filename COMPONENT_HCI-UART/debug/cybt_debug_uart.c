@@ -479,13 +479,41 @@ cybt_result_t cybt_trans_write (uint8_t type, uint16_t op, uint16_t data_size, u
     return result;
 }
 
+#if defined (__ICCARM__)
+#ifndef PRINTF_BUF_SIZE_IAR
+#define PRINTF_BUF_SIZE_IAR 128
+#endif
+
+static char printf_buf_iar[PRINTF_BUF_SIZE_IAR];
+static int char_count = 0;
+
+int __write(int fd, const char* ptr, int len)
+#else
 int _write(int fd, const char* ptr, int len)
+#endif
 {
-    if ( cybt_debug_uart_send_trace(len,(uint8_t* )ptr) == CYBT_SUCCESS)
-    {
-        return len;
-    }
-    return 0;
+#if defined (__ICCARM__)
+	printf_buf_iar[char_count] = *ptr;
+	char_count++;
+
+	if ((char_count == PRINTF_BUF_SIZE_IAR) || (*ptr == '\n') || (*ptr == '\r'))
+	{
+		if(cybt_debug_uart_send_trace(char_count,(uint8_t* )&printf_buf_iar) == CYBT_SUCCESS)
+		{
+			char_count = 0;
+			return 1;
+		}
+		char_count = 0;
+		return 0;
+	}
+    return 1;
+#else
+    if(cybt_debug_uart_send_trace(len,(uint8_t* )ptr) == CYBT_SUCCESS)
+	{
+	   return len;
+	}
+	return 0;
+#endif
 }
 
 #endif // ENABLE_DEBUG_UART

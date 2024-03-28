@@ -157,12 +157,14 @@ cybt_result_t cybt_platform_task_deinit(void)
     if(CYBT_SUCCESS != result)
     {
         MAIN_TRACE_ERROR("task_deinit(): Failed to shutdown HCI_RX task");
+        return result;
     }
 
     result = cybt_send_msg_to_hci_tx_task((BT_MSG_HDR *)BT_IND_TASK_SHUTDOWN, false);
     if(CYBT_SUCCESS != result)
     {
         MAIN_TRACE_ERROR("task_deinit(): Failed to shutdown HCI_TX task");
+        return result;
     }
 
     cybt_platform_task_mempool_deinit();
@@ -202,6 +204,9 @@ cybt_result_t cybt_platform_task_mempool_init(uint32_t total_size)
                                                       WICED_FALSE
                                                      );
 
+    if(NULL == task_mem_cb.p_tx_data_heap)
+        return CYBT_ERR_OUT_OF_MEMORY;
+
     return CYBT_SUCCESS;
 }
 
@@ -220,6 +225,9 @@ void *cybt_platform_task_tx_mempool_alloc(uint32_t req_size)
     p_mem_block = (void *) wiced_bt_get_buffer_from_heap(task_mem_cb.p_tx_data_heap,
                                                          req_size
                                                         );
+
+    if(NULL == p_mem_block)
+        return NULL;
 
     cybt_platform_enable_irq();
 

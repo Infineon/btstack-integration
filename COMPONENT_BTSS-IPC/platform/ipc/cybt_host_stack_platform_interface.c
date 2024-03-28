@@ -32,7 +32,6 @@
 #include "cybt_platform_config.h"
 #include "cybt_platform_trace.h"
 #include "cybt_platform_util.h"
-#include "cyhal_lptimer.h"
 #include "cycfg_system.h"
 #include "cybt_platform_internal.h"
 

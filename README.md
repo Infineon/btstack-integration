@@ -4,7 +4,7 @@ The btstack-integration hosts platform adaptation layer (porting layer) between 
 
 While these adaptation layer interfaces and functionality are the same, the hardware platform they run on differ in the inter processor communication mechanisms used for communication between host stack and controller.
 
-This asset provides three components, COMPONENT_BLESS-IPC, COMPONENT_BTSS-IPC and COMPONENT_HCI-UART porting layer components for various hardware platforms (such as psoc6-bless, 20829, psoc6+43xx respectively) and IPC methods (IPC_PIPE, IPC_BTSS and UART respectively) supported. Below table points to further documentation for using each of these components.
+This asset provides three components, COMPONENT_BLESS-IPC, COMPONENT_BTSS-IPC and COMPONENT_HCI-UART porting layer components for various hardware platforms (such as psoc6-bless, 20829, psoc6+43xx respectively) and IPC methods (IPC_PIPE, IPC_BTSS and UART respectively) supported. Additionally, with little or no modifications, COMPONENT_HCI-UART can be used as platform adaptation layer for the hardware platforms which use Cypress Abstraction Layers (CYHAL and CYOSAL) and FreeRTOS and where Bluetooth chip is connected over UART. Below table points to further documentation for using each of these components.
 
 Please refer below each COMPONENT's README for more details.
 
@@ -130,5 +130,17 @@ These MACROs are present in cybt_debug_uart.c
 | COMPONENT_BLESS-IPC | COMPONENT_BLESS-IPC/platform/common |
 | COMPONENT_BTSS-IPC | COMPONENT_BTSS-IPC/platform/common |
 | COMPONENT_HCI-UART |      COMPONENT_HCI-UART/debug      |
+
+NOTE: If IAR compiler is used, printf in the application calls **__write** function present in the cybt_debug_uart.c to output individual characters. As it receives one character at a time, we use a buffer (printf_buf_iar) to store the characters. The default size of the buffer is 128 (PRINTF_BUF_SIZE_IAR). Application can set it to a convenient size by definining it in the application makefile.
+
+## Debug UART TX/RX Task Priority
+In DEBUG UART, the default priority set for both TX and RX tasks is CY_RTOS_PRIORITY_ABOVENORMAL. Generally, it is expected to run DEBUG UART at a lower priority compared to bt_task ensure smooth working of bluetooth activities. The default priority set for bt_task is CY_RTOS_PRIORITY_HIGH in cybt_platform_task.h
+If DEBUG UART TX or RX task require more priority, it can be updated using the below MAROSs defined in cybt_debug_uart.c.
+
+
+```
+#define DEBUG_UART_TX_TASK_PRIORITY      (CY_RTOS_PRIORITY_ABOVENORMAL)
+#define DEBUG_UART_RX_TASK_PRIORITY     (CY_RTOS_PRIORITY_ABOVENORMAL)
+```
 
 © Infineon Technologies, 2022.

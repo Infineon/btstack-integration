@@ -48,12 +48,6 @@
  */
 #include "cybt_platform_hci.h"
 
-
-/**
- *  Timer interface which supports timeout notification to BT stack.
- */
-#include "cyhal_lptimer.h"
-
 #include "cybt_platform_config.h"
 
 

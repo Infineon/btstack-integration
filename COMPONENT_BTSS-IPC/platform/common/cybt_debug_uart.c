@@ -2,8 +2,9 @@
 
 #ifdef ENABLE_DEBUG_UART
 
-#define CYHAL_UART_DMA_ENABLE_RX FALSE
-#define CYHAL_UART_DMA_ENABLE_TX FALSE
+#ifndef CYHAL_UART_DMA_ENABLED
+#define CYHAL_UART_DMA_ENABLED FALSE
+#endif
 
 #include "cyhal_uart.h"
 #include "cyabs_rtos.h"
@@ -293,7 +294,7 @@ static void cybt_debug_rx_task(void *arg)
         expectedlength = ( phase == DATA_PHASE ) ? ( data_counter ) : ( WICED_HDR_SZ );
         if (!rx_done)
         {
-            if (CYHAL_UART_DMA_ENABLE_RX == TRUE)
+            if (CYHAL_UART_DMA_ENABLED == TRUE)
             {
                 cyhal_uart_enable_event(&cy_trans_uart.hal_obj, CYHAL_UART_IRQ_RX_DONE, 4u, true);
                 cyhal_uart_read_async(&cy_trans_uart.hal_obj, wiced_rx_cmd + head, expectedlength);
@@ -447,6 +448,7 @@ static void cybt_uart_irq_handler_(void *handler_arg, cyhal_uart_event_t event)
             cy_rtos_set_semaphore(&cy_trans_uart.rx_complete, true);
             break;
 #ifndef DISABLE_TX_TASK
+        case CYHAL_UART_IRQ_TX_TRANSMIT_IN_FIFO:
         case CYHAL_UART_IRQ_TX_DONE:
             cybt_uart_tx_irq();
             break;
@@ -467,9 +469,13 @@ cybt_result_t cybt_debug_uart_init(cybt_debug_uart_config_t *config, cybt_debug_
         .rx_buffer = NULL,
         .rx_buffer_size = 0,
     };
-    uint16_t enable_irq_event = (CYHAL_UART_IRQ_TX_DONE
-                                 | CYHAL_UART_IRQ_RX_NOT_EMPTY
-                                 );
+
+#if (CYHAL_UART_DMA_ENABLED == TRUE)
+    uint16_t enable_irq_event = (CYHAL_UART_IRQ_TX_TRANSMIT_IN_FIFO | CYHAL_UART_IRQ_RX_NOT_EMPTY);
+#else
+    uint16_t enable_irq_event = (CYHAL_UART_IRQ_TX_DONE | CYHAL_UART_IRQ_RX_NOT_EMPTY);
+#endif
+
     cy_rslt_t result = CY_RSLT_SUCCESS;
 
     if(!cybt_debug_uart_setup)
@@ -510,7 +516,7 @@ cybt_result_t cybt_debug_uart_init(cybt_debug_uart_config_t *config, cybt_debug_
     if(result != CY_RSLT_SUCCESS)
         return (CYBT_ERR_HCI_INIT_FAILED);
 
-#if ( (CYHAL_UART_DMA_ENABLE_RX == TRUE) || (CYHAL_UART_DMA_ENABLE_TX == TRUE) )
+#if (CYHAL_UART_DMA_ENABLED == TRUE)
     cyhal_uart_set_async_mode(&cy_trans_uart.hal_obj, CYHAL_ASYNC_DMA, 3);
 #endif
 
@@ -654,13 +660,41 @@ cybt_result_t cybt_trans_blocking_write (uint8_t type, uint16_t op, uint16_t dat
 BTSTACK_PORTING_SECTION_END
 #endif // DISABLE_TX_TASK
 
+#if defined (__ICCARM__)
+#ifndef PRINTF_BUF_SIZE_IAR
+#define PRINTF_BUF_SIZE_IAR 128
+#endif
+
+static char printf_buf_iar[PRINTF_BUF_SIZE_IAR];
+static int char_count = 0;
+
+int __write(int fd, const char* ptr, int len)
+#else
 int _write(int fd, const char* ptr, int len)
+#endif
 {
+#if defined (__ICCARM__)
+	printf_buf_iar[char_count] = *ptr;
+	char_count++;
+
+	if ((char_count == PRINTF_BUF_SIZE_IAR) || (*ptr == '\n') || (*ptr == '\r'))
+	{
+		if(cybt_debug_uart_send_trace(char_count,(uint8_t* )&printf_buf_iar) == CYBT_SUCCESS)
+		{
+			char_count = 0;
+			return 1;
+		}
+		char_count = 0;
+		return 0;
+	}
+    return 1;
+#else
     if(cybt_debug_uart_send_trace(len,(uint8_t* )ptr) == CYBT_SUCCESS)
-    {
-        return len;
-    }
-    return 0;
+	{
+	   return len;
+	}
+	return 0;
+#endif
 }
 
 #endif // ENABLE_DEBUG_UART

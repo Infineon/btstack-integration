@@ -6,6 +6,18 @@ This release of AIROC&trade; BT/BLE stack solution package includes as following
 * Infineon Bluetooth&reg; BT controller firmware (CYW4343W, CYW43012, 20829)
 * Platform and Operating system porting layers for P6+43xx, 20829 and P6+BLESS.
 
+#### v4.7.0
+btstack-integration v4.7.0 contains below updates:
+* Updated BT Controller FW patches for 20829B0 and 89829B0
+* Added BT Controller FW patch for new Inventek Board ‘ISM43439-WBP-L151-EVB’ board having new module  ‘ISM43439-WBP-L151’
+* Modified IRQ settings for DMA and non-DMA transfers
+* Updated P6+43xx platform code to support TARGET_KIT_XMC72_EVK_MUR_43439M2
+* Updated P6+43xx platform to fix an initialization issue observed with AIROC-Wi-Fi-Bluetooth-STM32 pack
+* Fixed an issue observed during printing Application traces while using IAR toolchain
+* Updated P6+43xx platform to use freertos timer instead of LP Timer
+* Removed default callback function used for registering HCI traces on P6+43xx platform. Application now needs to register for HCI traces using wiced_bt_dev_register_hci_trace() API
+* Updated BT Controller FW patch for P6+4373(Sterling LWB5Plus module)
+
 #### v4.6.0
 btstack-integration v4.6.0 contains below updates:
 * Added BT Controller FW patches with ISOC and PAWR support for 20829B0

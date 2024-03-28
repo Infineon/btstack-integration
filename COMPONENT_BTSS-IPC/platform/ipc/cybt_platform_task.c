@@ -56,9 +56,9 @@ cybt_result_t cybt_platform_task_init(void *p_arg)
         return task_result;
 
 #ifdef ENABLE_DEBUG_UART
-    cybt_init_debug_trans_task();
+    task_result = cybt_init_debug_trans_task();
 #endif // ENABLE_DEBUG_UART
-    return CYBT_SUCCESS;
+    return task_result;
 }
 
 cybt_result_t cybt_platform_task_deinit(void)

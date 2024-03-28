@@ -19,10 +19,6 @@
 
 #define BLESS_CONTROLLER     WICED_FALSE
 
-#if !defined (DISABLE_LPTIMER)
-#define DISABLE_LPTIMER
-#endif
-
 #define LOCK                             (true)
 #define UNLOCK                           (false)
 #define CONTROLLER_SLEEP(enable)         (Cy_BTSS_PowerDep(enable))

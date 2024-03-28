@@ -34,14 +34,14 @@
 #include "cycfg.h"
 #include "cyhal_uart.h"
 #include "cyhal_gpio.h"
-#include "cyhal_lptimer.h"
-#include "cyhal_syspm.h"
-
-#include "cybt_platform_task.h"
 #include "cybt_platform_interface.h"
+
+#include "cyhal_syspm.h"
+#include "cybt_platform_task.h"
 #include "cybt_platform_trace.h"
 #include "cybt_platform_config.h"
 #include "cybt_platform_util.h"
+
 #ifdef ENABLE_DEBUG_UART
 #include "cybt_debug_uart.h"
 #endif // ENABLE_DEBUG_UART
@@ -64,6 +64,16 @@
 #define SLEEP_ACT_START_IDLE_TIMER    (0x20)
 #define SLEEP_ACT_STOP_IDLE_TIMER     (0x40)
 #define SLEEP_ACT_EXIT_SLEEP_TASK     (0xFF)
+#endif
+
+#ifndef XMC7200D_E272K8384
+#define BT_POWER_PIN_DIRECTION  CYHAL_GPIO_DIR_OUTPUT
+#define BT_POWER_PIN_DRIVE_MODE CYHAL_GPIO_DRIVE_PULLUP
+#define BT_POWER_PIN_INIT_VALUE true
+#else
+#define BT_POWER_PIN_DIRECTION  CYHAL_GPIO_DIR_OUTPUT
+#define BT_POWER_PIN_DRIVE_MODE CYHAL_GPIO_DRIVE_STRONG
+#define BT_POWER_PIN_INIT_VALUE false
 #endif
 /*****************************************************************************
  *                           Type Definitions
@@ -98,10 +108,7 @@ cy_thread_t     sleep_timer_task;
 cy_queue_t      sleep_timer_task_queue;
 #endif
 
-cyhal_lptimer_t bt_stack_lptimer;
-uint8_t         lptimer_freq_shift;
-
-
+static cy_timer_t stack_timer;
 /******************************************************************************
  *                          Function Declarations
  ******************************************************************************/
@@ -118,22 +125,7 @@ static void cybt_enter_autobaud_mode(void);
 /******************************************************************************
  *                           Function Definitions
  ******************************************************************************/
-uint8_t calculate_lptimer_freq_shift(uint32_t clock_freq)
-{
-    uint8_t idx;
-
-    for (idx = 31; idx > 0; idx--)
-    {
-        if ((1U << idx) == clock_freq)
-        {
-            return idx;
-        }
-    }
-
-    return 0;
-}
-
-void platform_stack_lptimer_cback(void *callback_arg, cyhal_lptimer_event_t event)
+static void platform_stack_timer_callback(cy_timer_callback_arg_t arg)
 {
     cybt_platform_sleep_lock();
 
@@ -174,20 +166,9 @@ void cybt_platform_init(void)
     MAIN_TRACE_DEBUG("cybt_platform_init(): platform_sleep_idle_timer = 0x%x", &platform_sleep_idle_timer);
 #endif
 
-    cyhal_lptimer_init(&bt_stack_lptimer);
-    cyhal_lptimer_enable_event(&bt_stack_lptimer,
-                               CYHAL_LPTIMER_COMPARE_MATCH,
-                               CYHAL_ISR_PRIORITY_DEFAULT,
-                               false
-                              );
-    cyhal_lptimer_register_callback(&bt_stack_lptimer, &platform_stack_lptimer_cback, NULL);
-    cyhal_lptimer_enable_event(&bt_stack_lptimer,
-                               CYHAL_LPTIMER_COMPARE_MATCH,
-                               CYHAL_ISR_PRIORITY_DEFAULT,
-                               true
-                              );
+    memset(&hci_uart_cb, 0, sizeof(hci_uart_cb_t));
 
-    lptimer_freq_shift = calculate_lptimer_freq_shift(CY_CFG_SYSCLK_CLKLF_FREQ_HZ);
+    cy_rtos_init_timer(&stack_timer, CY_TIMER_TYPE_ONCE, platform_stack_timer_callback, (cy_timer_callback_arg_t)NULL);
 
 #if( configUSE_TICKLESS_IDLE != 0 )
     cy_rtos_init_queue(&sleep_timer_task_queue,
@@ -214,7 +195,7 @@ void cybt_platform_deinit(void)
     cybt_send_action_to_sleep_task(SLEEP_ACT_EXIT_SLEEP_TASK);
 #endif
 
-    cyhal_lptimer_free(&bt_stack_lptimer);
+    cy_rtos_deinit_timer(&stack_timer);
 
 #if( configUSE_TICKLESS_IDLE != 0 )
     cy_rtos_deinit_timer(&platform_sleep_idle_timer);
@@ -257,44 +238,30 @@ void cybt_platform_sleep_unlock(void)
 
 uint64_t cybt_platform_get_tick_count_us(void)
 {
-    static uint64_t   abs_tick_cnt_hi = 0;
-    static uint32_t   last_tick_cnt = 0;
-    static uint64_t   lptick_remainder = 0;
+    static cy_time_t last_time_in_ms = 0;
+    static uint64_t abs_time_cnt_in_us_hi = 0;
+    cy_time_t cur_time_in_ms;
+    uint64_t cur_time_in_ms64 = 0;
+    uint64_t cur_time_in_us64 = 0;
 
-    uint32_t          cur_time_in_lpticks = 0;
-    uint64_t          cur_time_in_lpticks64 = 0;
-    uint64_t          cur_time_in_us = 0;
-    uint64_t          temp_cnt64 = 0;
+    cy_rtos_get_time(&cur_time_in_ms);
 
-    cur_time_in_lpticks = cyhal_lptimer_read(&bt_stack_lptimer);
-
-    if (cur_time_in_lpticks < last_tick_cnt)
+    if(cur_time_in_ms < last_time_in_ms)
     {
-        abs_tick_cnt_hi += 0x100000000;
+        abs_time_cnt_in_us_hi += 0x100000000;
     }
 
-    last_tick_cnt = cur_time_in_lpticks;
-    cur_time_in_lpticks64 = cur_time_in_lpticks + abs_tick_cnt_hi;
+    last_time_in_ms = cur_time_in_ms;
 
-    // convert tick to us
-    temp_cnt64 = cur_time_in_lpticks64 * 1000000;
-    cur_time_in_us = temp_cnt64 >> lptimer_freq_shift;
-
-    lptick_remainder += temp_cnt64 - (cur_time_in_us << lptimer_freq_shift);
-    if(lptick_remainder > CY_CFG_SYSCLK_CLKLF_FREQ_HZ)
-    {
-        cur_time_in_us += 1;
-        lptick_remainder -= CY_CFG_SYSCLK_CLKLF_FREQ_HZ;
-    }
-
-    return cur_time_in_us;
+    cur_time_in_ms64 = cur_time_in_ms + abs_time_cnt_in_us_hi;
+    cur_time_in_us64 = (cur_time_in_ms64 * 1000);
+    return (cur_time_in_us64);
 }
 
 void cybt_platform_set_next_timeout(uint64_t abs_tick_us_to_expire)
 {
     uint64_t curr_time_in_us = cybt_platform_get_tick_count_us();
     uint64_t time_to_expire_in_us = abs_tick_us_to_expire - curr_time_in_us;
-    uint32_t time_to_expire_in_lpticks;
 
     if(abs_tick_us_to_expire <= curr_time_in_us)
     {
@@ -304,10 +271,18 @@ void cybt_platform_set_next_timeout(uint64_t abs_tick_us_to_expire)
         return;
     }
 
-    // convert us to tick
-    time_to_expire_in_lpticks = ((time_to_expire_in_us << lptimer_freq_shift) + 1000000 - 1) / 1000000;
+    {
+        cy_rslt_t result;
+        cy_time_t next_timeout = (cy_time_t)(time_to_expire_in_us/1000);
 
-    cyhal_lptimer_set_delay(&bt_stack_lptimer, time_to_expire_in_lpticks);
+        /* No need to stop this timer, internally FREE-RTOS restarting the timer
+         * Leaving reminder (~1ms), Its ok verified */
+        result = cy_rtos_start_timer(&stack_timer, next_timeout);
+        if(CY_RSLT_SUCCESS != result)
+        {
+            MAIN_TRACE_DEBUG("timer failed to start %u\n", next_timeout);
+        }
+    }
 }
 
 void cybt_platform_log_print(const char *fmt_str, ...)
@@ -460,6 +435,8 @@ void cybt_host_wake_irq_handler(void *callback_arg, cyhal_gpio_event_t event)
 
 cybt_result_t cybt_platform_hci_open(void *p_arg)
 {
+    cyhal_resource_inst_t pinRsc;
+
     cyhal_uart_event_t enable_irq_event = (cyhal_uart_event_t)(CYHAL_UART_IRQ_RX_DONE
                                            | CYHAL_UART_IRQ_TX_DONE
                                            | CYHAL_UART_IRQ_RX_NOT_EMPTY
@@ -492,6 +469,10 @@ cybt_result_t cybt_platform_hci_open(void *p_arg)
     if((CYBT_SLEEP_MODE_ENABLED == p_bt_platform_cfg->controller_config.sleep_mode.sleep_mode_enabled)
       && (NC != p_bt_platform_cfg->controller_config.sleep_mode.host_wakeup_pin))
     {
+
+        pinRsc = cyhal_utils_get_gpio_resource(p_bt_platform_cfg->controller_config.sleep_mode.host_wakeup_pin);
+        cyhal_hwmgr_free(&pinRsc);
+
         result = cyhal_gpio_init(p_bt_platform_cfg->controller_config.sleep_mode.host_wakeup_pin,
                                  CYHAL_GPIO_DIR_INPUT,
                                  CYHAL_GPIO_DRIVE_NONE,
@@ -543,6 +524,9 @@ cybt_result_t cybt_platform_hci_open(void *p_arg)
     if((CYBT_SLEEP_MODE_ENABLED == p_bt_platform_cfg->controller_config.sleep_mode.sleep_mode_enabled)
         && (NC != p_bt_platform_cfg->controller_config.sleep_mode.device_wakeup_pin))
     {
+        pinRsc = cyhal_utils_get_gpio_resource(p_bt_platform_cfg->controller_config.sleep_mode.device_wakeup_pin);
+        cyhal_hwmgr_free(&pinRsc);
+
         result = cyhal_gpio_init(p_bt_platform_cfg->controller_config.sleep_mode.device_wakeup_pin,
                                  CYHAL_GPIO_DIR_OUTPUT,
                                  CYHAL_GPIO_DRIVE_STRONG,
@@ -562,10 +546,14 @@ cybt_result_t cybt_platform_hci_open(void *p_arg)
         cy_rtos_delay_milliseconds(100);
     }
 
+
+    pinRsc = cyhal_utils_get_gpio_resource(p_bt_platform_cfg->controller_config.bt_power_pin);
+    cyhal_hwmgr_free(&pinRsc);
+
     result = cyhal_gpio_init(p_bt_platform_cfg->controller_config.bt_power_pin,
-                             CYHAL_GPIO_DIR_OUTPUT,
-                             CYHAL_GPIO_DRIVE_PULLUP,
-                             1
+                            BT_POWER_PIN_DIRECTION,
+                            BT_POWER_PIN_DRIVE_MODE,
+                            BT_POWER_PIN_INIT_VALUE
                             );
     if(CY_RSLT_SUCCESS != result)
     {

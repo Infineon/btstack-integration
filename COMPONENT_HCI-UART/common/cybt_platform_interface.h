@@ -51,12 +51,6 @@
 #include "cybt_platform_hci.h"
 
 
-/**
- *  Timer interface which supports timeout notification to BT stack.
- */
-#include "cyhal_lptimer.h"
-
-
 /******************************************************************************
  *                                Constants
  ******************************************************************************/
@@ -65,7 +59,6 @@
 #else
 #define  CYBT_TRACE_BUFFER_SIZE    (128)
 #endif //ENABLE_DEBUG_UART
-
 
 #ifdef __cplusplus
 extern "C"

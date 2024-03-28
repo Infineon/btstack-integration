@@ -12,10 +12,6 @@
 #define PATCH_DOWNLOAD_FN          NULL
 #define BLESS_CONTROLLER           WICED_TRUE
 
-#if !defined (DISABLE_LPTIMER)
-#define DISABLE_LPTIMER
-#endif
-
 #define LOCK                             (true)
 #define UNLOCK                           (false)
 #define CONTROLLER_SLEEP(enable)
