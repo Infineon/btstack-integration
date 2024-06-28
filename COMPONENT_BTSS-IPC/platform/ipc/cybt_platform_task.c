@@ -37,9 +37,6 @@
 /******************************************************************************
  *                          Function Declarations
  ******************************************************************************/
-#ifdef ENABLE_DEBUG_UART
-extern cybt_result_t cybt_init_debug_trans_task(void);
-#endif // ENABLE_DEBUG_UART
 extern cybt_result_t cybt_platform_msg_to_bt_task(const uint16_t msg, bool is_from_isr);
 extern cybt_result_t cybt_bttask_init(void*);
 extern void cybt_bttask_deinit(void);
@@ -55,9 +52,6 @@ cybt_result_t cybt_platform_task_init(void *p_arg)
     if(CYBT_SUCCESS != task_result)
         return task_result;
 
-#ifdef ENABLE_DEBUG_UART
-    task_result = cybt_init_debug_trans_task();
-#endif // ENABLE_DEBUG_UART
     return task_result;
 }
 

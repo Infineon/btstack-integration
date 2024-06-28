@@ -64,7 +64,7 @@ extern void host_stack_platform_interface_deinit(void);
 extern uint16_t cybt_platform_get_event_id(void *event);
 extern void cybt_platform_hci_post_stack_init(void);
 extern bool cybt_platform_hci_process_if_coredump(uint8_t *p_data, uint32_t length);
-extern void cybt_platform_exception_handler(cybt_exception_t error, uint8_t *info, uint32_t length);
+extern void cybt_platform_exception_handler(uint16_t error, uint8_t *ptr, uint32_t length);
 
 /******************************************************************************
  *                           Function Definitions
@@ -152,11 +152,10 @@ static void handle_hci_rx_packet(void *event)
             wiced_bt_process_isoc_data(&packet_buffer[0], length);
             break;
 
-#ifdef ENABLE_DEBUG_UART
         case HCI_PACKET_TYPE_DIAG:
             //sent packet to tracing uart
             break;
-#endif
+
         default:
             break;
     }

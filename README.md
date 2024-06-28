@@ -30,6 +30,15 @@ GATT Server applications which need to implement GATT Robust Caching will need t
 ### Requirements for enabling GATT Data Signing
 GATT applications work with signed data will need to invoke **wiced_bt_gatt_enable_signing** in the **BTM_ENABLED_EVT**
 
+## Handling Stack, Controller and Porting layer Exceptions
+AIROC Bluetooth Stack, Controller and porting layer can generate Exceptions for buffer corruption, controller crash etc. If AIROC Bluetooth Stack version is v4.0 or above, the default behaviour is to reset the system whenever an exception occurs. This is taken care by the porting layer (btstack-integration). If the application prefers to modify this behaviour, it can register an exception callback function by calling **wiced_bt_set_exceptions_callback()** and implement a custom logic in the application layer.
+
+All controller and poring layer exceptions are handled by **cybt_platform_exception_handler()** and all stack exceptions are handled by **host_stack_exception_handler()** which are respectively defined in cybt_platform_main.c and cybt_host_stack_platform_interface.c files of porting layer. To implement a custom logic for handling the exceptions in the application layer, User can refer **platform_default_exception_handling()** and **host_stack_exception_handler()** which are present in above mentioned files.
+
+For more specific info about exception handling functions and input parameters, please check the API documentation.
+
+**Note:** Exception handling is currently supported on psoc6-20829 platform (i.e. CYW29829B0 and CYW89829B0 controllers) only.
+
 ## Platform HCI transport config
 
 Besides of stack settings, HCI configuration is also required to specify,
@@ -54,84 +63,16 @@ The API **cybt_platform_config_init( )** shall be invoked prior to
     cybt_platform_set_trace_level(CYBT_TRACE_ID_ALL, CYBT_TRACE_LEVEL_DEBUG);
     ```
 
-## How to enable BTSpy logs?
+## How to print debug traces
 
-- BTSpy is a trace utility that can be used in the AIROC&trade; Bluetooth&reg; platforms to view HCI protocol and generic trace messages from the embedded device
-- Add macro ENABLE_BT_SPY_LOG in Makefile or command line to get both generic traces and HCI protocol traces
-  - `DEFINES+=ENABLE_BT_SPY_LOG`
-  - This will automatically enable ENABLE_DEBUG_UART
-- If HCI protocol traces are not required but BTSpy utility is to be used
-for getting generic trace messages, then instead of ENABLE_BT_SPY_LOG add ENABLE_DEBUG_UART in Makefile or
-command line
-  - `DEFINES+=ENABLE_DEBUG_UART`
-- Call **cybt_debug_uart_init(&debug_uart_configuration, NULL);**
-  - The first argument is the debug_uart_configurations structure pointer, which has hardware pin configurations (refer schematic for getting actual port_pin details) along with baud_rate and flow_control configurations. Recommended baudrate is 3000000, although 115200 is also supported by the BTSpy tool. The second argument is an optional callback function which can be set to NULL
-  - Ensure retarget-io is not enabled on the same UART port as BTSpy. There is no need to initialize the retarget-io libray if the application wants to send both application messages and BT protocol traces to the same port through BTSpy
-  - Compiler directives can be used to either initialize the retarget-io library or BTSpy logs depending on the debug macro setting. For example:
-    ```
-    #if defined(ENABLE_BT_SPY_LOG) || defined(ENABLE_DEBUG_UART)
-       {
-           #define DEBUG_UART_BAUDRATE 3000000
-           #define DEBUG_UART_RTS        (P5_2)
-           #define DEBUG_UART_CTS        (P5_3)
-           cybt_debug_uart_config_t debug_uart_config = {
-                   .uart_tx_pin = CYBSP_DEBUG_UART_TX,
-                   .uart_rx_pin = CYBSP_DEBUG_UART_RX,
-                   .uart_cts_pin = DEBUG_UART_CTS,
-                   .uart_rts_pin = DEBUG_UART_RTS,
-                   .baud_rate = DEBUG_UART_BAUDRATE,
-                   .flow_control = TRUE
-           };
-           cybt_debug_uart_init(&debug_uart_config, NULL);
-       }
-    #else
-       cy_retarget_io_init(CYBSP_DEBUG_UART_TX, CYBSP_DEBUG_UART_RX, CY_RETARGET_IO_BAUDRATE);
-    #endif
-    ```
-- Additional steps only for psoc6-bless and 20829
-  - On receiving BTM_ENABLED_EVT in Application, register a callback for HCI traces using wiced_bt_dev_register_hci_trace()
-   ```
-    #ifdef ENABLE_BT_SPY_LOG
-        wiced_bt_dev_register_hci_trace(hci_trace_cback);
-    #endif
-  ```
-  - Define the callback function in Application
-  ```
-    #ifdef ENABLE_BT_SPY_LOG
-        void hci_trace_cback(wiced_bt_hci_trace_type_t type,
-                     uint16_t length, uint8_t* p_data)
-        {
-            cybt_debug_uart_send_hci_trace(type, length, p_data);
-        }
-    #endif
-  ```
+Any generic terminal emulator tools such as putty/teraterm/etc. can be used for printing application or generic traces. But if the requirement is to print platform or HCI traces along with application traces, then it is adviced to use airoc-hci-transport with BTspy tool.
 
-- If ENABLE_BT_SPY_LOG is not defined in makefile, Application traces can be captured
- in Teraterm
-
-- Download and use [BTSPY](https://github.com/Infineon/btsdk-utils)
-  - Click on serial port setup
-  - Select "Enable Serial Port"
-  - Select the corrct baudrate, port number and enable HW flow control
-
-## Memory allocations for HCI protocol/trace logs
-
-Enabling ENABLE_BT_SPY_LOG creates two threads for handling TX and RX data over UART. It also allocates a heap whose size is defined by DEBUG_UART_MEMORY_SIZE. Application developers can tweak the value of this MACRO as per Application requirement.
-
-Also, the TX and RX task stack sizes are defined by the below MACROs and are optimized for allowing maximum traces, but can be modified to suit application needs.
-
-* DEBUG_UART_TX_TASK_STACK_SIZE
-* DEBUG_UART_RX_TASK_STACK_SIZE
-
-These MACROs are present in cybt_debug_uart.c
-
-|  Component's name  |    Location of cybt_debug_uart.c    |
-| :-----------------: | :---------------------------------: |
-| COMPONENT_BLESS-IPC | COMPONENT_BLESS-IPC/platform/common |
-| COMPONENT_BTSS-IPC | COMPONENT_BTSS-IPC/platform/common |
-| COMPONENT_HCI-UART |      COMPONENT_HCI-UART/debug      |
+[The airoc-hci-transport](https://github.com/Infineon/airoc-hci-transport) is a utility library, offering a comprehensive solution for extracting debug traces and facilitating communication with external host application. This library is used along with the [BTSPY](https://github.com/Infineon/btsdk-utils) trace utility.<br />
+Find more info in [airoc-hci-transport](https://github.com/Infineon/airoc-hci-transport) README.MD
 
 NOTE: If IAR compiler is used, printf in the application calls **__write** function present in the cybt_debug_uart.c to output individual characters. As it receives one character at a time, we use a buffer (printf_buf_iar) to store the characters. The default size of the buffer is 128 (PRINTF_BUF_SIZE_IAR). Application can set it to a convenient size by definining it in the application makefile.
+
+Note: airoc-hci-transport is supported with btstack-integration release-v5.0.0 or more.
 
 ## Debug UART TX/RX Task Priority
 In DEBUG UART, the default priority set for both TX and RX tasks is CY_RTOS_PRIORITY_ABOVENORMAL. Generally, it is expected to run DEBUG UART at a lower priority compared to bt_task ensure smooth working of bluetooth activities. The default priority set for bt_task is CY_RTOS_PRIORITY_HIGH in cybt_platform_task.h

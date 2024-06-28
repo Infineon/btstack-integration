@@ -75,20 +75,68 @@ typedef struct
  ******************************************************************************/
 cybt_platform_main_cb_t cybt_main_cb = {0};
 
+//WDT object for system rest on exceptions
+cyhal_wdt_t platform_wdt_obj;
+
+#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x04000000))
+pf_wiced_exception pf_platform_exception = NULL;
+#endif
+
+#ifdef STACK_EXCEPTION_VERBOSE
+/*Stack exception message strings*/
+const char* const stack_exception_msg [] =
+{
+    "CYBT_STACK_BASE_EXCEPTION",
+    "CYBT_STACK_BUF_CORRUPTED",
+    "CYBT_STACK_NOT_BUF_OWNER",
+    "CYBT_STACK_FREEBUF_BAD_QID",
+    "CYBT_STACK_FREEBUF_BUF_LINKED",
+    "CYBT_STACK_SEND_MSG_BAD_DEST",
+    "CYBT_STACK_SEND_MSG_BUF_LINKED",
+    "CYBT_STACK_ENQUEUE_BUF_LINKED",
+    "CYBT_STACK_DELETE_POOL_BAD_QID",
+    "CYBT_STACK_BUF_SIZE_TOOBIG",
+    "CYBT_STACK_BUF_SIZE_ZERO",
+    "CYBT_STACK_ADDR_NOT_IN_BUF",
+    "CYBT_STACK_OUT_OF_BUFFERS",
+    "CYBT_STACK_GETPOOLBUF_BAD_QID",
+    "CYBT_STACK_POOLBUF_BAD_SIZE",
+    "CYBT_STACK_NO_INTERFACE",
+    "CYBT_STACK_BAD_TRANSPORT",
+    "CYBT_STACK_NO_MEMORY",
+    "CYBT_STACK_NO_BUF",
+    "CYBT_STACK_MAX_EXCEPTION"
+};
+
+/*Porting layer exception message strings*/
+const char* const porting_exception_msg [] =
+{
+    "CYBT_PORTING_BASE_EXCEPTION",
+    "CYBT_PORTING_HCI_IPC_REL_BUFFER",
+    "CYBT_PORTING_MAX_EXCEPTION"
+};
+
+/*Controller exception message strings*/
+const char* const controller_exception_msg [] =
+{
+    "CYBT_CONTROLLER_BASE_EXCEPTION",
+    "CYBT_CONTROLLER_CORE_DUMP",
+    "CYBT_CONTROLLER_RESTARTED",
+    "CYBT_CONTROLLER_MAX_EXCEPTION"
+};
+#endif
 
 /******************************************************************************
  *                          Function Declarations
  ******************************************************************************/
 extern void host_stack_platform_interface_init(void);
-#ifdef ENABLE_DEBUG_UART
-extern cybt_result_t cybt_send_coredump_hci_trace (uint16_t data_size, uint8_t *p_data);
-#endif
 
 #ifdef RESET_LOCAL_SUPPORT_FEATURE
 extern void wiced_bt_btm_ble_reset_local_supported_features(uint32_t feature);
 #endif
 
 wiced_result_t cybt_core_management_cback( wiced_bt_management_evt_t event, wiced_bt_management_evt_data_t *p_event_data );
+void platform_default_exception_handling(uint16_t code, uint8_t *ptr, uint32_t length);
 /******************************************************************************
  *                           Function Definitions
  ******************************************************************************/
@@ -328,62 +376,80 @@ const cybt_platform_config_t* cybt_platform_get_config(void)
     return cybt_main_cb.p_bt_platform_cfg;
 }
 
-static void trace_exception(cybt_exception_t error, uint8_t *info, uint32_t length)
+#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x04000000))
+void wiced_set_exception_callback(pf_wiced_exception pf_handler)
 {
-    switch (error)
-    {
-        case CYBT_HCI_IPC_REL_BUFFER:
-            MAIN_TRACE_ERROR("Exception: case: IPC release buffer failed, reason:0x%x", *(uint32_t *)info);
-            break;
-        case CYBT_CONTROLLER_RESTARTED:
-            MAIN_TRACE_ERROR("Exception: case: BT restarted again");
-            break;
-        case CYBT_CONTROLLER_CORE_DUMP:
-            MAIN_TRACE_ERROR("Exception: case: %x [CoreDump], len:%d reason:0x%x", error, length, *(uint32_t *)info);
-
-#ifdef ENABLE_DEBUG_UART
-            cybt_send_coredump_hci_trace(length, &info[0]);
-#else
-            for (uint32_t i = 0; i < length; i++)
-            {
-                MAIN_TRACE_ERROR("%x ", *(uint8_t *)(info + i));
-            }
+	pf_platform_exception = pf_handler;
+}
 #endif
 
-            if(HCI_EVT_COREDUMPTYPE_END == *(uint8_t *)(info + HCI_EVT_COREDUMPTYPE_INDEX))
-            {
-                MAIN_TRACE_ERROR("End of CoreDump. Going to Assert ");
-                cy_rtos_delay_milliseconds(10);
-                CY_ASSERT(0);
-            }
-            break;
-        default:
-            MAIN_TRACE_ERROR("Exception: case: %x [unknown]", error);
-            break;
+#ifdef STACK_EXCEPTION_VERBOSE
+const char* wiced_get_exception_message(uint16_t code)
+{
+	const char* p_str = "UNKNOWN EXCEPTION";
+
+#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x04000000))
+    if (code <= CYBT_STACK_MAX_EXCEPTION && code >= CYBT_STACK_BASE_EXCEPTION)
+    {
+        p_str = stack_exception_msg[(code) & (0xFFF)];
+    }
+#endif
+
+    if(code <= CYBT_PORTING_MAX_EXCEPTION && code >= CYBT_PORTING_BASE_EXCEPTION)
+    {
+	p_str = porting_exception_msg[(code) & (0xFFF)];
+    }
+    else if(code <= CYBT_CONTROLLER_MAX_EXCEPTION && code >= CYBT_CONTROLLER_BASE_EXCEPTION)
+    {
+	p_str = controller_exception_msg[(code) & (0xFFF)];
+    }
+    return p_str;
+}
+#endif
+
+void cybt_platform_exception_handler(uint16_t code, uint8_t *ptr, uint32_t length)
+{
+#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x04000000))
+    if(pf_platform_exception!=NULL)
+    {
+        pf_platform_exception(code, (uint8_t *)ptr, length);
+    }
+    else
+#endif
+    {
+        platform_default_exception_handling(code, ptr, length);
     }
 }
 
-void cybt_platform_exception_handler(cybt_exception_t error, uint8_t *info, uint32_t length)
+__attribute__((weak)) cybt_result_t cybt_send_coredump_hci_trace (uint16_t data_size, uint8_t *p_data)
 {
-    trace_exception(error, info, length);
-
-#if 0 // Todo: register handler from app then enable this code
-    /* If app callback is not registered on exception, trigger assert */
-    if ( NULL == exception_cb )
-    {
-        CY_ASSERT(0);
-    }
-
-    /* If app not handled on exception, trigger assert */
-    if( false == exception_cb(error, info, length) )
-    {
-        CY_ASSERT(0);
-    }
-#else
-    /* We might get more core dump packets. Do not assert from here. */
-    if(CYBT_CONTROLLER_CORE_DUMP != error)
-        CY_ASSERT(0);
-#endif
-    return;
+	return CYBT_SUCCESS;
 }
 
+void platform_default_exception_handling(uint16_t code, uint8_t *ptr, uint32_t length)
+{
+	char buf[250]={0};
+	uint8_t* ptr_temp=ptr;
+	uint8_t offset=0, len=length;
+#ifdef STACK_EXCEPTION_VERBOSE
+	const char* msg = wiced_get_exception_message(code);
+#else
+	const char* msg = "";
+#endif
+
+	while(ptr_temp && len--)
+	{
+		offset+=snprintf(buf+offset, sizeof(buf)-offset, "%02x ", *ptr_temp++);
+	}
+	MAIN_TRACE_ERROR("[%s]: 0x%x %s len:%lu reason:\"%s\"\n", __FUNCTION__, code, msg, length, buf);
+
+	if(code!=CYBT_CONTROLLER_CORE_DUMP)
+	{
+		/*Initiate WDT. Reset the system*/
+		cyhal_wdt_init(&platform_wdt_obj, PLATFORM_WDT_TIME_OUT_MS);
+	}
+	else
+	{
+		cybt_send_coredump_hci_trace(length, (uint8_t *)ptr);
+	}
+}

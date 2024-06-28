@@ -42,10 +42,6 @@
 #include "cybt_platform_config.h"
 #include "cybt_platform_util.h"
 
-#ifdef ENABLE_DEBUG_UART
-#include "cybt_debug_uart.h"
-#endif // ENABLE_DEBUG_UART
-
 /******************************************************************************
  *                                Constants
  ******************************************************************************/
@@ -285,24 +281,22 @@ void cybt_platform_set_next_timeout(uint64_t abs_tick_us_to_expire)
     }
 }
 
+__attribute__((weak)) cybt_result_t cybt_debug_uart_send_trace(uint16_t length, uint8_t* p_data)
+{
+	return CYBT_SUCCESS;
+}
+
 void cybt_platform_log_print(const char *fmt_str, ...)
 {
     char buffer[CYBT_TRACE_BUFFER_SIZE];
     va_list ap;
     int len;
-    cy_time_t time;
 
-    cy_rtos_get_time(&time);
     va_start(ap, fmt_str);
     len = vsnprintf(buffer, CYBT_TRACE_BUFFER_SIZE, fmt_str, ap);
     va_end(ap);
 
-#ifdef ENABLE_DEBUG_UART
     cybt_debug_uart_send_trace(len, (uint8_t*)buffer);
-#else // ENABLE_DEBUG_UART
-    printf("[%u] %s\r\n", (unsigned int)time, buffer);
-    UNUSED_VARIABLE(len);
-#endif // ENABLE_DEBUG_UART
 }
 
 static void cybt_uart_rx_not_empty(void)
@@ -435,8 +429,6 @@ void cybt_host_wake_irq_handler(void *callback_arg, cyhal_gpio_event_t event)
 
 cybt_result_t cybt_platform_hci_open(void *p_arg)
 {
-    cyhal_resource_inst_t pinRsc;
-
     cyhal_uart_event_t enable_irq_event = (cyhal_uart_event_t)(CYHAL_UART_IRQ_RX_DONE
                                            | CYHAL_UART_IRQ_TX_DONE
                                            | CYHAL_UART_IRQ_RX_NOT_EMPTY
@@ -469,20 +461,20 @@ cybt_result_t cybt_platform_hci_open(void *p_arg)
     if((CYBT_SLEEP_MODE_ENABLED == p_bt_platform_cfg->controller_config.sleep_mode.sleep_mode_enabled)
       && (NC != p_bt_platform_cfg->controller_config.sleep_mode.host_wakeup_pin))
     {
-
-        pinRsc = cyhal_utils_get_gpio_resource(p_bt_platform_cfg->controller_config.sleep_mode.host_wakeup_pin);
-        cyhal_hwmgr_free(&pinRsc);
-
         result = cyhal_gpio_init(p_bt_platform_cfg->controller_config.sleep_mode.host_wakeup_pin,
                                  CYHAL_GPIO_DIR_INPUT,
                                  CYHAL_GPIO_DRIVE_NONE,
                                  0
                                 );
-        if(CY_RSLT_SUCCESS != result)
+        //If the host_wakeup_pin already initialized by the device configurator or application, we get CYHAL_HWMGR_RSLT_ERR_INUSE.
+        if(CYHAL_HWMGR_RSLT_ERR_INUSE == result)
         {
-            HCIDRV_TRACE_ERROR("hci_open(): Init HostWakeup pin failed (0x%x)",
-                               result
-                              );
+            HCIDRV_TRACE_ERROR("hci_open(): HostWakeup pin already initialized by the app/configurator -  status: (0x%x)", result);
+        }
+        //For any other error, we return init failure.
+        else if(CY_RSLT_SUCCESS != result)
+        {
+            HCIDRV_TRACE_ERROR("hci_open(): Init HostWakeup pin failed (0x%x)", result);
             return CYBT_ERR_GPIO_HOST_WAKE_INIT_FAILED;
         }
     }
@@ -524,19 +516,20 @@ cybt_result_t cybt_platform_hci_open(void *p_arg)
     if((CYBT_SLEEP_MODE_ENABLED == p_bt_platform_cfg->controller_config.sleep_mode.sleep_mode_enabled)
         && (NC != p_bt_platform_cfg->controller_config.sleep_mode.device_wakeup_pin))
     {
-        pinRsc = cyhal_utils_get_gpio_resource(p_bt_platform_cfg->controller_config.sleep_mode.device_wakeup_pin);
-        cyhal_hwmgr_free(&pinRsc);
-
         result = cyhal_gpio_init(p_bt_platform_cfg->controller_config.sleep_mode.device_wakeup_pin,
                                  CYHAL_GPIO_DIR_OUTPUT,
                                  CYHAL_GPIO_DRIVE_STRONG,
                                  0
                                 );
-        if(CY_RSLT_SUCCESS != result)
+        //If the device_wakeup_pin already initialized by the device configurator or application, we get CYHAL_HWMGR_RSLT_ERR_INUSE.
+        if(CYHAL_HWMGR_RSLT_ERR_INUSE == result)
         {
-            HCIDRV_TRACE_ERROR("hci_open(): Init DevWakeup pin failed (0x%x)",
-                               result
-                              );
+            HCIDRV_TRACE_ERROR("hci_open(): DevWakeup pin already initialized by the app/configurator -  status: (0x%x)", result);
+        }
+        //For any other error, we return init failure.
+        else if(CY_RSLT_SUCCESS != result)
+        {
+            HCIDRV_TRACE_ERROR("hci_open(): Init DevWakeup pin failed (0x%x)",result);
             return CYBT_ERR_GPIO_DEV_WAKE_INIT_FAILED;
         }
 
@@ -546,22 +539,23 @@ cybt_result_t cybt_platform_hci_open(void *p_arg)
         cy_rtos_delay_milliseconds(100);
     }
 
-
-    pinRsc = cyhal_utils_get_gpio_resource(p_bt_platform_cfg->controller_config.bt_power_pin);
-    cyhal_hwmgr_free(&pinRsc);
-
     result = cyhal_gpio_init(p_bt_platform_cfg->controller_config.bt_power_pin,
                             BT_POWER_PIN_DIRECTION,
                             BT_POWER_PIN_DRIVE_MODE,
                             BT_POWER_PIN_INIT_VALUE
                             );
-    if(CY_RSLT_SUCCESS != result)
+     //If the bt_power_pin already initialized by the device configurator or application, we get CYHAL_HWMGR_RSLT_ERR_INUSE.
+    if(CYHAL_HWMGR_RSLT_ERR_INUSE == result)
     {
-        HCIDRV_TRACE_ERROR("hci_open(): Init power pin failed (0x%x)",
-                           result
-                          );
+        HCIDRV_TRACE_ERROR("hci_open(): BtPower pin already initialized by the app/configurator -  status: (0x%x)", result);
+    }
+    //For any other error, we return init failure.
+    else if(CY_RSLT_SUCCESS != result)
+    {
+        HCIDRV_TRACE_ERROR("hci_open(): Init BtPower pin failed (0x%x)",result);
         return CYBT_ERR_GPIO_POWER_INIT_FAILED;
     }
+
 #ifdef COMPONENT_55500
     cybt_enter_autobaud_mode();
 
@@ -673,10 +667,10 @@ static void cybt_enter_autobaud_mode(void)
 
     /* Toggle BT REG ON pin */
     cyhal_gpio_write(p_bt_platform_cfg->controller_config.bt_power_pin, false);
-    cy_rtos_delay_milliseconds(500);
+    cy_rtos_delay_milliseconds(10);
 
     cyhal_gpio_write(p_bt_platform_cfg->controller_config.bt_power_pin, true);
-    cy_rtos_delay_milliseconds(500);
+    cy_rtos_delay_milliseconds(10);
 
     /* Release RTS pin to be used by UART block */
     cyhal_gpio_free(p_bt_platform_cfg->hci_config.hci.hci_uart.uart_rts_pin);

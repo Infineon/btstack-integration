@@ -54,11 +54,32 @@
 /******************************************************************************
  *                                Constants
  ******************************************************************************/
-#ifdef ENABLE_DEBUG_UART
-#define  CYBT_TRACE_BUFFER_SIZE    (256)
-#else
 #define  CYBT_TRACE_BUFFER_SIZE    (128)
-#endif //ENABLE_DEBUG_UART
+
+/** Define start of the function placed to the SRAM area by the linker */
+#if defined(__ARMCC_VERSION)
+   /** To create cross compiler compatible code, use the CY_NOINIT, CY_SECTION, CY_UNUSED, CY_ALIGN
+     * attributes at the first place of declaration/definition.
+     * For example: CY_NOINIT uint32_t noinitVar;
+     */
+   #define BTSTACK_PORTING_SECTION_BEGIN __attribute__((section(".text.cy_btstack_porting")))
+   #define BTSTACK_PORTING_SECTION_END
+
+#elif defined(__ICCARM__)
+   #define BTSTACK_PORTING_SECTION_BEGIN _Pragma("default_function_attributes = @\".text.cy_btstack_porting\"")
+   #define BTSTACK_PORTING_SECTION_END _Pragma("default_function_attributes = ")
+#elif defined(__GNUC__)
+    #if defined(__clang__)
+        #define BTSTACK_PORTING_SECTION_BEGIN __attribute__((section("__DATA, .text.cy_btstack_porting")))
+        #define BTSTACK_PORTING_SECTION_END
+    #else
+        #define BTSTACK_PORTING_SECTION_BEGIN __attribute__((section(".text.cy_btstack_porting")))
+        #define BTSTACK_PORTING_SECTION_END
+    #endif
+#else // if defined(__ARMCC_VERSION)
+    #define BTSTACK_PORTING_SECTION_BEGIN
+    #define BTSTACK_PORTING_SECTION_END
+#endif // (__ARMCC_VERSION)
 
 #ifdef __cplusplus
 extern "C"

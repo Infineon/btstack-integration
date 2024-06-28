@@ -31,6 +31,7 @@
 #include "cybt_platform_internal.h"
 #include "cybt_platform_config.h"
 #include "cybt_platform_util.h"
+#include "wiced_bt_stack_platform.h"
 
 /******************************************************************************
  *                                Constants
@@ -113,7 +114,7 @@ static cy_stc_syspm_callback_t        cybt_syspm_callback       =
  *                          Function Declarations
  ******************************************************************************/
 extern cybt_result_t cybt_platform_msg_to_bt_task(const uint16_t msg, bool is_from_isr);
-extern void cybt_platform_exception_handler(cybt_exception_t error, uint8_t *info, uint32_t length);
+extern void cybt_platform_exception_handler(uint16_t error, uint8_t *ptr, uint32_t length);
 
 /******************************************************************************
  *                           Function Definitions
@@ -186,6 +187,7 @@ static void notify_callback_mcu_longmsg(uint32_t * msg)
             /* On FPGA, controller does not send CY_BT_IPC_BOOT_CONFIG_WAIT and directly sends CY_BT_IPC_BOOT_FULLY_UP */
             cybt_platform_msg_to_bt_task(BT_EVT_TASK_BOOT_COMPLETES, IN_ISR);
 #else
+            Cy_SysClk_ClkHfSetSource(0U, CY_SYSCLK_CLKHF_IN_CLKPATH0); /* restore to original frequency */
             cy_rtos_set_semaphore(&hci_cb.boot_fully_up, IN_ISR);
 #endif /* FPGA_TEST_PLATFORM */
             break;
@@ -209,6 +211,7 @@ static cybt_result_t ipc_hci_release_buffer(uint32_t *p_msg)
 {
     uint32_t time_out = 2000UL; //2ms
     cy_en_btipcdrv_status_t ipc_status;
+    uint8_t ipc_status_buf[4]={0};
 
     do
     {
@@ -222,7 +225,10 @@ static cybt_result_t ipc_hci_release_buffer(uint32_t *p_msg)
         time_out--;
     } while (time_out > 0);
 
-    cybt_platform_exception_handler(CYBT_HCI_IPC_REL_BUFFER, (uint8_t *)&ipc_status, sizeof(ipc_status));
+    HCIDRV_TRACE_ERROR("[%s] Release buffer failure: 0x%x", __FUNCTION__, ipc_status);
+
+    UINT32_TO_BE_FIELD(ipc_status_buf,ipc_status);
+    cybt_platform_exception_handler(CYBT_PORTING_HCI_IPC_REL_BUFFER, (uint8_t *)ipc_status_buf, sizeof(ipc_status_buf)/sizeof(ipc_status_buf[0]));
 
     /* App wants to continue on error, we can proceed */
     return CYBT_ERR_HCI_IPC_REL_BUFFER_FAILED;
@@ -497,7 +503,7 @@ cybt_result_t cybt_platform_hci_write(hci_packet_type_t pti,
 				++ipc_stats.write_fail_count;
 
 			if (retries > ipc_stats.write_max_retry_count){
-				ipc_stats.write_max_retry_count = retries; 
+				ipc_stats.write_max_retry_count = retries;
             }
 #endif
         }else{

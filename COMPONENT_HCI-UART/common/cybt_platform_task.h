@@ -73,15 +73,12 @@
  *****************************************************************************/
 
 /**
- * BT event (with message header and payload)
+ * BT event
  */
-#define BT_EVT_TO_BTD_EVENT                 (0x0201)
-#define BT_EVT_TO_BTD_ACL                   (0x0202)
-#define BT_EVT_TO_BTD_SCO                   (0x0203)
-
 #define BT_EVT_TO_HCI_COMMAND               (0x0401)
 #define BT_EVT_TO_HCI_ACL                   (0x0402)
 #define BT_EVT_TO_HCI_SCO                   (0x0403)
+#define BT_EVT_TO_HCI_ISO                   (0x0404)
 #define BT_EVT_INVALID                      (0xFFFF)
 typedef uint16_t bt_task_event_t;
 
@@ -92,9 +89,6 @@ typedef uint16_t bt_task_event_t;
 
 #define OFFSET_TASK_SHUTDOWN                (0)
 #define OFFSET_DATA_READY_UNKNOWN           (1)
-#define OFFSET_DATA_READY_ACL               (2)
-#define OFFSET_DATA_READY_SCO               (3)
-#define OFFSET_DATA_READY_EVT               (4)
 #define OFFSET_TIMER                        (5)
 #if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x03080000))
 #define OFFSET_APP_SERIALIZATION            (6)
@@ -107,9 +101,6 @@ typedef uint16_t bt_task_event_t;
 
 #define BT_IND_TASK_SHUTDOWN                (BT_IND_BASE + OFFSET_TASK_SHUTDOWN)
 #define BT_IND_TO_HCI_DATA_READY_UNKNOWN    (BT_IND_BASE + OFFSET_DATA_READY_UNKNOWN)
-#define BT_IND_TO_HCI_DATA_READY_ACL        (BT_IND_BASE + OFFSET_DATA_READY_ACL)
-#define BT_IND_TO_HCI_DATA_READY_SCO        (BT_IND_BASE + OFFSET_DATA_READY_SCO)
-#define BT_IND_TO_HCI_DATA_READY_EVT        (BT_IND_BASE + OFFSET_DATA_READY_EVT)
 #define BT_IND_TO_BTS_TIMER                 (BT_IND_BASE + OFFSET_TIMER)
 #if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x03080000))
 #define BT_IND_TO_APP_SERIALIZATION         (BT_IND_BASE + OFFSET_APP_SERIALIZATION)
@@ -133,11 +124,6 @@ typedef struct
  */
 #define BT_MSG_HDR_SIZE             (sizeof(BT_MSG_HDR))
 
-#define HCI_EVT_MSG_HDR_SIZE        (BT_MSG_HDR_SIZE + HCIE_PREAMBLE_SIZE)
-#define HCI_ACL_MSG_HDR_SIZE        (BT_MSG_HDR_SIZE + HCI_DATA_PREAMBLE_SIZE)
-#define HCI_SCO_MSG_HDR_SIZE        (BT_MSG_HDR_SIZE + HCI_SCO_PREAMBLE_SIZE)
-
-
 extern cy_queue_t  cybt_task_queue[];
 
 /**
@@ -156,6 +142,7 @@ extern cy_queue_t  cybt_task_queue[];
 #define CYBT_HCI_TX_BLOCKED_QUEUE_FULL_CMD    (1 << 1)
 #define CYBT_HCI_TX_BLOCKED_QUEUE_FULL_ACL    (1 << 2)
 #define CYBT_HCI_TX_BLOCKED_QUEUE_FULL_SCO    (1 << 3)
+#define CYBT_HCI_TX_BLOCKED_QUEUE_FULL_ISO    (1 << 4)
 typedef uint8_t cybt_hci_tx_status_t;
 
 #ifdef __cplusplus

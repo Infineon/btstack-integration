@@ -55,6 +55,9 @@ wiced_result_t cybt_core_management_cback( wiced_bt_management_evt_t event, wice
 #define BT_SLEEP_TXD_CONFIG                  (1)
 #define BT_SLEEP_BT_WAKE_IDLE_TIME           (50)
 
+#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x04000000))
+pf_wiced_exception pf_platform_exception = NULL;
+#endif
 
 /*****************************************************************************
  *                           Type Definitions
@@ -318,3 +321,9 @@ const cybt_platform_config_t* cybt_platform_get_config(void)
     return cybt_main_cb.p_bt_platform_cfg;
 }
 
+#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x04000000))
+void wiced_set_exception_callback(pf_wiced_exception pf_handler)
+{
+	pf_platform_exception = pf_handler;
+}
+#endif

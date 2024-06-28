@@ -11,14 +11,6 @@
     <member refid="structcybt__controller__sleep__config__t_1af610fc41d1a3984908fafcf00c7ec76e" kind="variable"><name>device_wake_polarity</name></member>
     <member refid="structcybt__controller__sleep__config__t_1a593fd22a6c9987faaef084853b9dd3c6" kind="variable"><name>host_wake_polarity</name></member>
   </compound>
-  <compound refid="structcybt__debug__uart__config__t" kind="struct"><name>cybt_debug_uart_config_t</name>
-    <member refid="structcybt__debug__uart__config__t_1a704afa40225e32731d606d2488a50496" kind="variable"><name>uart_tx_pin</name></member>
-    <member refid="structcybt__debug__uart__config__t_1a109bf7ff2f78d5c2b3d8447ecefbc3e5" kind="variable"><name>uart_rx_pin</name></member>
-    <member refid="structcybt__debug__uart__config__t_1a1442253ba42008c899c18fa135bfeb21" kind="variable"><name>uart_rts_pin</name></member>
-    <member refid="structcybt__debug__uart__config__t_1ad2a825e22ae429addfec61fe09f3451b" kind="variable"><name>uart_cts_pin</name></member>
-    <member refid="structcybt__debug__uart__config__t_1a60d99e8cf844de2b090ac19c3291ee03" kind="variable"><name>baud_rate</name></member>
-    <member refid="structcybt__debug__uart__config__t_1adf606b6502f0bb0fdd741edf575599ec" kind="variable"><name>flow_control</name></member>
-  </compound>
   <compound refid="structcybt__hci__transport__config__t" kind="struct"><name>cybt_hci_transport_config_t</name>
     <member refid="structcybt__hci__transport__config__t_1a49e2aa2bba549df93cb113ecb293801f" kind="variable"><name>hci_transport</name></member>
     <member refid="structcybt__hci__transport__config__t_1a906d2c4cc61e0cfdff53e7f004ac1396" kind="variable"><name>hci_uart</name></member>
@@ -43,13 +35,6 @@
   </compound>
   <compound refid="structcybt__platform__trace__cb__t" kind="struct"><name>cybt_platform_trace_cb_t</name>
     <member refid="structcybt__platform__trace__cb__t_1aff6cbe7223f753c87f870ff5cab4333d" kind="variable"><name>trace_level</name></member>
-  </compound>
-  <compound refid="cybt__debug__uart_8h" kind="file"><name>cybt_debug_uart.h</name>
-    <member refid="cybt__debug__uart_8h_1ad9ac57d78f046b0d5dbcf3f32e54e1fd" kind="typedef"><name>cybt_debug_uart_data_handler_t</name></member>
-    <member refid="cybt__debug__uart_8h_1a16bde8710d82bdc7086fa44f6103ccf3" kind="function"><name>cybt_debug_uart_init</name></member>
-    <member refid="cybt__debug__uart_8h_1a138649c1c5091bd65757aa23db3b55a4" kind="function"><name>cybt_debug_uart_send_trace</name></member>
-    <member refid="cybt__debug__uart_8h_1a7a64b5c537dd7068dcbaf5efa6ed57be" kind="function"><name>cybt_debug_uart_send_hci_trace</name></member>
-    <member refid="cybt__debug__uart_8h_1aa5b2fd8df23a303ef08508db24792e24" kind="function"><name>cybt_debug_uart_send_data</name></member>
   </compound>
   <compound refid="cybt__platform__config_8h" kind="file"><name>cybt_platform_config.h</name>
     <member refid="group__platform__cfg_1ga71a14bd3046f030353a91683577817a6" kind="define"><name>CYBT_SLEEP_MODE_DISABLED</name></member>

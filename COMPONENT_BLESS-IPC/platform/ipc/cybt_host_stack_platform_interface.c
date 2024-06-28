@@ -26,6 +26,7 @@
 
 #include "cyabs_rtos.h"
 #include "wiced_bt_stack_platform.h"
+#include "wiced_memory.h"
 #include "cybt_platform_hci.h"
 #include "cybt_platform_task.h"
 #include "cybt_platform_interface.h"
@@ -46,13 +47,49 @@ char bt_trace_buf[CYBT_TRACE_BUFFER_SIZE];
  *                          Function Declarations
  ******************************************************************************/
 extern uint8_t *cybt_platform_hci_get_buffer(hci_packet_type_t pti, uint32_t size);
+#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x04000000))
+extern pf_wiced_exception pf_platform_exception;
+#endif
 
+extern cyhal_wdt_t platform_wdt_obj;
 /******************************************************************************
  *                           Function Definitions
  ******************************************************************************/
+#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x04000000))
+void host_stack_exception_handler(uint16_t code, void* ptr, uint32_t length)
+#else
 void host_stack_exception_handler(uint16_t code, char* msg, void* ptr)
+#endif
 {
-    SPIF_TRACE_ERROR("[Exception] code = 0x%x, msg = %s", code, msg);
+#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x04000000))
+    if(pf_platform_exception!=NULL)
+    {
+        pf_platform_exception(code, (uint8_t *)ptr, length);
+    }
+    else
+    {
+		char buf[50]={0};
+		uint8_t* ptr_temp=(uint8_t *)ptr;
+		uint8_t offset=0, len=length;
+#ifdef STACK_EXCEPTION_VERBOSE
+		const char* msg = wiced_get_exception_message(code);
+#else
+		const char* msg = "";
+#endif
+
+		while(ptr_temp && len--)
+		{
+			offset+=snprintf(buf+offset, sizeof(buf)-offset, "%02x ", *ptr_temp++);
+		}
+		SPIF_TRACE_ERROR("[%s]: 0x%x %s len:%lu reason:\"%s\"\n", __FUNCTION__, code, msg, length, buf);
+
+		/*Initiate WDT. Reset the system*/
+		cyhal_wdt_init(&platform_wdt_obj, PLATFORM_WDT_TIME_OUT_MS);
+    }
+#else
+    SPIF_TRACE_ERROR("[Exception] code = 0x%x, msg = %s reason = 0x%x", code, msg, ptr);
+    cyhal_wdt_init(&platform_wdt_obj, PLATFORM_WDT_TIME_OUT_MS);
+#endif
 }
 
 BTSTACK_PORTING_SECTION_BEGIN

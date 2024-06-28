@@ -37,9 +37,6 @@
 #include "cybt_platform_trace.h"
 #include "cybt_platform_util.h"
 #include "cycfg_system.h"
-#ifdef ENABLE_DEBUG_UART
-#include "cybt_debug_uart.h"
-#endif
 
 /******************************************************************************
  *                           Variables Definitions
@@ -51,9 +48,17 @@ char         bt_trace_buf[CYBT_TRACE_BUFFER_SIZE];
 /******************************************************************************
  *                           Function Definitions
  ******************************************************************************/
+#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x04000000))
+void host_stack_exception_handler(uint16_t code, void* ptr, uint32_t length)
+#else
 void host_stack_exception_handler(uint16_t code, char* msg, void* ptr)
+#endif
 {
+#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x04000000))
+    SPIF_TRACE_ERROR("[Exception] code = 0x%x", code);
+#else
     SPIF_TRACE_ERROR("[Exception] code = 0x%x, msg = %s", code, msg);
+#endif
 }
 
 void host_stack_mutex_lock(void * p_lock_context)
@@ -397,6 +402,85 @@ void host_stack_print_trace_log(char *p_trace_buf,
     }
 }
 
+wiced_result_t host_stack_send_iso_to_lower(uint8_t* p_data,
+    uint16_t len
+)
+{
+    cybt_result_t result;
+    BT_MSG_HDR* p_msg_hdr;
+    uint8_t* p;
+    const cybt_platform_config_t* p_bt_platform_cfg = cybt_platform_get_config();
+
+    // Some checks before allocating memory and accpeting ISO packet
+    if (CYBT_HCI_UART != p_bt_platform_cfg->hci_config.hci_transport)
+    {
+        SPIF_TRACE_ERROR("send_iso_to_lower(): Unknown transport (%d)",
+            p_bt_platform_cfg->hci_config.hci_transport
+        );
+        return WICED_ERROR;
+    }
+    if (CYBT_HCI_TX_NORMAL != cybt_get_hci_tx_status())
+    {
+        SPIF_TRACE_ERROR("send_iso_to_lower(): TX is blocked now");
+        return WICED_ERROR;
+    }
+    if (NULL == p_data || 0 == len)
+    {
+        SPIF_TRACE_ERROR("send_iso_to_lower(): Invalid data(0x%p) or length(%d)",
+            p_data,
+            len
+        );
+        return WICED_ERROR;
+    }
+
+    // Packet seems okay so Allocate memory for ISOC packet
+    p_msg_hdr = (BT_MSG_HDR*)cybt_platform_task_tx_mempool_alloc(BT_MSG_HDR_SIZE + HCI_UART_TYPE_HEADER_SIZE + len);
+
+    if (NULL == p_msg_hdr)
+    {
+#if (CYBT_PLATFORM_TRACE_ENABLE == 1)
+        uint16_t largest_free_size = 0;
+        uint8_t  use_perc = 0;
+        use_perc = cybt_platform_task_get_tx_heap_utilization(&largest_free_size);
+        SPIF_TRACE_ERROR("host_stack_send_iso_to_lower(): Unable to alloc memory (size = %d, heap = %d%%)", len, use_perc);
+#endif
+
+        cybt_lock_hci_tx(CYBT_HCI_TX_BLOCKED_HEAP_RAN_OUT);
+        return WICED_ERROR;
+    }
+
+    SPIF_TRACE_DEBUG("host_stack_send_iso_to_lower(): p_bt_msg = 0x%p, size = %d",
+        p_msg_hdr,
+        len
+    );
+
+    p = (uint8_t*)(p_msg_hdr + 1);
+
+    p_msg_hdr->event = BT_EVT_TO_HCI_ISO;
+    p_msg_hdr->length = len + HCI_UART_TYPE_HEADER_SIZE;
+    *p++ = HCI_PACKET_TYPE_SCO;
+
+    SPIF_TRACE_DEBUG("send_iso_to_lower(): p_data = 0x%p, len = %d",
+        p_data,
+        len
+    );
+
+    result = cybt_send_msg_to_hci_tx_task(p_msg_hdr, false);
+    if (CYBT_SUCCESS == result)
+    {
+        return WICED_SUCCESS;
+    }
+    else
+    {
+        SPIF_TRACE_ERROR("send_iso_to_lower(): Send hci queue failed (ret = 0x%x)",
+            result
+        );
+
+        cybt_lock_hci_tx(CYBT_HCI_TX_BLOCKED_QUEUE_FULL_ISO);
+        cybt_platform_task_mempool_free(p_msg_hdr);
+        return WICED_ERROR;
+    }
+}
 void host_stack_platform_interface_init(void)
 {
     wiced_bt_stack_platform_t host_stack_platform_if = {0};
@@ -417,6 +501,7 @@ void host_stack_platform_interface_init(void)
     host_stack_platform_if.pf_write_cmd_to_lower      = host_stack_send_cmd_to_lower;
     host_stack_platform_if.pf_get_sco_to_lower_buffer = host_stack_get_sco_to_lower_buffer;
     host_stack_platform_if.pf_write_sco_to_lower      = host_stack_send_sco_to_lower;
+    host_stack_platform_if.pf_write_iso_to_lower      = host_stack_send_iso_to_lower;
     host_stack_platform_if.pf_hci_trace_cback_t       = NULL;
     host_stack_platform_if.pf_debug_trace             = host_stack_print_trace_log;
     host_stack_platform_if.trace_buffer               = bt_trace_buf;

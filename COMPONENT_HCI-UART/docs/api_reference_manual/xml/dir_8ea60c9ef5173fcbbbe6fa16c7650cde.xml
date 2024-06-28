@@ -2,7 +2,6 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.15">
   <compounddef id="dir_8ea60c9ef5173fcbbbe6fa16c7650cde" kind="dir">
     <compoundname>include</compoundname>
-    <innerfile refid="cybt__debug__uart_8h">cybt_debug_uart.h</innerfile>
     <innerfile refid="cybt__platform__config_8h">cybt_platform_config.h</innerfile>
     <innerfile refid="cybt__platform__interface_8h">cybt_platform_interface.h</innerfile>
     <innerfile refid="cybt__platform__trace_8h">cybt_platform_trace.h</innerfile>
@@ -12,6 +11,6 @@
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/var/tmp/gitlab-runner2/builds/9f77bc33/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/"/>
+    <location file="/var/tmp/gitlab-runner2/builds/-SJPWcYk/0/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/"/>
   </compounddef>
 </doxygen>

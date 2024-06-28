@@ -54,12 +54,10 @@
 /******************************************************************************
  *                                Constants
  ******************************************************************************/
-#ifdef ENABLE_DEBUG_UART
-#define  CYBT_TRACE_BUFFER_SIZE    (256)
-#else
 #define  CYBT_TRACE_BUFFER_SIZE    (128)
-#endif //ENABLE_DEBUG_UART
 
+//WDT timeout for system rest on exceptions
+#define PLATFORM_WDT_TIME_OUT_MS		200
 
 /** Define start of the function placed to the SRAM area by the linker */
 #if defined(__ARMCC_VERSION)
@@ -199,6 +197,5 @@ void cybt_call_app_in_stack_context(void);
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
-
 #endif
 
