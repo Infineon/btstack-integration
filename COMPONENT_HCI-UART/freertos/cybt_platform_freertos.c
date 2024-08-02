@@ -667,10 +667,10 @@ static void cybt_enter_autobaud_mode(void)
 
     /* Toggle BT REG ON pin */
     cyhal_gpio_write(p_bt_platform_cfg->controller_config.bt_power_pin, false);
-    cy_rtos_delay_milliseconds(10);
+    cy_rtos_delay_milliseconds(100);
 
     cyhal_gpio_write(p_bt_platform_cfg->controller_config.bt_power_pin, true);
-    cy_rtos_delay_milliseconds(10);
+    cy_rtos_delay_milliseconds(100);
 
     /* Release RTS pin to be used by UART block */
     cyhal_gpio_free(p_bt_platform_cfg->hci_config.hci.hci_uart.uart_rts_pin);

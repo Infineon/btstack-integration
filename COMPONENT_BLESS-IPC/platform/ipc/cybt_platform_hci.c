@@ -270,7 +270,7 @@ cybt_result_t cybt_platform_hci_open(void *p_arg)
     {
 
     	stackParam.maxConnCount = p_bt_cfg_settings_Bless->p_ble_cfg->ble_max_simultaneous_links;
-    	stackParam.controllerTotalHeapSz = (stackParam.maxConnCount *1532) + 3476 ;
+	stackParam.controllerTotalHeapSz = (stackParam.maxConnCount *1532) + 3496 ;
     	stackParam.totalHeapSz = stackParam.controllerTotalHeapSz;
     	if(stackParam.controllerMemoryHeapPtr == NULL)
     	{
