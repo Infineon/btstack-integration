@@ -458,12 +458,14 @@ wiced_result_t host_stack_send_iso_to_lower(uint8_t* p_data,
 
     p_msg_hdr->event = BT_EVT_TO_HCI_ISO;
     p_msg_hdr->length = len + HCI_UART_TYPE_HEADER_SIZE;
-    *p++ = HCI_PACKET_TYPE_SCO;
+    *p++ = HCI_PACKET_TYPE_ISO;
 
     SPIF_TRACE_DEBUG("send_iso_to_lower(): p_data = 0x%p, len = %d",
         p_data,
         len
     );
+
+    memcpy(p, p_data, len);
 
     result = cybt_send_msg_to_hci_tx_task(p_msg_hdr, false);
     if (CYBT_SUCCESS == result)

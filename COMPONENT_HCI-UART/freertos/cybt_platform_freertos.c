@@ -439,6 +439,10 @@ cybt_result_t cybt_platform_hci_open(void *p_arg)
     UNUSED_VARIABLE(p_arg);
     const cybt_platform_config_t *p_bt_platform_cfg = cybt_platform_get_config();
 
+    #ifdef COMPONENT_55500
+    uint32_t platform_baud_download;
+    #endif
+
     if(true == hci_uart_cb.inited)
     {
         return  CYBT_SUCCESS;
@@ -558,7 +562,6 @@ cybt_result_t cybt_platform_hci_open(void *p_arg)
 
 #ifdef COMPONENT_55500
     cybt_enter_autobaud_mode();
-
 #else
         cyhal_gpio_write(p_bt_platform_cfg->controller_config.bt_power_pin,
                          true
@@ -595,10 +598,18 @@ cybt_result_t cybt_platform_hci_open(void *p_arg)
         return  CYBT_ERR_HCI_INIT_FAILED;
     }
 
+#ifdef COMPONENT_55500
+    platform_baud_download=p_bt_platform_cfg->hci_config.hci.hci_uart.baud_rate_for_fw_download;
     result = cyhal_uart_set_baud(&hci_uart_cb.hal_obj,
-                                 HCI_UART_DEFAULT_BAUDRATE,
+                                 platform_baud_download,
                                  &actual_baud_rate
                                 );
+#else
+    result = cyhal_uart_set_baud(&hci_uart_cb.hal_obj,
+                                     HCI_UART_DEFAULT_BAUDRATE,
+                                     &actual_baud_rate
+                                    );
+#endif
     if(CY_RSLT_SUCCESS != result)
     {
         HCIDRV_TRACE_ERROR("hci_open(): Set baud rate failed (0x%x)",

@@ -428,7 +428,7 @@ __attribute__((weak)) cybt_result_t cybt_send_coredump_hci_trace (uint16_t data_
 
 void platform_default_exception_handling(uint16_t code, uint8_t *ptr, uint32_t length)
 {
-	char buf[250]={0};
+	char buf[CYBT_TRACE_BUFFER_SIZE]={0};
 	uint8_t* ptr_temp=ptr;
 	uint8_t offset=0, len=length;
 #ifdef STACK_EXCEPTION_VERBOSE
@@ -437,14 +437,24 @@ void platform_default_exception_handling(uint16_t code, uint8_t *ptr, uint32_t l
 	const char* msg = "";
 #endif
 
-	while(ptr_temp && len--)
-	{
-		offset+=snprintf(buf+offset, sizeof(buf)-offset, "%02x ", *ptr_temp++);
-	}
-	MAIN_TRACE_ERROR("[%s]: 0x%x %s len:%lu reason:\"%s\"\n", __FUNCTION__, code, msg, length, buf);
+	MAIN_TRACE_ERROR("[%s]: 0x%x %s len:%lu Reason:\n", __FUNCTION__, code, msg, length);
 
 	if(code!=CYBT_CONTROLLER_CORE_DUMP)
 	{
+		/*Buffer the data and print the exception data*/
+		while(ptr_temp && len!=0)
+		{
+			/*Need 3 char in buf to print one byte of data since format is "%02x "*/
+			offset+=snprintf(buf+offset, sizeof(buf)-offset, "%02x ", *ptr_temp++);
+			if(offset>=(CYBT_TRACE_BUFFER_SIZE-3) || len==1)
+			{
+				MAIN_TRACE_ERROR("%s \n", buf);
+				memset(buf,0,CYBT_TRACE_BUFFER_SIZE);
+				offset=0;
+			}
+			len--;
+		}
+
 		/*Initiate WDT. Reset the system*/
 		cyhal_wdt_init(&platform_wdt_obj, PLATFORM_WDT_TIME_OUT_MS);
 	}
@@ -452,4 +462,6 @@ void platform_default_exception_handling(uint16_t code, uint8_t *ptr, uint32_t l
 	{
 		cybt_send_coredump_hci_trace(length, (uint8_t *)ptr);
 	}
+
+    UNUSED_VARIABLE(msg);
 }

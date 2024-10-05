@@ -585,6 +585,8 @@ cybt_result_t cybt_platform_hci_close(void)
         CY_ASSERT(0);
     }
 
+    cy_rtos_deinit_semaphore(&hci_cb.boot_fully_up);
+
     memset(&hci_cb, 0, sizeof(hci_interface_t));
 
     return status;

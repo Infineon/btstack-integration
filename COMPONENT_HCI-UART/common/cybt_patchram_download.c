@@ -214,7 +214,6 @@ void bt_fw_download_complete_cback(cybt_prm_status_t status)
                             );
             bt_update_platform_baudrate(HCI_UART_DEFAULT_BAUDRATE);
         }
-
         if(HCI_UART_DEFAULT_BAUDRATE
            != p_bt_platform_cfg->hci_config.hci.hci_uart.baud_rate_for_feature
           )
@@ -269,6 +268,7 @@ void bt_post_reset_cback(void)
     if ((result == CY_RSLT_SUCCESS) && (0 < bt_fw_info.BT_FW_size))
 #endif /* !FW_DATBLOCK_SEPARATE_FROM_APPLICATION */
     {
+#ifndef COMPONENT_55500
         if(p_bt_platform_cfg->hci_config.hci.hci_uart.baud_rate_for_fw_download != HCI_UART_DEFAULT_BAUDRATE)
         {
             MAIN_TRACE_DEBUG("bt_post_reset_cback(): Change baudrate (%d) for FW downloading",
@@ -278,6 +278,9 @@ void bt_post_reset_cback(void)
             bt_update_controller_baudrate(p_bt_platform_cfg->hci_config.hci.hci_uart.baud_rate_for_fw_download);
         }
         else
+#else
+        UNUSED_VARIABLE(p_bt_platform_cfg);
+#endif
         {
             MAIN_TRACE_DEBUG("bt_post_reset_cback(): Starting FW download...");
             bt_start_fw_download();
