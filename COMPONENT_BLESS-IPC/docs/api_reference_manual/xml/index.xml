@@ -68,6 +68,7 @@
     <member refid="cybt__platform__interface_8h_1a63266c3ba4e8863a8cedf129798dc6cf" kind="function"><name>cybt_platform_log_print</name></member>
     <member refid="cybt__platform__interface_8h_1a8dcac5f34f5a4068d759ebf6bf30e95e" kind="function"><name>cybt_platform_get_tick_count_us</name></member>
     <member refid="cybt__platform__interface_8h_1a7878e8cc760de1837b637733901ca979" kind="function"><name>cybt_platform_set_next_timeout</name></member>
+    <member refid="cybt__platform__interface_8h_1a1a18cc742508d203c30ace105cc367cb" kind="function"><name>cybt_call_app_in_stack_context</name></member>
   </compound>
   <compound refid="cybt__platform__trace_8h" kind="file"><name>cybt_platform_trace.h</name>
     <member refid="group__platform__trace_1ga6ee1dced2b4da94270e21bbb3d358600" kind="define"><name>CYBT_PLATFORM_TRACE_ENABLE</name></member>

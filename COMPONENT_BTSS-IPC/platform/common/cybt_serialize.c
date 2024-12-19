@@ -24,7 +24,6 @@
 *******************************************************************************/
 #include "wiced_bt_version.h"
 
-#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x03080000))
 #include "cyabs_rtos.h"
 #include "cybt_result.h"
 #include "cybt_platform_task.h"
@@ -111,6 +110,5 @@ void cybt_call_app_in_stack_context (void)
         (entry.pf)(entry.pp);
 }
 BTSTACK_PORTING_SECTION_END
-#endif // BTSTACK_VER
 
 /**@} */

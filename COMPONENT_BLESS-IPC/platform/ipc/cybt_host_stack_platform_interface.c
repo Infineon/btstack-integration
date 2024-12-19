@@ -36,6 +36,10 @@
 #include "cycfg_system.h"
 #include "cybt_platform_internal.h"
 
+#ifndef USE_AIROC_STACK_SMP
+#define USE_AIROC_STACK_SMP 1
+#endif
+
 /******************************************************************************
  *                           Variables Definitions
  ******************************************************************************/
@@ -47,21 +51,16 @@ char bt_trace_buf[CYBT_TRACE_BUFFER_SIZE];
  *                          Function Declarations
  ******************************************************************************/
 extern uint8_t *cybt_platform_hci_get_buffer(hci_packet_type_t pti, uint32_t size);
-#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x04000000))
 extern pf_wiced_exception pf_platform_exception;
-#endif
-
 extern cyhal_wdt_t platform_wdt_obj;
+wiced_result_t host_stack_platform_smp_adapter_init(void);
+
 /******************************************************************************
  *                           Function Definitions
  ******************************************************************************/
-#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x04000000))
+
 void host_stack_exception_handler(uint16_t code, void* ptr, uint32_t length)
-#else
-void host_stack_exception_handler(uint16_t code, char* msg, void* ptr)
-#endif
 {
-#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x04000000))
     if(pf_platform_exception!=NULL)
     {
         pf_platform_exception(code, (uint8_t *)ptr, length);
@@ -86,10 +85,6 @@ void host_stack_exception_handler(uint16_t code, char* msg, void* ptr)
 		/*Initiate WDT. Reset the system*/
 		cyhal_wdt_init(&platform_wdt_obj, PLATFORM_WDT_TIME_OUT_MS);
     }
-#else
-    SPIF_TRACE_ERROR("[Exception] code = 0x%x, msg = %s reason = 0x%x", code, msg, ptr);
-    cyhal_wdt_init(&platform_wdt_obj, PLATFORM_WDT_TIME_OUT_MS);
-#endif
 }
 
 BTSTACK_PORTING_SECTION_BEGIN
@@ -326,6 +321,18 @@ void host_stack_platform_interface_init(void)
         SPIF_TRACE_ERROR("platform_interface_init(): failed, result = 0x%x", result);
     }
 }
+
+wiced_result_t host_stack_platform_smp_adapter_init()
+{
+	wiced_result_t result = WICED_ERROR;
+
+#if (defined(USE_AIROC_STACK_SMP) && (USE_AIROC_STACK_SMP == 1))
+	result=wiced_bt_set_default_smp_adapter();
+#endif
+
+	return result;
+}
+
 
 void host_stack_platform_interface_deinit(void)
 {

@@ -250,11 +250,9 @@ void bt_task_handler(cy_thread_arg_t arg)
                             cybt_platform_exception_handler(CYBT_CONTROLLER_RESTARTED, NULL, 0);
                         }
                         break;
-#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x03080000))
                     case BT_EVT_APP_SERIALIZATION:
                         cybt_call_app_in_stack_context();
                         break;
-#endif // BTSTACK_VER
                     default:
                         BTTASK_TRACE_ERROR("bt_task(): Unknown event (0x%x)", event_id);
                         break;

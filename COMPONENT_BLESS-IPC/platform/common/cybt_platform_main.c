@@ -35,6 +35,10 @@
 #include "cybt_platform_util.h"
 #include "cybt_platform_internal.h"
 
+#ifdef PROVIDE_INITIAL_SETUP_DATA_TO_STACK
+extern wiced_bt_stack_init_cmd_data_t ctrl_data_for_stack_init;
+#endif
+
 /******************************************************************************
  *                                Constants
  ******************************************************************************/
@@ -60,6 +64,8 @@
 #define CONNECTION_PARAMETER_REQUEST_PROCEDURE (1) // Feature bit position for Connection Parameters Request Procedure
 #endif
 
+extern wiced_result_t host_stack_platform_smp_adapter_init();
+
 /*****************************************************************************
  *                           Type Definitions
  *****************************************************************************/
@@ -78,9 +84,7 @@ cybt_platform_main_cb_t cybt_main_cb = {0};
 //WDT object for system rest on exceptions
 cyhal_wdt_t platform_wdt_obj;
 
-#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x04000000))
 pf_wiced_exception pf_platform_exception = NULL;
-#endif
 
 #ifdef STACK_EXCEPTION_VERBOSE
 /*Stack exception message strings*/
@@ -259,13 +263,27 @@ wiced_bool_t wiced_stack_event_handler_cback (uint8_t *p_event)
     return WICED_FALSE;
 }
 
+#ifndef ENABLE_SMP_SERVER_MODULE
+#define ENABLE_SMP_SERVER_MODULE 1
+#endif
+#ifndef ENABLE_SMP_CLIENT_MODULE
+#define ENABLE_SMP_CLIENT_MODULE 1
+#endif
 
-
-#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x03070000))
 static wiced_result_t init_layers(void)
 {
     /* handle in porting layer */
-    return wiced_bt_smp_module_init();
+	wiced_result_t res = WICED_BT_SUCCESS;
+#if (ENABLE_SMP_SERVER_MODULE == 1)
+    res = wiced_bt_smp_server_module_init();
+    if(res == WICED_BT_SUCCESS)
+#endif
+	{
+#if (ENABLE_SMP_CLIENT_MODULE == 1)
+    res = wiced_bt_smp_client_module_init();
+#endif
+	}
+    return res;
 }
 
 #if (defined(__GNUC__) || defined(__ARMCC_VERSION))
@@ -280,14 +298,12 @@ extern wiced_result_t app_initialize_btstack_modules(void);
 #pragma weak app_initialize_btstack_modules=init_layers
 
 #endif
-#endif // BTSTACK_VER
 
 wiced_result_t cybt_core_management_cback( wiced_bt_management_evt_t event, wiced_bt_management_evt_data_t *p_event_data )
 {
     wiced_result_t result = WICED_BT_SUCCESS;
     int send_to_app = 1;
 
-#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x03070000))
     switch(event)
     {
         case BTM_ENABLED_EVT:
@@ -298,7 +314,6 @@ wiced_result_t cybt_core_management_cback( wiced_bt_management_evt_t event, wice
             wiced_bt_init_resolution(); /* to be removed subsequently. only required for non-privacy controllers */
         break;
     }
-#endif // BTSTACK_VER
 
     if(send_to_app && cybt_main_cb.p_app_management_callback)
     {
@@ -310,11 +325,19 @@ wiced_result_t cybt_core_management_cback( wiced_bt_management_evt_t event, wice
 
 void cybt_core_stack_init(void)
 {
+    wiced_result_t result;
+
     /* Start the stack */
     wiced_bt_stack_init_internal(cybt_core_management_cback,
                                  wiced_post_stack_init_cback,
                                  wiced_stack_event_handler_cback
                                  );
+
+    result = host_stack_platform_smp_adapter_init();
+    if(WICED_SUCCESS != result)
+	{
+		SPIF_TRACE_ERROR("host_stack_platform_smp_adapter_init(): failed, result = 0x%x", result);
+	}
 }
 
 wiced_result_t wiced_bt_stack_init(wiced_bt_management_cback_t *p_bt_management_cback,
@@ -332,6 +355,12 @@ wiced_result_t wiced_bt_stack_init(wiced_bt_management_cback_t *p_bt_management_
     cybt_main_cb.p_app_management_callback = p_bt_management_cback;
 
     host_stack_platform_interface_init();
+
+#ifdef PROVIDE_INITIAL_SETUP_DATA_TO_STACK
+    wiced_bt_set_stack_initial_setup_data(&ctrl_data_for_stack_init);
+#else
+    wiced_bt_enable_stack_default_flow();
+#endif
 
     /* Configure the stack */
     if (0 == wiced_bt_set_stack_config(p_bt_cfg_settings))
@@ -376,24 +405,20 @@ const cybt_platform_config_t* cybt_platform_get_config(void)
     return cybt_main_cb.p_bt_platform_cfg;
 }
 
-#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x04000000))
 void wiced_set_exception_callback(pf_wiced_exception pf_handler)
 {
 	pf_platform_exception = pf_handler;
 }
-#endif
 
 #ifdef STACK_EXCEPTION_VERBOSE
 const char* wiced_get_exception_message(uint16_t code)
 {
 	const char* p_str = "UNKNOWN EXCEPTION";
 
-#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x04000000))
     if (code <= CYBT_STACK_MAX_EXCEPTION && code >= CYBT_STACK_BASE_EXCEPTION)
     {
         p_str = stack_exception_msg[(code) & (0xFFF)];
     }
-#endif
 
     if(code <= CYBT_PORTING_MAX_EXCEPTION && code >= CYBT_PORTING_BASE_EXCEPTION)
     {
@@ -409,13 +434,11 @@ const char* wiced_get_exception_message(uint16_t code)
 
 void cybt_platform_exception_handler(uint16_t code, uint8_t *ptr, uint32_t length)
 {
-#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x04000000))
     if(pf_platform_exception!=NULL)
     {
         pf_platform_exception(code, (uint8_t *)ptr, length);
     }
     else
-#endif
     {
         platform_default_exception_handling(code, ptr, length);
     }

@@ -195,7 +195,7 @@ uint64_t cybt_platform_get_tick_count_us(void);
  */
 void cybt_platform_set_next_timeout(uint64_t abs_tick_us_to_expire);
 
-#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x03080000))
+
 /**
 * Call back to the application in the BT stack context
 *
@@ -204,7 +204,6 @@ void cybt_platform_set_next_timeout(uint64_t abs_tick_us_to_expire);
 * @returns  void
 */
 void cybt_call_app_in_stack_context(void);
-#endif // BTSTACK_VER
 
 #ifdef __cplusplus
 } /* extern "C" */

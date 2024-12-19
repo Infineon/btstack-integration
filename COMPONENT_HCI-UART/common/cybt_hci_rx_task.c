@@ -505,11 +505,9 @@ void cybt_hci_rx_task(cy_thread_arg_t arg)
             case BT_IND_TO_BTS_TIMER:
                 wiced_bt_process_timer();
                 break;
-#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x03080000))
             case BT_IND_TO_APP_SERIALIZATION:
                 cybt_call_app_in_stack_context();
                 break;
-#endif // BTSTACK_VER
             default:
                 HCIRXTASK_TRACE_ERROR("hci_rx_task(): Unknown message (0x%x)",
                                       bt_ind_msg

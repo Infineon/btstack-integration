@@ -24,7 +24,6 @@
 *******************************************************************************/
 #include "wiced_bt_version.h"
 
-#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x03080000))
 #include "cyabs_rtos.h"
 #include "cybt_result.h"
 #include "cybt_platform_task.h"
@@ -105,6 +104,5 @@ void cybt_call_app_in_stack_context (void)
     if (cy_rtos_get_queue(&serial_q_struct.serialQ, &entry, 0, false) == CY_RSLT_SUCCESS)
         (entry.pf)(entry.pp);
 }
-#endif // BTSTACK_VER
 
 /**@} */

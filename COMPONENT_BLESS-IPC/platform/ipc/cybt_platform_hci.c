@@ -331,6 +331,7 @@ cybt_result_t cybt_platform_hci_write(hci_packet_type_t pti,
     int retries = 0;
     host_msg = (IPC_HOST_MSG *)(p_data-sizeof(IPC_HOST_MSG));
     ipc_tx_buffer = p_data;
+    hci_acl_packet_header_t hciHeader;
 
     HCIDRV_TRACE_DEBUG("hci_write for len = %d", length);
 
@@ -341,8 +342,19 @@ cybt_result_t cybt_platform_hci_write(hci_packet_type_t pti,
     if (pti == HCI_PACKET_TYPE_ACL)
     {
         memcpy(&(host_msg->hciHeader), p_data, HCI_HEADER_LEN);
-        memcpy(&(host_msg->pktDataHeader), (p_data+HCI_HEADER_LEN), L2C_HEADER_LEN);
-        host_msg->pktDataPointer = (uint32_t)&ipc_tx_buffer[HCI_HEADER_LEN+L2C_HEADER_LEN];
+        memcpy(&hciHeader, p_data, HCI_HEADER_LEN);
+
+        /*Consider header and data if non-automatically-flushable packet.
+        Otherwise (ie. In case of Continuing fragment packet) consider only data.*/
+        if(hciHeader.pb == START_OF_NON_AUTO_FLUSHABLE_PKT_PB_FLAG)
+        {
+            memcpy(&(host_msg->pktDataHeader), (p_data+HCI_HEADER_LEN), L2C_HEADER_LEN);
+            host_msg->pktDataPointer = (uint32_t)&ipc_tx_buffer[HCI_HEADER_LEN+L2C_HEADER_LEN];
+        }
+        else
+        {
+            host_msg->pktDataPointer = (uint32_t)&ipc_tx_buffer[HCI_HEADER_LEN];
+        }
     }
     else
     {

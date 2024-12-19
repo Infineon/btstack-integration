@@ -187,7 +187,11 @@ static void notify_callback_mcu_longmsg(uint32_t * msg)
             /* On FPGA, controller does not send CY_BT_IPC_BOOT_CONFIG_WAIT and directly sends CY_BT_IPC_BOOT_FULLY_UP */
             cybt_platform_msg_to_bt_task(BT_EVT_TASK_BOOT_COMPLETES, IN_ISR);
 #else
+
+#if (defined(COMPONENT_CYW20829B0) || defined(COMPONENT_CYW89829B0))
             Cy_SysClk_ClkHfSetSource(0U, CY_SYSCLK_CLKHF_IN_CLKPATH0); /* restore to original frequency */
+#endif // (defined(COMPONENT_CYW20829B0) || defined(COMPONENT_CYW89829B0))
+
             cy_rtos_set_semaphore(&hci_cb.boot_fully_up, IN_ISR);
 #endif /* FPGA_TEST_PLATFORM */
             break;

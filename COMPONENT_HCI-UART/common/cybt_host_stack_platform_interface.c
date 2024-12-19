@@ -38,6 +38,10 @@
 #include "cybt_platform_util.h"
 #include "cycfg_system.h"
 
+#ifndef USE_AIROC_STACK_SMP
+#define USE_AIROC_STACK_SMP 1
+#endif
+
 /******************************************************************************
  *                           Variables Definitions
  ******************************************************************************/
@@ -46,19 +50,17 @@ cy_mutex_t   bt_stack_mutex;
 char         bt_trace_buf[CYBT_TRACE_BUFFER_SIZE];
 
 /******************************************************************************
+ *                          Function Declarations
+ ******************************************************************************/
+
+wiced_result_t host_stack_platform_smp_adapter_init(void);
+
+/******************************************************************************
  *                           Function Definitions
  ******************************************************************************/
-#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x04000000))
 void host_stack_exception_handler(uint16_t code, void* ptr, uint32_t length)
-#else
-void host_stack_exception_handler(uint16_t code, char* msg, void* ptr)
-#endif
 {
-#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x04000000))
     SPIF_TRACE_ERROR("[Exception] code = 0x%x", code);
-#else
-    SPIF_TRACE_ERROR("[Exception] code = 0x%x, msg = %s", code, msg);
-#endif
 }
 
 void host_stack_mutex_lock(void * p_lock_context)
@@ -483,6 +485,7 @@ wiced_result_t host_stack_send_iso_to_lower(uint8_t* p_data,
         return WICED_ERROR;
     }
 }
+
 void host_stack_platform_interface_init(void)
 {
     wiced_bt_stack_platform_t host_stack_platform_if = {0};
@@ -520,6 +523,18 @@ void host_stack_platform_interface_init(void)
     {
         SPIF_TRACE_ERROR("platform_interface_init(): failed, result = 0x%x", result);
     }
+
+}
+
+wiced_result_t host_stack_platform_smp_adapter_init()
+{
+	wiced_result_t result = WICED_ERROR;
+
+#if (defined(USE_AIROC_STACK_SMP) && (USE_AIROC_STACK_SMP == 1))
+	result=wiced_bt_set_default_smp_adapter();
+#endif
+
+	return result;
 }
 
 void host_stack_platform_interface_deinit(void)

@@ -24,6 +24,30 @@ Applications which do not create GATT/ACL connections or those which do not need
   DEFINES+=DISABLE_DEFAULT_BTSTACK_INIT
 ```
 
+### Code size optimizations for SMP server and SMP client applications
+By default, porting layer initialises btstack for both SMP server and SMP client. However, if the application is going to be SMP server only, then there is no need to initialise SMP client module and vice versa. This would help to save the memory involved in initialising SMP client or SMP server module depending on the configuartion.
+
+To disable SMP server module, define ENABLE_SMP_SERVER_MODULE to 0 in application's makefile.
+```
+  DEFINES+=ENABLE_SMP_SERVER_MODULE=0
+```
+
+To disable SMP client module, define ENABLE_SMP_CLIENT_MODULE to 0 in applications's makefile.
+```
+  DEFINES+=ENABLE_SMP_CLIENT_MODULE=0
+```
+If SMP is not required, both SMP server and SMP client modules can be disabled in application's makefile.
+```
+  DEFINES+=ENABLE_SMP_SERVER_MODULE=0
+  DEFINES+=ENABLE_SMP_CLIENT_MODULE=0
+```
+
+### Stack size optimization on 20829, 89829 and P6+BLESS platform
+Stack size of bt_task (BTU_TASK_STACK_SIZE) is optimized to work for wide range of applications. It is possible to further optimize it by overriding it from application's makefile.
+```
+  DEFINES+=BTU_TASK_STACK_SIZE=0x1000
+```
+
 ### Requirements for enabling GATT Robust Caching 
 GATT Server applications which need to implement GATT Robust Caching will need to invoke **wiced_bt_gatt_server_enable_caching** in the **BTM_ENABLED_EVT**
 

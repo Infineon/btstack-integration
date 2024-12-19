@@ -90,21 +90,15 @@ typedef uint16_t bt_task_event_t;
 #define OFFSET_TASK_SHUTDOWN                (0)
 #define OFFSET_DATA_READY_UNKNOWN           (1)
 #define OFFSET_TIMER                        (5)
-#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x03080000))
 #define OFFSET_APP_SERIALIZATION            (6)
 #define BT_IND_TOTAL_NUM                    (7)
-#else
-#define BT_IND_TOTAL_NUM                    (6)
-#endif // BTSTACK_VER
 
 #define BT_IND_ID_MASK                      (0x00000FFF)
 
 #define BT_IND_TASK_SHUTDOWN                (BT_IND_BASE + OFFSET_TASK_SHUTDOWN)
 #define BT_IND_TO_HCI_DATA_READY_UNKNOWN    (BT_IND_BASE + OFFSET_DATA_READY_UNKNOWN)
 #define BT_IND_TO_BTS_TIMER                 (BT_IND_BASE + OFFSET_TIMER)
-#if (defined(BTSTACK_VER) && (BTSTACK_VER >= 0x03080000))
 #define BT_IND_TO_APP_SERIALIZATION         (BT_IND_BASE + OFFSET_APP_SERIALIZATION)
-#endif // BTSTACK_VER
 #define BT_IND_END                          (BT_IND_BASE + BT_IND_TOTAL_NUM)
 
 #define BT_IND_INVALID                      (0xFFFFFFFF)
