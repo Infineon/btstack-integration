@@ -11,6 +11,7 @@
 
 #define PATCH_DOWNLOAD_FN          NULL
 #define BLESS_CONTROLLER           WICED_TRUE
+#define GET_TRNG_FN                NULL
 
 #define LOCK                             (true)
 #define UNLOCK                           (false)

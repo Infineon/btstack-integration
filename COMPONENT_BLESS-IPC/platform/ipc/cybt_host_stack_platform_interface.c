@@ -259,6 +259,7 @@ void host_stack_print_trace_log(char *p_trace_buf,
     switch(trace_type)
     {
         case WICED_BT_TRACE_ERROR:
+        case WICED_BT_TRACE_CRIT_ERROR:
             STACK_TRACE_ERROR("%s", p_trace_buf);
             break;
         case WICED_BT_TRACE_WARN:
@@ -285,6 +286,7 @@ void host_stack_platform_interface_init(void)
     cy_rslt_t cy_result;
 
     extern void bt_post_reset_cback(void);
+    extern void cybt_platform_get_trng(uint8_t *p_rand, uint8_t *p_len);
 
     platform_interface.pf_exception               = host_stack_exception_handler;
     platform_interface.pf_os_malloc               = cybt_platform_malloc;
@@ -306,6 +308,8 @@ void host_stack_platform_interface_init(void)
     platform_interface.trace_buffer_len           = CYBT_TRACE_BUFFER_SIZE;
     platform_interface.pf_patch_download          = PATCH_DOWNLOAD_FN;
     platform_interface.is_legacy_bless_controller = BLESS_CONTROLLER;
+    platform_interface.pf_get_trng                = GET_TRNG_FN;
+
     memset(bt_trace_buf, 0, CYBT_TRACE_BUFFER_SIZE);
 
     cy_result = cy_rtos_init_mutex(&bt_stack_mutex);

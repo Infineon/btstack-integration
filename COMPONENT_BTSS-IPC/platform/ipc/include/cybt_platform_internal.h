@@ -13,8 +13,10 @@
 
 #ifdef FPGA_TEST_PLATFORM
 #define PATCH_DOWNLOAD_FN    NULL
+#define GET_TRNG_FN          NULL
 #else
 #define PATCH_DOWNLOAD_FN    bt_post_reset_cback
+#define GET_TRNG_FN          cybt_platform_get_trng
 #endif /* FPGA_TEST_PLATFORM */
 
 #define BLESS_CONTROLLER     WICED_FALSE

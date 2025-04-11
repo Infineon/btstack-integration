@@ -269,6 +269,22 @@ wiced_bool_t wiced_stack_event_handler_cback (uint8_t *p_event)
 #ifndef ENABLE_SMP_CLIENT_MODULE
 #define ENABLE_SMP_CLIENT_MODULE 1
 #endif
+#ifndef ENABLE_CREATE_LOCAL_KEYS
+#define ENABLE_CREATE_LOCAL_KEYS 1
+#endif
+
+static void write_local_keys_to_stack(wiced_bt_local_identity_keys_t *p_keys)
+{
+    wiced_bt_features_t features;
+    wiced_bt_ble_read_le_features(NULL, features);
+
+    if (features[0] & (1 << 6)) {
+        wiced_ble_init_ctlr_private_addr_generation(p_keys);
+    }
+    else {
+        wiced_ble_init_host_private_addr_generation(p_keys);
+    }
+}
 
 static wiced_result_t init_layers(void)
 {
@@ -283,10 +299,22 @@ static wiced_result_t init_layers(void)
     res = wiced_bt_smp_client_module_init();
 #endif
 	}
+#if (ENABLE_CREATE_LOCAL_KEYS == 1)
+    {
+        wiced_bt_local_identity_keys_t keys;
+
+        if (wiced_ble_read_local_identity_keys_from_app(&keys) == 0) {
+             write_local_keys_to_stack(&keys);
+        }
+        else {
+            wiced_ble_create_local_identity_keys();
+        }
+    }
+#endif
     return res;
 }
 
-#if (defined(__GNUC__) || defined(__ARMCC_VERSION))
+#if (defined(__GNUC__) || defined(__ARMCC_VERSION)|| defined(__llvm__))
 extern __attribute__((weak)) wiced_result_t app_initialize_btstack_modules(void)
 {
      return init_layers();
@@ -313,6 +341,13 @@ wiced_result_t cybt_core_management_cback( wiced_bt_management_evt_t event, wice
         
             wiced_bt_init_resolution(); /* to be removed subsequently. only required for non-privacy controllers */
         break;
+#if (ENABLE_CREATE_LOCAL_KEYS == 1)
+        case BTM_LOCAL_IDENTITY_KEYS_UPDATE_EVT:
+        {
+            write_local_keys_to_stack(&p_event_data->local_identity_keys_update);
+        }
+        break;
+#endif
     }
 
     if(send_to_app && cybt_main_cb.p_app_management_callback)

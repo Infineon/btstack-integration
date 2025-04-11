@@ -35,7 +35,7 @@
 #define L2C_HEADER_LEN 0x04
 #define BT_TASK_EVENT_BUFFERS_CNT 10
 
-#define MAX_WRITE_RETRIES       (10)
+#define MAX_IPC_RETRIES       (10)
 #define RECORD_IPC_STATS
 
 /*****************************************************************************
@@ -74,7 +74,9 @@ typedef struct
 #ifdef RECORD_IPC_STATS
 typedef struct {
     uint32_t write_fail_count; /* Number of write requests that failed. This does not count number of retries performed for same request.  */
-    uint32_t write_max_retry_count; /* Maximum number of failed retries permormed for write request. 0 <= MAX_WRITE_RETRIES */
+    uint32_t write_max_retry_count; /* Maximum number of failed retries permormed for write request. 0 <= MAX_IPC_RETRIES */
+    uint32_t free_fail_count; /* Number of free requests that failed. This does not count number of retries performed for same request.  */
+    uint32_t free_max_retry_count; /* Maximum number of failed retries permormed for free request. 0 <= MAX_IPC_RETRIES */
 }cybt_ipc_stats_t;
 
 #endif
@@ -173,14 +175,40 @@ void cybt_platform_ipc_pipe_release_cb(void)
 
 void HciIpcFreePktBuffer(unsigned char type, uint32_t bufferPtr, uint16_t length)
 {
+    cy_en_ipc_pipe_status_t result = CY_IPC_PIPE_ERROR_NO_IPC;
+    int retries = 0;
+
     memset (&msg_comp, 0x00, sizeof(msg_comp));
     msg_comp.clientID = CY_BLE_CYPIPE_MSG_COMPLETE_ID;
     msg_comp.pktType = type;
     msg_comp.pktLen = length;
     msg_comp.pktDataPointer = bufferPtr;
 
-    Cy_IPC_Pipe_SendMessage(CY_BLE_IPC_CONTROLLER_ADDR,CY_BLE_IPC_HOST_ADDR, (void *)&msg_comp,
-                            NULL);
+    do
+    {
+        result = Cy_IPC_Pipe_SendMessage(CY_BLE_IPC_CONTROLLER_ADDR,CY_BLE_IPC_HOST_ADDR, (void *)&msg_comp, NULL);
+        if (result)
+        {
+            /* adding a delay before retrying */
+            {
+                volatile int delay = 1000;
+                while(delay--);
+            }
+
+#ifdef RECORD_IPC_STATS
+			if (!retries)
+				++ipc_stats.free_fail_count;
+
+			if (retries > ipc_stats.free_max_retry_count){
+				ipc_stats.free_max_retry_count = retries;
+            }
+#endif
+		}
+		else
+		{
+			break;
+		}
+	}while(++retries < MAX_IPC_RETRIES);
 }
 
 bt_task_event_t *get_rx_free_event_buffer()
@@ -388,7 +416,7 @@ cybt_result_t cybt_platform_hci_write(hci_packet_type_t pti,
             status = CYBT_SUCCESS;
             break;
         }
-    }while(++retries < MAX_WRITE_RETRIES);
+    }while(++retries < MAX_IPC_RETRIES);
 
     //TODO: Instead of blocking wait, manage this by buffer queue or a new thread
 

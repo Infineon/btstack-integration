@@ -48,10 +48,10 @@ Stack size of bt_task (BTU_TASK_STACK_SIZE) is optimized to work for wide range 
   DEFINES+=BTU_TASK_STACK_SIZE=0x1000
 ```
 
-### Requirements for enabling GATT Robust Caching 
+## Requirements for enabling GATT Robust Caching
 GATT Server applications which need to implement GATT Robust Caching will need to invoke **wiced_bt_gatt_server_enable_caching** in the **BTM_ENABLED_EVT**
 
-### Requirements for enabling GATT Data Signing
+## Requirements for enabling GATT Data Signing
 GATT applications work with signed data will need to invoke **wiced_bt_gatt_enable_signing** in the **BTM_ENABLED_EVT**
 
 ## Handling Stack, Controller and Porting layer Exceptions
@@ -107,5 +107,18 @@ If DEBUG UART TX or RX task require more priority, it can be updated using the b
 #define DEBUG_UART_TX_TASK_PRIORITY      (CY_RTOS_PRIORITY_ABOVENORMAL)
 #define DEBUG_UART_RX_TASK_PRIORITY     (CY_RTOS_PRIORITY_ABOVENORMAL)
 ```
+
+## Random address management
+btstack-integration v6.1.0 or later allows application to control IRK (Identity Resolving Key).
+
+Porting layer uses below listed APIs provided by AIROC™ BT Stack:
+- **wiced_ble_create_local_identity_keys** to create new local keys. The created keys are returned in **BTM_LOCAL_IDENTITY_KEYS_UPDATE_EVT**. The returned keys are expected to be stored by the application.
+- **wiced_ble_init_ctlr_private_addr_generation** to enable controller based local address generation 
+- **wiced_ble_init_host_private_addr_generation** to enable host based address local address generation
+- **wiced_ble_read_local_identity_keys_from_app** to read stored local keys from the app
+
+By default, **ENABLE_CREATE_LOCAL_KEYS** MACRO is set to **1**. This allows porting layer to retrieve/create the local identity keys stored by the application and start either controller or host based local address generation/resolution.
+
+The application can based on its requirements, choose to set **ENABLE_CREATE_LOCAL_KEYS** to **0**. In this case the application needs to invoke these APIs to create, store and initialize local address generation.
 
 © Infineon Technologies, 2022.

@@ -641,3 +641,34 @@ cybt_result_t cybt_platform_hci_get_ipc_stats(cybt_ipc_stats_t *p_stats)
 	return  CYBT_SUCCESS;
 }
 #endif
+
+BTSTACK_PORTING_SECTION_BEGIN
+void cybt_platform_get_trng(uint8_t *p_rand, uint8_t *p_len)
+{
+    static bool trng_init = false;
+	uint32_t rand_num;
+	uint8_t loop_cnt = 0, remainder = 0;
+
+    if (!trng_init)
+    {
+        Cy_Cryptolite_Trng_Init(CRYPTOLITE, NULL);
+
+        trng_init = true;
+    }
+    
+    loop_cnt = ((*p_len) / 4);
+    remainder = ((*p_len) % 4);
+
+    for(uint8_t i = 0; i < loop_cnt; i++)
+    {
+    	Cy_Cryptolite_Trng(CRYPTOLITE, &rand_num);
+    	memcpy((p_rand + (i * 4)), (uint8_t *)&rand_num, sizeof(rand_num));
+    }
+
+    if(remainder)
+    {
+    	Cy_Cryptolite_Trng(CRYPTOLITE, &rand_num);
+    	memcpy((p_rand + (loop_cnt * 4)), (uint8_t *)&rand_num, remainder);
+    }
+}
+BTSTACK_PORTING_SECTION_END

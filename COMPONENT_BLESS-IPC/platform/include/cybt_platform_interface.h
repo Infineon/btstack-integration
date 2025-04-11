@@ -60,7 +60,7 @@
 #define PLATFORM_WDT_TIME_OUT_MS		200
 
 /** Define start of the function placed to the SRAM area by the linker */
-#if defined(__ARMCC_VERSION)
+#if (defined(__ARMCC_VERSION) || defined(__llvm__))
    /** To create cross compiler compatible code, use the CY_NOINIT, CY_SECTION, CY_UNUSED, CY_ALIGN
      * attributes at the first place of declaration/definition.
      * For example: CY_NOINIT uint32_t noinitVar;

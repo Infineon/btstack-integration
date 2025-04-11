@@ -385,6 +385,7 @@ void host_stack_print_trace_log(char *p_trace_buf,
     switch(trace_type)
     {
         case WICED_BT_TRACE_ERROR:
+        case WICED_BT_TRACE_CRIT_ERROR:
             STACK_TRACE_ERROR("%s", p_trace_buf);
             break;
         case WICED_BT_TRACE_WARN:
@@ -512,6 +513,7 @@ void host_stack_platform_interface_init(void)
     host_stack_platform_if.trace_buffer               = bt_trace_buf;
     host_stack_platform_if.trace_buffer_len           = CYBT_TRACE_BUFFER_SIZE;
     host_stack_platform_if.pf_patch_download          = bt_post_reset_cback;
+    host_stack_platform_if.pf_get_trng                = NULL;
 
     memset(bt_trace_buf, 0, CYBT_TRACE_BUFFER_SIZE);
 

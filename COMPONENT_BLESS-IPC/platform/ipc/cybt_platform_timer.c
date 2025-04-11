@@ -22,7 +22,6 @@
 * limitations under the License.
 *******************************************************************************/
 #include "cyabs_rtos.h"
-#include "cycfg.h"
 #include "cybt_platform_task.h"
 #include "cybt_platform_interface.h"
 #include "cybt_platform_trace.h"

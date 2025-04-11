@@ -31,7 +31,6 @@
 
 #include "wiced_data_types.h"
 
-#include "cycfg.h"
 #include "cyhal_uart.h"
 #include "cyhal_gpio.h"
 #include "cybt_platform_interface.h"
