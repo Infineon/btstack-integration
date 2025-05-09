@@ -278,12 +278,16 @@ static void write_local_keys_to_stack(wiced_bt_local_identity_keys_t *p_keys)
     wiced_bt_features_t features;
     wiced_bt_ble_read_le_features(NULL, features);
 
+#ifdef COMPONENT_BLESS_IPC
+    wiced_ble_init_host_private_addr_generation(p_keys);
+#else
     if (features[0] & (1 << 6)) {
         wiced_ble_init_ctlr_private_addr_generation(p_keys);
     }
     else {
         wiced_ble_init_host_private_addr_generation(p_keys);
     }
+#endif
 }
 
 static wiced_result_t init_layers(void)
