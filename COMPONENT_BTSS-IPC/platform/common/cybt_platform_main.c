@@ -6,7 +6,9 @@
 *
 ********************************************************************************
 * \copyright
-* Copyright 2018-2019 Cypress Semiconductor Corporation
+* Copyright 2018-2021 Cypress Semiconductor Corporation (an Infineon company) or
+* an affiliate of Cypress Semiconductor Corporation.
+*
 * SPDX-License-Identifier: Apache-2.0
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,6 +29,7 @@
 #include "wiced_bt_stack_platform.h"
 #include "wiced_bt_stack.h"
 #include "wiced_bt_gatt.h"
+#include "wiced_bt_version.h"
 
 #include "cybt_platform_task.h"
 #include "cybt_platform_trace.h"
@@ -35,10 +38,25 @@
 #include "cybt_platform_util.h"
 #include "cybt_platform_internal.h"
 
+
+#ifndef ENABLE_SMP_SERVER_MODULE
+#define ENABLE_SMP_SERVER_MODULE 1
+#endif
+#ifndef ENABLE_SMP_CLIENT_MODULE
+#define ENABLE_SMP_CLIENT_MODULE 1
+#endif
+#ifndef ENABLE_CREATE_LOCAL_KEYS
+#define ENABLE_CREATE_LOCAL_KEYS 1
+#endif
+#ifndef ENABLE_HOST_RPA_GENERATION
+#define ENABLE_HOST_RPA_GENERATION 0
+#endif
+
 #ifdef PROVIDE_INITIAL_SETUP_DATA_TO_STACK
 extern wiced_bt_stack_init_cmd_data_t ctrl_data_for_stack_init;
 #endif
 
+wiced_result_t cybt_core_management_cback( wiced_bt_management_evt_t event, wiced_bt_management_evt_data_t *p_event_data);
 /******************************************************************************
  *                                Constants
  ******************************************************************************/
@@ -65,6 +83,12 @@ extern wiced_bt_stack_init_cmd_data_t ctrl_data_for_stack_init;
 #endif
 
 extern wiced_result_t host_stack_platform_smp_adapter_init();
+extern wiced_result_t app_initialize_btstack_modules(void);
+#ifdef COMPONENT_BLESS_IPC
+int g_host_rpa_gen = 1;
+#else
+int g_host_rpa_gen = ENABLE_HOST_RPA_GENERATION;
+#endif
 
 /*****************************************************************************
  *                           Type Definitions
@@ -134,6 +158,7 @@ const char* const controller_exception_msg [] =
  *                          Function Declarations
  ******************************************************************************/
 extern void host_stack_platform_interface_init(void);
+extern const wiced_bt_cfg_settings_t *BTU_GetConfigSettings(void);
 
 #ifdef RESET_LOCAL_SUPPORT_FEATURE
 extern void wiced_bt_btm_ble_reset_local_supported_features(uint32_t feature);
@@ -147,8 +172,7 @@ void platform_default_exception_handling(uint16_t code, uint8_t *ptr, uint32_t l
 void bt_sleep_status_cback (wiced_bt_dev_vendor_specific_command_complete_params_t *p_command_complete_params)
 {
     MAIN_TRACE_DEBUG("bt_sleep_status_cback(): status = 0x%x",
-                     p_command_complete_params->p_param_buf[0]
-            );
+                     p_command_complete_params->p_param_buf[0]);
 
     if(HCI_SUCCESS == p_command_complete_params->p_param_buf[0])
     {
@@ -208,17 +232,18 @@ bool bt_enable_sleep_mode(void)
 */
 void wiced_post_stack_init_cback( void )
 {
-    wiced_bt_management_evt_data_t event_data;
     const cybt_platform_config_t *p_bt_platform_cfg = cybt_platform_get_config();
     cybt_controller_sleep_config_t *p_sleep_config =
             &(((cybt_platform_config_t *)cybt_main_cb.p_bt_platform_cfg)->controller_config.sleep_mode);
 
     MAIN_TRACE_DEBUG("wiced_post_stack_init_cback");
 
-    memset(&event_data, 0, sizeof(wiced_bt_management_evt_t));
-    event_data.enabled.status = WICED_BT_SUCCESS;
+#ifndef DISABLE_DEFAULT_BTSTACK_INIT
+    app_initialize_btstack_modules(); // initialize all layers
+#endif
 
-    cybt_core_management_cback(BTM_ENABLED_EVT, &event_data);
+    wiced_bt_issue_btm_enabled_evt(cybt_core_management_cback);
+
 #ifdef RESET_LOCAL_SUPPORT_FEATURE
     wiced_bt_btm_ble_reset_local_supported_features(CONNECTION_PARAMETER_REQUEST_PROCEDURE);
 #endif
@@ -263,31 +288,33 @@ wiced_bool_t wiced_stack_event_handler_cback (uint8_t *p_event)
     return WICED_FALSE;
 }
 
-#ifndef ENABLE_SMP_SERVER_MODULE
-#define ENABLE_SMP_SERVER_MODULE 1
-#endif
-#ifndef ENABLE_SMP_CLIENT_MODULE
-#define ENABLE_SMP_CLIENT_MODULE 1
-#endif
-#ifndef ENABLE_CREATE_LOCAL_KEYS
-#define ENABLE_CREATE_LOCAL_KEYS 1
-#endif
-
 static void write_local_keys_to_stack(wiced_bt_local_identity_keys_t *p_keys)
 {
-    wiced_bt_features_t features;
-    wiced_bt_ble_read_le_features(NULL, features);
+    wiced_bt_features_t features = {0};
 
-#ifdef COMPONENT_BLESS_IPC
-    wiced_ble_init_host_private_addr_generation(p_keys);
-#else
-    if (features[0] & (1 << 6)) {
-        wiced_ble_init_ctlr_private_addr_generation(p_keys);
+    wiced_bt_ble_read_le_features(NULL, features);
+    int use_host_generation = (features[0] & (1 << 6)) ? 0 : 1;
+
+    if (g_host_rpa_gen)
+    {
+        use_host_generation = 1;
     }
-    else {
+
+    MAIN_TRACE_DEBUG("[%s] host %d 0x%x", __FUNCTION__, use_host_generation, wiced_bt_get_btm_startup_flags());
+
+    if (use_host_generation)
+    {
+#ifndef DISABLE_HOST_RPA_GENERATION
         wiced_ble_init_host_private_addr_generation(p_keys);
-    }
 #endif
+    }
+    else
+    {
+#ifndef DISABLE_CTLR_RPA_GENERATION
+        wiced_ble_init_ctlr_private_addr_generation(p_keys);
+#endif
+    }
+    wiced_bt_issue_btm_enabled_evt(cybt_core_management_cback);
 }
 
 static wiced_result_t init_layers(void)
@@ -303,14 +330,21 @@ static wiced_result_t init_layers(void)
     res = wiced_bt_smp_client_module_init();
 #endif
 	}
+
 #if (ENABLE_CREATE_LOCAL_KEYS == 1)
     {
-        wiced_bt_local_identity_keys_t keys;
+        wiced_bt_local_identity_keys_t keys = {0};
 
-        if (wiced_ble_read_local_identity_keys_from_app(&keys) == 0) {
-             write_local_keys_to_stack(&keys);
+        wiced_ble_read_local_identity_keys_from_app(&keys);
+
+        MAIN_TRACE_DEBUG("[%s] mask 0x%x", __FUNCTION__, keys.key_type_mask);
+
+        if (keys.key_type_mask != 0)
+        {
+            write_local_keys_to_stack(&keys);
         }
-        else {
+        else
+        {
             wiced_ble_create_local_identity_keys();
         }
     }
@@ -328,7 +362,6 @@ extern __attribute__((weak)) wiced_result_t app_initialize_btstack_modules(void)
 #if defined(__ICCARM__)
 extern wiced_result_t app_initialize_btstack_modules(void);
 #pragma weak app_initialize_btstack_modules=init_layers
-
 #endif
 
 wiced_result_t cybt_core_management_cback( wiced_bt_management_evt_t event, wiced_bt_management_evt_data_t *p_event_data )
@@ -339,11 +372,7 @@ wiced_result_t cybt_core_management_cback( wiced_bt_management_evt_t event, wice
     switch(event)
     {
         case BTM_ENABLED_EVT:
-            #ifndef DISABLE_DEFAULT_BTSTACK_INIT
-            app_initialize_btstack_modules();
-            #endif
-        
-            wiced_bt_init_resolution(); /* to be removed subsequently. only required for non-privacy controllers */
+            wiced_bt_init_resolution(); // To be removed, only required for non-privacy controllers
         break;
 #if (ENABLE_CREATE_LOCAL_KEYS == 1)
         case BTM_LOCAL_IDENTITY_KEYS_UPDATE_EVT:
@@ -351,7 +380,12 @@ wiced_result_t cybt_core_management_cback( wiced_bt_management_evt_t event, wice
             write_local_keys_to_stack(&p_event_data->local_identity_keys_update);
         }
         break;
+        case BTM_BLE_DEVICE_ADDRESS_UPDATE_EVENT:
+            wiced_bt_issue_btm_enabled_evt(cybt_core_management_cback);
+            break;
 #endif
+        default:
+            break;
     }
 
     if(send_to_app && cybt_main_cb.p_app_management_callback)
@@ -375,7 +409,7 @@ void cybt_core_stack_init(void)
     result = host_stack_platform_smp_adapter_init();
     if(WICED_SUCCESS != result)
 	{
-		SPIF_TRACE_ERROR("host_stack_platform_smp_adapter_init(): failed, result = 0x%x", result);
+		MAIN_TRACE_ERROR("host_stack_platform_smp_adapter_init(): failed, result = 0x%x", result);
 	}
 }
 

@@ -5,6 +5,15 @@ AIROC&trade; BT/BLE stack provides Bluetooth&reg; functionality with high perfor
 This release of AIROC&trade; BT/BLE stack solution package includes as following:
 * Platform and Operating system porting layers for P6+43xx, P6+555xx, 20829, 89829 and P6+BLESS.
 
+#### v6.2.0
+btstack-integration v6.2.0 contains below changes:
+* Requires BTSTACK v4.1.3 and later
+* Fixed issue of application receiving a BTM_ENABLE_EVT before creation of a Random address when host random address generation is used. Affects P6+BLESS and any other platform using `wiced_ble_init_host_private_addr_generation` to enable Host Address generation.
+* Added macro `ENABLE_HOST_RPA_GENERATION` to force host based address generation. Application can set `DEFINES +=ENABLE_HOST_RPA_GENERATION=1` for host based RPA generation
+* Modified the IPC send message retry mechanism on P6+BLESS platform
+* Updated COMPONENT_HCI-UART code to support next major version of HAL
+
+
 #### v6.1.1
 btstack-integration v6.1.1 contains below changes:
 * Fixed an issue in P6+BLESS platform by enabling Host Address generation. Updated to support BTSTACK v4.1.1 and later

@@ -11,7 +11,6 @@
 
 #define PATCH_DOWNLOAD_FN          NULL
 #define BLESS_CONTROLLER           WICED_TRUE
-#define GET_TRNG_FN                NULL
 
 #define LOCK                             (true)
 #define UNLOCK                           (false)
@@ -19,6 +18,8 @@
 
 /* Need to update VSC for bless if its needed */
 #define ENABLE_SLEEP_MODE()       (1)
+
+void cybt_platform_bless_get_trng(uint8_t *p_rand, uint8_t *p_len);
 
 #endif //CYBT_PLATFORM_INTERNAL_H
 

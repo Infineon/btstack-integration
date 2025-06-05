@@ -30,8 +30,9 @@
 #include "cybt_platform_task.h"
 #include "cybt_platform_interface.h"
 #include "cybt_platform_util.h"
-
 #include "cybt_platform_trace.h"
+
+#include "platform_hal_wrapper.h"
 
 #include "wiced_memory.h"
 
@@ -73,11 +74,11 @@ cybt_result_t cybt_platform_task_init(void *p_arg)
     cy_rslt_t cy_result;
     cybt_result_t task_result;
     UNUSED_VARIABLE(p_arg);
-    const cybt_platform_config_t *p_bt_platform_cfg = cybt_platform_get_config();
+
+    uint32_t mem_pool_size = platform_hal_get_task_mem_pool_size_wrapper();
 
     uint32_t total_mem_pool_size =
-        (p_bt_platform_cfg->task_mem_pool_size > CYBT_TASK_MINIMUM_POOL_SIZE)?
-        p_bt_platform_cfg->task_mem_pool_size: CYBT_TASK_MINIMUM_POOL_SIZE;
+        (mem_pool_size > CYBT_TASK_MINIMUM_POOL_SIZE)? mem_pool_size: CYBT_TASK_MINIMUM_POOL_SIZE;
 
     task_result = cybt_platform_task_mempool_init(total_mem_pool_size);
     if(CYBT_SUCCESS != task_result)

@@ -363,49 +363,44 @@ void handle_hci_rx_data_ready(hci_packet_type_t hci_packet_type)
 {
     uint32_t read_len = 0;
     cybt_result_t result;
-    const cybt_platform_config_t *p_bt_platform_cfg = cybt_platform_get_config();
+    uint8_t count = 0;
 
-    if(CYBT_HCI_UART == p_bt_platform_cfg->hci_config.hci_transport)
+    for(; count < HCI_MAX_READ_PACKET_NUM_PER_ROUND; count++)
     {
-        uint8_t count = 0;
-
-        for(; count < HCI_MAX_READ_PACKET_NUM_PER_ROUND; count++)
+        read_len = 1;
+        result = cybt_platform_hci_read(HCI_PACKET_TYPE_IGNORE,
+                                        (uint8_t *) &hci_packet_type,
+                                        &read_len,
+                                        0
+                                       );
+        if(CYBT_SUCCESS != result || 0 == read_len)
         {
-            read_len = 1;
-            result = cybt_platform_hci_read(HCI_PACKET_TYPE_IGNORE,
-                                            (uint8_t *) &hci_packet_type,
-                                            &read_len,
-                                            0
-                                           );
-            if(CYBT_SUCCESS != result || 0 == read_len)
-            {
-                // No data is read from UART FIFO
-                return;
-            }
+            // No data is read from UART FIFO
+            return;
+        }
 
-            switch(hci_packet_type)
-            {
-                case HCI_PACKET_TYPE_ACL:
-                    handle_hci_rx_acl();
-                    break;
-                case HCI_PACKET_TYPE_EVENT:
-                    handle_hci_rx_event();
-                    break;
-                case HCI_PACKET_TYPE_SCO:
-                    handle_hci_rx_sco();
-                    break;
-                case HCI_PACKET_TYPE_DIAG:
-                    handle_hci_diag();
-                    break;
-                case HCI_PACKET_TYPE_ISO:
-                    handle_hci_rx_iso();
-                    break;
-                default:
-                    HCIRXTASK_TRACE_ERROR("handle_hci_rx_data_ready(): unknown type (0x%02x)",
-                                          hci_packet_type
-                                         );
+        switch(hci_packet_type)
+        {
+            case HCI_PACKET_TYPE_ACL:
+                handle_hci_rx_acl();
                 break;
-            }
+            case HCI_PACKET_TYPE_EVENT:
+                handle_hci_rx_event();
+                break;
+            case HCI_PACKET_TYPE_SCO:
+                handle_hci_rx_sco();
+                break;
+            case HCI_PACKET_TYPE_DIAG:
+                handle_hci_diag();
+                break;
+            case HCI_PACKET_TYPE_ISO:
+                handle_hci_rx_iso();
+                break;
+            default:
+                HCIRXTASK_TRACE_ERROR("handle_hci_rx_data_ready(): unknown type (0x%02x)",
+                                      hci_packet_type
+                                     );
+            break;
         }
     }
 }

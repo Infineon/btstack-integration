@@ -643,7 +643,7 @@ cybt_result_t cybt_platform_hci_get_ipc_stats(cybt_ipc_stats_t *p_stats)
 #endif
 
 BTSTACK_PORTING_SECTION_BEGIN
-void cybt_platform_get_trng(uint8_t *p_rand, uint8_t *p_len)
+void cybt_platform_btss_get_trng(uint8_t *p_rand, uint8_t *p_len)
 {
     static bool trng_init = false;
 	uint32_t rand_num;

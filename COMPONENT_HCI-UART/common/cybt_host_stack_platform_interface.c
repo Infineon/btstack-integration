@@ -80,27 +80,15 @@ uint8_t *host_stack_get_acl_to_lower_buffer(wiced_bt_transport_t transport, uint
     uint8_t     *p;
     BT_MSG_HDR  *p_bt_msg;
 
-    const cybt_platform_config_t *p_bt_platform_cfg = cybt_platform_get_config();
-
     if(CYBT_HCI_TX_NORMAL != cybt_get_hci_tx_status())
     {
         SPIF_TRACE_ERROR("get_acl_to_lower_buffer(): TX is blocked now");
         return NULL;
     }
 
-    if(CYBT_HCI_UART == p_bt_platform_cfg->hci_config.hci_transport)
-    {
-        // One extra byte is added for HCI UART packet type
-        msg_packet_len = BT_MSG_HDR_SIZE + HCI_UART_TYPE_HEADER_SIZE + size;
-        payload_len = size + HCI_UART_TYPE_HEADER_SIZE;
-    }
-    else
-    {
-        SPIF_TRACE_ERROR("get_acl_to_lower_buffer(): Unknown transport (%d)",
-                         p_bt_platform_cfg->hci_config.hci_transport
-                        );
-        return NULL;
-    }
+    // One extra byte is added for HCI UART packet type
+    msg_packet_len = BT_MSG_HDR_SIZE + HCI_UART_TYPE_HEADER_SIZE + size;
+    payload_len = size + HCI_UART_TYPE_HEADER_SIZE;
 
     p_bt_msg = (BT_MSG_HDR *) cybt_platform_task_tx_mempool_alloc(msg_packet_len);
 
@@ -127,10 +115,7 @@ uint8_t *host_stack_get_acl_to_lower_buffer(wiced_bt_transport_t transport, uint
     p_bt_msg->event = BT_EVT_TO_HCI_ACL;
     p_bt_msg->length = payload_len;
 
-    if(CYBT_HCI_UART == p_bt_platform_cfg->hci_config.hci_transport)
-    {
-        *p++ = HCI_PACKET_TYPE_ACL;
-    }
+    *p++ = HCI_PACKET_TYPE_ACL;
 
     return p;
 }
@@ -142,20 +127,9 @@ wiced_result_t host_stack_send_acl_to_lower(wiced_bt_transport_t transport,
 {
     cybt_result_t result;
     BT_MSG_HDR  *p_msg_hdr;
-    const cybt_platform_config_t *p_bt_platform_cfg = cybt_platform_get_config();
 
-    if(CYBT_HCI_UART == p_bt_platform_cfg->hci_config.hci_transport)
-    {
-        // One extra byte is for HCI UART packet type
-        p_msg_hdr = (BT_MSG_HDR *)(p_data - BT_MSG_HDR_SIZE - HCI_UART_TYPE_HEADER_SIZE);
-    }
-    else
-    {
-        SPIF_TRACE_ERROR("send_acl_to_lower(): Unknown transport (%d)",
-                         p_bt_platform_cfg->hci_config.hci_transport
-                        );
-        return WICED_ERROR;
-    }
+    // One extra byte is for HCI UART packet type
+    p_msg_hdr = (BT_MSG_HDR *)(p_data - BT_MSG_HDR_SIZE - HCI_UART_TYPE_HEADER_SIZE);
 
     if(CYBT_HCI_TX_NORMAL != cybt_get_hci_tx_status())
     {
@@ -203,20 +177,9 @@ wiced_result_t host_stack_send_cmd_to_lower(uint8_t *p_cmd, uint16_t cmd_len)
     BT_MSG_HDR  *p_msg_hdr;
     uint8_t     *p;
     uint16_t    payload_len;
-    const cybt_platform_config_t *p_bt_platform_cfg = cybt_platform_get_config();
 
-    if(CYBT_HCI_UART == p_bt_platform_cfg->hci_config.hci_transport)
-    {
-        // One extra byte is added for HCI UART packet type
-        payload_len = cmd_len + HCI_UART_TYPE_HEADER_SIZE;
-    }
-    else
-    {
-        SPIF_TRACE_ERROR("send_cmd_to_lower(): Unknown transport (%d)",
-                         p_bt_platform_cfg->hci_config.hci_transport
-                        );
-        return WICED_ERROR;
-    }
+    // One extra byte is added for HCI UART packet type
+    payload_len = cmd_len + HCI_UART_TYPE_HEADER_SIZE;
 
     p_msg_hdr = (BT_MSG_HDR  *) cybt_platform_task_get_tx_cmd_mem();
     if(NULL == p_msg_hdr)
@@ -235,10 +198,7 @@ wiced_result_t host_stack_send_cmd_to_lower(uint8_t *p_cmd, uint16_t cmd_len)
 
     p = (uint8_t *)(p_msg_hdr + 1);
 
-    if(CYBT_HCI_UART == p_bt_platform_cfg->hci_config.hci_transport)
-    {
-        *p++ = HCI_PACKET_TYPE_COMMAND;
-    }
+    *p++ = HCI_PACKET_TYPE_COMMAND;
 
     memcpy(p, p_cmd, cmd_len);
 
@@ -265,27 +225,15 @@ uint8_t *host_stack_get_sco_to_lower_buffer(uint32_t size)
     uint8_t     *p;
     BT_MSG_HDR  *p_bt_msg;
 
-    const cybt_platform_config_t *p_bt_platform_cfg = cybt_platform_get_config();
-
     if(CYBT_HCI_TX_NORMAL != cybt_get_hci_tx_status())
     {
         SPIF_TRACE_ERROR("get_sco_to_lower_buffer(): TX is blocked now");
         return NULL;
     }
 
-    if(CYBT_HCI_UART == p_bt_platform_cfg->hci_config.hci_transport)
-    {
-        // One extra byte is added for HCI UART packet type
-        msg_packet_len = BT_MSG_HDR_SIZE + HCI_UART_TYPE_HEADER_SIZE + size;
-        payload_len = size + HCI_UART_TYPE_HEADER_SIZE;
-    }
-    else
-    {
-        SPIF_TRACE_ERROR("get_sco_to_lower_buffer(): Unknown transport (%d)",
-                         p_bt_platform_cfg->hci_config.hci_transport
-                        );
-        return NULL;
-    }
+    // One extra byte is added for HCI UART packet type
+    msg_packet_len = BT_MSG_HDR_SIZE + HCI_UART_TYPE_HEADER_SIZE + size;
+    payload_len = size + HCI_UART_TYPE_HEADER_SIZE;
 
     p_bt_msg = (BT_MSG_HDR *) cybt_platform_task_tx_mempool_alloc(msg_packet_len);
 
@@ -312,10 +260,7 @@ uint8_t *host_stack_get_sco_to_lower_buffer(uint32_t size)
     p_bt_msg->event = BT_EVT_TO_HCI_SCO;
     p_bt_msg->length = payload_len;
 
-    if(CYBT_HCI_UART == p_bt_platform_cfg->hci_config.hci_transport)
-    {
-        *p++ = HCI_PACKET_TYPE_SCO;
-    }
+    *p++ = HCI_PACKET_TYPE_SCO;
 
     return p;
 }
@@ -324,20 +269,9 @@ wiced_result_t host_stack_send_sco_to_lower(uint8_t* p_sco_data, uint8_t len)
 {
     cybt_result_t result;
     BT_MSG_HDR  *p_msg_hdr;
-    const cybt_platform_config_t *p_bt_platform_cfg = cybt_platform_get_config();
 
-    if(CYBT_HCI_UART == p_bt_platform_cfg->hci_config.hci_transport)
-    {
-        // One extra byte is for HCI UART packet type
-        p_msg_hdr = (BT_MSG_HDR *)(p_sco_data - BT_MSG_HDR_SIZE - HCI_UART_TYPE_HEADER_SIZE);
-    }
-    else
-    {
-        SPIF_TRACE_ERROR("send_sco_to_lower(): Unknown transport (%d)",
-                         p_bt_platform_cfg->hci_config.hci_transport
-                        );
-        return WICED_ERROR;
-    }
+    // One extra byte is for HCI UART packet type
+    p_msg_hdr = (BT_MSG_HDR *)(p_sco_data - BT_MSG_HDR_SIZE - HCI_UART_TYPE_HEADER_SIZE);
 
     if(CYBT_HCI_TX_NORMAL != cybt_get_hci_tx_status())
     {
@@ -412,16 +346,7 @@ wiced_result_t host_stack_send_iso_to_lower(uint8_t* p_data,
     cybt_result_t result;
     BT_MSG_HDR* p_msg_hdr;
     uint8_t* p;
-    const cybt_platform_config_t* p_bt_platform_cfg = cybt_platform_get_config();
 
-    // Some checks before allocating memory and accpeting ISO packet
-    if (CYBT_HCI_UART != p_bt_platform_cfg->hci_config.hci_transport)
-    {
-        SPIF_TRACE_ERROR("send_iso_to_lower(): Unknown transport (%d)",
-            p_bt_platform_cfg->hci_config.hci_transport
-        );
-        return WICED_ERROR;
-    }
     if (CYBT_HCI_TX_NORMAL != cybt_get_hci_tx_status())
     {
         SPIF_TRACE_ERROR("send_iso_to_lower(): TX is blocked now");

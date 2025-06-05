@@ -37,12 +37,12 @@
  */
 #include "cyabs_rtos.h"
 
-
+#if defined (CY_USING_HAL)
 /**
  *  GPIO interface which is related to pin control of BT chip.
  */
 #include "cyhal_gpio.h"
-
+#endif
 
 /**
  *  BT HCI transport interface, which is used to communicate with

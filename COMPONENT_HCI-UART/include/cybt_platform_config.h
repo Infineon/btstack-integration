@@ -30,8 +30,11 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+
+#if defined (CY_USING_HAL)
 #include "cyhal_gpio.h"
 #include "cyhal_uart.h"
+#endif
 
 /**
  *  @addtogroup    platform_cfg   Bluetooth Platform Configuration
@@ -52,7 +55,7 @@
 #define CYBT_WAKE_ACTIVE_LOW          (0)
 #define CYBT_WAKE_ACTIVE_HIGH         (1)
 
-
+#if defined (CY_USING_HAL)
 /*****************************************************************************
  *                           Type Definitions
  *****************************************************************************/
@@ -206,6 +209,6 @@ void cybt_platform_config_init(const cybt_platform_config_t *p_bt_platform_cfg);
 #endif
 
 /**@} */
-
+#endif
 #endif
 
