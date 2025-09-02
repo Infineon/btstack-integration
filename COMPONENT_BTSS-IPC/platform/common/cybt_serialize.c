@@ -27,7 +27,6 @@
 #include "cyabs_rtos.h"
 #include "cybt_result.h"
 #include "cybt_platform_task.h"
-#include "wiced_bt_serialize.h"
 #include "cybt_platform_interface.h"
 
 /**
@@ -58,7 +57,8 @@ static uint16_t     ser_event = BT_EVT_APP_SERIALIZATION;
 CYBT_SER_Q_t serial_q_struct = {0};
 
 /**
-* Called by applications to serialize the execution of an application function in the BT stack context
+* Called by application to serialize the execution of an application function in the BT_Task context.
+* This function is safe to be called from ISR.
 *
 * @param[in] p_func   Function to be called in the BT stack context
 * @param[in] param:   Parameter to be passed
@@ -66,7 +66,7 @@ CYBT_SER_Q_t serial_q_struct = {0};
 * @returns  WICED_BT_SUCCESS if success else error reason.
 */
 BTSTACK_PORTING_SECTION_BEGIN
-wiced_result_t wiced_bt_app_serialize_function (wiced_bt_serialized_app_func_t p_func, void *param)
+wiced_result_t wiced_bt_serialize_function_from_isr (wiced_bt_serialized_app_func_t p_func, void *param)
 {
     CYBT_SER_Q_ENTRY_t   entry;
 

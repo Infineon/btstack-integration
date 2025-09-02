@@ -7,23 +7,23 @@
     <includes local="yes">wiced_data_types.h</includes>
     <includes refid="cybt__platform__config_8h" local="yes">cybt_platform_config.h</includes>
     <incdepgraph>
-      <node id="13">
+      <node id="14">
         <label>stdint.h</label>
       </node>
-      <node id="14">
+      <node id="15">
         <label>wiced_data_types.h</label>
       </node>
-      <node id="11">
+      <node id="12">
         <label>cybt_platform_trace.h</label>
         <link refid="cybt__platform__trace_8h"/>
-        <childnode refid="12" relation="include">
-        </childnode>
         <childnode refid="13" relation="include">
         </childnode>
         <childnode refid="14" relation="include">
         </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
       </node>
-      <node id="12">
+      <node id="13">
         <label>stdio.h</label>
       </node>
     </incdepgraph>

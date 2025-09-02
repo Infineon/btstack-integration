@@ -57,6 +57,7 @@
   <compound refid="cybt__platform__interface_8h" kind="file"><name>cybt_platform_interface.h</name>
     <member refid="cybt__platform__interface_8h_1a9300e0eb9926090bb68420072608f7ae" kind="define"><name>CYBT_TRACE_BUFFER_SIZE</name></member>
     <member refid="cybt__platform__interface_8h_1a63da37443dbcebd376b22575f70958d0" kind="define"><name>PLATFORM_WDT_TIME_OUT_MS</name></member>
+    <member refid="cybt__platform__interface_8h_1a034801b5e1a84b9b156403a2749fa51d" kind="define"><name>wiced_bt_app_serialize_function</name></member>
     <member refid="cybt__platform__interface_8h_1ab6311c3fcc2976e287a70a13da2d6c67" kind="define"><name>BTSTACK_PORTING_SECTION_BEGIN</name></member>
     <member refid="cybt__platform__interface_8h_1ad4d237830a4ce62f60a879518158631a" kind="define"><name>BTSTACK_PORTING_SECTION_END</name></member>
     <member refid="cybt__platform__interface_8h_1a86cec88ff13b9d4150196b87f199e768" kind="function"><name>cybt_platform_init</name></member>
@@ -69,6 +70,7 @@
     <member refid="cybt__platform__interface_8h_1a8dcac5f34f5a4068d759ebf6bf30e95e" kind="function"><name>cybt_platform_get_tick_count_us</name></member>
     <member refid="cybt__platform__interface_8h_1a7878e8cc760de1837b637733901ca979" kind="function"><name>cybt_platform_set_next_timeout</name></member>
     <member refid="cybt__platform__interface_8h_1a1a18cc742508d203c30ace105cc367cb" kind="function"><name>cybt_call_app_in_stack_context</name></member>
+    <member refid="cybt__platform__interface_8h_1a126f95f975f58481001a650c6f49a1ce" kind="function"><name>wiced_bt_serialize_function_from_isr</name></member>
   </compound>
   <compound refid="cybt__platform__trace_8h" kind="file"><name>cybt_platform_trace.h</name>
     <member refid="group__platform__trace_1ga6ee1dced2b4da94270e21bbb3d358600" kind="define"><name>CYBT_PLATFORM_TRACE_ENABLE</name></member>

@@ -5,6 +5,11 @@ AIROC&trade; BT/BLE stack provides Bluetooth&reg; functionality with high perfor
 This release of AIROC&trade; BT/BLE stack solution package includes as following:
 * Platform and Operating system porting layers for P6+43xx, P6+555xx, 20829, 89829 and P6+BLESS.
 
+#### v6.2.1
+btstack-integration v6.2.1 contains below changes:
+* Updated porting layer to support BTSTACK v4.1.4 and later
+* Added new API, wiced_bt_serialize_function_from_isr, as wiced_bt_app_serialize_function is deprecated
+
 #### v6.2.0
 btstack-integration v6.2.0 contains below changes:
 * Requires BTSTACK v4.1.3 and later
