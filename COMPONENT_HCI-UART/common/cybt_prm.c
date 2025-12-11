@@ -24,6 +24,8 @@
 * limitations under the License.
 *******************************************************************************/
 
+#if (defined(COMPONENT_BTSS_IPC) || defined(COMPONENT_HCI_UART))
+
 #include <string.h>
 #include <stdbool.h>
 
@@ -43,8 +45,11 @@
 
 /* dest ram location */
 #define CYBT_DEST_RAM_LOCATION           (0x00085D00)
+
+#ifdef COMPONENT_HCI_UART
 #define CYBT_MINIDRV_2_PATCH_RAM_DELAY   (50)
 #define CYBT_END_DELAY                   (250)  /* delay before sending any new command (ms) */
+#endif
 
 #define CYBT_MAX_PRM_LEN                 (250)
 
@@ -114,16 +119,18 @@ static void cybt_prm_launch_ram_internal(void);
 **                  patch_buf_len - length of patch ram buffer
 **                  address - address of patch ram to be written,
 **                  format_type - patch format type ( bin, hcd ...)
+**                  download_mini_drv - enable to download minidriver
 **
 ** Returns          true if successful, otherwise false
 **
 *******************************************************************************/
 bool cybt_prm_download (cybt_prm_cback_t *p_cb,
-                               const uint8_t  *p_patch_buf,
-                               uint32_t patch_buf_len,
-                               uint32_t address,
-                               uint8_t  format_type
-                              )
+                        const uint8_t  *p_patch_buf,
+                        uint32_t patch_buf_len,
+                        uint32_t address,
+                        uint8_t  format_type,
+                        bool download_mini_drv
+                        )
 {
     PRM_TRACE_DEBUG("cybt_prm_init()");
 
@@ -157,18 +164,25 @@ bool cybt_prm_download (cybt_prm_cback_t *p_cb,
     {
         cybt_prm_cb.dest_ram = CYBT_DEST_RAM_LOCATION;
     }
-#ifndef COMPONENT_55500
-    wiced_bt_dev_vendor_specific_command(cybt_prm_cb.opcode,
-                                         0,
-                                         NULL,
-                                         cybt_prm_command_complete_cback
-                                        );
+
     cybt_prm_cb.state = CYBT_PRM_ST_INITIALIZING;
-#else
-    // H1 - No need to send MiniDriver, we can directly start FW load
-    cybt_prm_cb.state = CYBT_PRM_ST_LOADING_DATA;
-    cybt_prm_send_next_patch();
-#endif //COMPONENT_55500
+    if(true == download_mini_drv)
+    {
+        wiced_bt_dev_vendor_specific_command(cybt_prm_cb.opcode,
+                                             0,
+                                             NULL,
+                                             cybt_prm_command_complete_cback
+                                             );
+    }
+    else
+    {
+        uint8_t p_param_buf = 0;
+        wiced_bt_dev_vendor_specific_command_complete_params_t dummy_resp = {
+            .opcode = HCI_VSC_DOWNLOAD_MINI_DRV,
+            .p_param_buf = &p_param_buf
+        };
+        cybt_prm_command_complete_cback(&dummy_resp);
+    }
 
     return true;
 }
@@ -195,82 +209,86 @@ static void cybt_prm_command_complete_cback(wiced_bt_dev_vendor_specific_command
     switch (cybt_prm_cb.state)
     {
         case CYBT_PRM_ST_INITIALIZING:
-             if (!(p_param->opcode == cybt_prm_cb.opcode))
-             {
-                  if (cybt_prm_cb.p_cb)
-                      (cybt_prm_cb.p_cb)(CYBT_PRM_STS_ABORT);
-                  return;
-             }
-             cybt_prm_cb.state = CYBT_PRM_ST_INITIALIZING_DONE;
-             PRM_TRACE_DEBUG("CYBT_PRM_ST_INITIALIZING_DONE");
+            if (!(p_param->opcode == cybt_prm_cb.opcode))
+            {
+                if (cybt_prm_cb.p_cb)
+                    (cybt_prm_cb.p_cb)(CYBT_PRM_STS_ABORT);
+                return;
+            }
+            cybt_prm_cb.state = CYBT_PRM_ST_INITIALIZING_DONE;
+            PRM_TRACE_DEBUG("CYBT_PRM_ST_INITIALIZING_DONE");
 
-             cy_rtos_delay_milliseconds(CYBT_MINIDRV_2_PATCH_RAM_DELAY);
+#ifdef COMPONENT_HCI_UART
+            cy_rtos_delay_milliseconds(CYBT_MINIDRV_2_PATCH_RAM_DELAY);
+#endif
 
-             if (!cybt_prm_cb.internal_patch)
-             {
-                  if (cybt_prm_cb.p_cb)
-                      (cybt_prm_cb.p_cb)(CYBT_PRM_STS_CONTINUE);
-             }
-             else
-             {
-                  cybt_prm_cb.state = CYBT_PRM_ST_LOADING_DATA;
-                  cybt_prm_send_next_patch();
-             }
-             break;
+            if (!cybt_prm_cb.internal_patch)
+            {
+                if (cybt_prm_cb.p_cb)
+                    (cybt_prm_cb.p_cb)(CYBT_PRM_STS_CONTINUE);
+            }
+            else
+            {
+                cybt_prm_cb.state = CYBT_PRM_ST_LOADING_DATA;
+                cybt_prm_send_next_patch();
+            }
+            break;
         case CYBT_PRM_ST_LOADING_DATA:
-             if (!(p_param->opcode == HCI_VSC_WRITE_RAM))
-             {
-                  if (cybt_prm_cb.p_cb)
-                  {
-                      (cybt_prm_cb.p_cb)(CYBT_PRM_STS_ABORT);
-                  }
-                  return;
-             }
-             if (cybt_prm_cb.tx_patch_length >= cybt_prm_cb.patch_length)
-             {
-                 cybt_prm_cb.state = CYBT_PRM_ST_LOADING_DATA_DONE;
-                 /* For internal patch, if all patches are sent */
-                 if (cybt_prm_cb.internal_patch)
-                 {
-                     PRM_TRACE_DEBUG("Internal patch download completed, starting launching ram");
-                     cybt_prm_cb.state = CYBT_PRM_ST_LAUNCHING_RAM;
-                     cybt_prm_launch_ram_internal();
-                 }
-                 /* For external patch, send contiune to application back */
-                 else
-                 {
-                     PRM_TRACE_DEBUG("External patch piece down, wait for next piece");
-                     cybt_prm_cb.dest_ram += cybt_prm_cb.patch_length;
-                     if (cybt_prm_cb.p_cb)
-                         (cybt_prm_cb.p_cb)(CYBT_PRM_STS_CONTINUE);
-                 }
-             }
-             else
-             {
-                 /* Have not complete this piece yet */
-                 cybt_prm_send_next_patch();
-             }
-             break;
+            if (!(p_param->opcode == HCI_VSC_WRITE_RAM))
+            {
+                if (cybt_prm_cb.p_cb)
+                {
+                    (cybt_prm_cb.p_cb)(CYBT_PRM_STS_ABORT);
+                }
+                return;
+            }
+            if (cybt_prm_cb.tx_patch_length >= cybt_prm_cb.patch_length)
+            {
+                cybt_prm_cb.state = CYBT_PRM_ST_LOADING_DATA_DONE;
+                /* For internal patch, if all patches are sent */
+                if (cybt_prm_cb.internal_patch)
+                {
+                    PRM_TRACE_DEBUG("Internal patch download completed, starting launching ram");
+                    cybt_prm_cb.state = CYBT_PRM_ST_LAUNCHING_RAM;
+                    cybt_prm_launch_ram_internal();
+                }
+                /* For external patch, send contiune to application back */
+                else
+                {
+                    PRM_TRACE_DEBUG("External patch piece down, wait for next piece");
+                    cybt_prm_cb.dest_ram += cybt_prm_cb.patch_length;
+                    if (cybt_prm_cb.p_cb)
+                        (cybt_prm_cb.p_cb)(CYBT_PRM_STS_CONTINUE);
+                }
+            }
+            else
+            {
+                /* Have not complete this piece yet */
+                cybt_prm_send_next_patch();
+            }
+            break;
         case CYBT_PRM_ST_LAUNCHING_RAM:
-             if (!(p_param->opcode == HCI_VSC_LAUNCH_RAM))
-             {
-                  if (cybt_prm_cb.p_cb)
-                      (cybt_prm_cb.p_cb)(CYBT_PRM_STS_ABORT);
-                  return;
-             }
+            if (!(p_param->opcode == HCI_VSC_LAUNCH_RAM))
+            {
+                if (cybt_prm_cb.p_cb)
+                    (cybt_prm_cb.p_cb)(CYBT_PRM_STS_ABORT);
+                return;
+            }
 
-             PRM_TRACE_DEBUG("Launch RAM successful");
+            PRM_TRACE_DEBUG("Launch RAM successful");
 
-             cy_rtos_delay_milliseconds(CYBT_END_DELAY);
+#ifdef COMPONENT_HCI_UART
+            cy_rtos_delay_milliseconds(CYBT_END_DELAY);
+#endif
 
-             if (cybt_prm_cb.p_cb)
-                 (cybt_prm_cb.p_cb)(CYBT_PRM_STS_COMPLETE);
+            if (cybt_prm_cb.p_cb)
+                (cybt_prm_cb.p_cb)(CYBT_PRM_STS_COMPLETE);
 
-             memset(&cybt_prm_cb, 0, sizeof(cybt_prm_cb_t));
+            memset(&cybt_prm_cb, 0, sizeof(cybt_prm_cb_t));
 
-             break;
+            break;
         default:
-             break;
+            break;
     }
 }
 
@@ -296,11 +314,19 @@ static void cybt_prm_send_next_patch(void)
         STREAM_TO_UINT16 (vsc_command, p);
         STREAM_TO_UINT8  (len, p);
 
+#if (defined(COMPONENT_CYW20829B0) || defined(COMPONENT_CYW89829B0))
+        if ( vsc_command == HCI_VSC_LAUNCH_RAM )
+        {
+            /* set hf0 to 48MHz */
+            Cy_SysClk_ClkHfSetSource(0U, CY_SYSCLK_CLKHF_IN_CLKPATH1);
+        }
+#endif // (defined(COMPONENT_CYW20829B0) || defined(COMPONENT_CYW89829B0))
+
         wiced_bt_dev_vendor_specific_command(vsc_command,
                                              (uint8_t)len,
                                              p,
                                              cybt_prm_command_complete_cback
-                                            );
+                                             );
 
         /* including 3 bytes header */
         cybt_prm_cb.tx_patch_length += (len + 3);
@@ -329,7 +355,7 @@ static void cybt_prm_send_next_patch(void)
                                               (uint8_t) (len+4),
                                               write_ram_vsc,
                                               cybt_prm_command_complete_cback
-                                             );
+                                              );
 
         cybt_prm_cb.tx_patch_length += len;
     }
@@ -349,13 +375,13 @@ static void cybt_prm_send_next_patch(void)
 **
 *******************************************************************************/
 bool cybt_prm_load_data (uint8_t  *p_patch_data,
-                                 uint16_t patch_data_len
-                                )
+                         uint16_t patch_data_len
+                         )
 {
     /* Only load data if loading minidri or data piece is done */
     if (cybt_prm_cb.state != CYBT_PRM_ST_INITIALIZING_DONE
-        && cybt_prm_cb.state != CYBT_PRM_ST_LOADING_DATA_DONE
-       )
+            && cybt_prm_cb.state != CYBT_PRM_ST_LOADING_DATA_DONE
+            )
     {
         return false;
     }
@@ -422,7 +448,7 @@ static void cybt_prm_launch_ram_internal(void)
                                          4,
                                          write_launch_ram_vsc,
                                          cybt_prm_command_complete_cback
-                                        );
+                                         );
 }
 
 
@@ -441,4 +467,6 @@ uint8_t cybt_prm_get_state(void)
 {
     return (cybt_prm_cb.state);
 }
+
+#endif // #if (defined(COMPONENT_BTSS_IPC) || defined(COMPONENT_HCI_UART))
 

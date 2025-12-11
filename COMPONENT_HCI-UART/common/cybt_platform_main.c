@@ -48,6 +48,9 @@
 #ifndef ENABLE_HOST_RPA_GENERATION
 #define ENABLE_HOST_RPA_GENERATION 0
 #endif
+#ifndef ADD_TO_RESOLVING_LIST_ON_SMP_KEY_UPDATE
+#define ADD_TO_RESOLVING_LIST_ON_SMP_KEY_UPDATE 1
+#endif
 
 #ifdef PROVIDE_INITIAL_SETUP_DATA_TO_STACK
 extern wiced_bt_stack_init_cmd_data_t ctrl_data_for_stack_init;
@@ -200,8 +203,9 @@ wiced_bool_t wiced_stack_event_handler_cback (uint8_t *p_event)
     return WICED_FALSE;
 }
 
-static void write_local_keys_to_stack(wiced_bt_local_identity_keys_t *p_keys)
+wiced_result_t wiced_ble_write_local_keys_to_stack(wiced_bt_local_identity_keys_t *p_keys)
 {
+    wiced_result_t res = WICED_ERROR;
     wiced_bt_features_t features = {0};
 
     wiced_bt_ble_read_le_features(NULL, features);
@@ -217,16 +221,17 @@ static void write_local_keys_to_stack(wiced_bt_local_identity_keys_t *p_keys)
     if (use_host_generation)
     {
 #ifndef DISABLE_HOST_RPA_GENERATION
-        wiced_ble_init_host_private_addr_generation(p_keys);
+        res = wiced_ble_init_host_private_addr_generation(p_keys);
 #endif
     }
     else
     {
 #ifndef DISABLE_CTLR_RPA_GENERATION
-        wiced_ble_init_ctlr_private_addr_generation(p_keys);
+        res = wiced_ble_init_ctlr_private_addr_generation(p_keys);
 #endif
     }
     wiced_bt_issue_btm_enabled_evt(cybt_core_management_cback);
+    return res;
 }
 
 static wiced_result_t init_layers(void)
@@ -253,7 +258,7 @@ static wiced_result_t init_layers(void)
 
         if (keys.key_type_mask != 0)
         {
-            write_local_keys_to_stack(&keys);
+            wiced_ble_write_local_keys_to_stack(&keys);
         }
         else
         {
@@ -285,16 +290,28 @@ wiced_result_t cybt_core_management_cback( wiced_bt_management_evt_t event, wice
     {
         case BTM_ENABLED_EVT:
             wiced_bt_init_resolution(); // To be removed, only required for non-privacy controllers
+#if (ADD_TO_RESOLVING_LIST_ON_SMP_KEY_UPDATE == 0)
+            /* Turn of auto enabling the resolving list */
+            wiced_bt_ble_resolving_list_auto_enable_set(0);
+#endif
         break;
 #if (ENABLE_CREATE_LOCAL_KEYS == 1)
         case BTM_LOCAL_IDENTITY_KEYS_UPDATE_EVT:
         {
-            write_local_keys_to_stack(&p_event_data->local_identity_keys_update);
+            wiced_ble_write_local_keys_to_stack(&p_event_data->local_identity_keys_update);
         }
         break;
         case BTM_BLE_DEVICE_ADDRESS_UPDATE_EVENT:
             wiced_bt_issue_btm_enabled_evt(cybt_core_management_cback);
             break;
+#endif
+#if (ADD_TO_RESOLVING_LIST_ON_SMP_KEY_UPDATE == 1)
+        case BTM_PAIRED_DEVICE_LINK_KEYS_UPDATE_EVT:
+        {
+            wiced_bt_device_link_keys_t *p_key_data = &p_event_data->paired_device_link_keys_update;
+            wiced_bt_dev_add_device_to_address_resolution_db(p_key_data);
+        }
+        break;
 #endif
         default:
             break;

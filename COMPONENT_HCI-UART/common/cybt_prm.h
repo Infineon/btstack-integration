@@ -27,6 +27,8 @@
 #ifndef CYBT_PRM_H
 #define CYBT_PRM_H
 
+#if (defined(COMPONENT_BTSS_IPC) || defined(COMPONENT_HCI_UART))
+
 /*****************************************************************************
  *                           Type Definitions
  *****************************************************************************/
@@ -74,21 +76,25 @@ extern "C"
  * @param[in]      patch_buf_len : length of patch ram buffer
  * @param[in]      address       : address of patch ram to be written,
  * @param[in]      format_type   : patch format type ( bin, hcd ...)
+ * @param[in]      download_mini_drv  : enable to download minidriver
  *
  * @returns        true if successful,
  *                 false otherwise
  *
  */
 bool cybt_prm_download (cybt_prm_cback_t *p_cb,
-                               const uint8_t *p_patch_buf,
-                               uint32_t patch_buf_len,
-                               uint32_t address,
-                               uint8_t  format_type
-                              );
+                        const uint8_t *p_patch_buf,
+                        uint32_t patch_buf_len,
+                        uint32_t address,
+                        uint8_t  format_type,
+                        bool download_mini_drv
+                        );
 
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
+
+#endif //#if (defined(COMPONENT_BTSS_IPC) || defined(COMPONENT_HCI_UART))
 
 #endif
 

@@ -23,6 +23,8 @@
 * limitations under the License.
 *******************************************************************************/
 
+#if (defined(COMPONENT_BTSS_IPC) || defined(COMPONENT_HCI_UART))
+
 #include "cyabs_rtos.h"
 
 #include "wiced_bt_dev.h"
@@ -34,6 +36,14 @@
 #include "cybt_platform_trace.h"
 #include "cybt_platform_util.h"
 
+#ifdef COMPONENT_HCI_UART
+#include "platform_hal_wrapper.h"
+
+#ifdef FW_DATBLOCK_SEPARATE_FROM_APPLICATION
+#include "cy_ota_api.h"
+    cy_ota_fwdb_bt_fw_t bt_fw_buffer_info;
+#endif /* FW_DATBLOCK_SEPARATE_FROM_APPLICATION */
+#endif // #ifdef COMPONENT_HCI_UART
 
 /******************************************************************************
  *                                Constants
@@ -67,33 +77,74 @@ typedef struct
 bt_fw_download_cb bt_fwdl_cb = {.state = BT_POST_RESET_STATE_IDLE};
 
 extern const char    brcm_patch_version[];
+#ifndef FW_DATBLOCK_SEPARATE_FROM_APPLICATION
 extern const uint8_t brcm_patchram_buf[];
 extern const int     brcm_patch_ram_length;
 extern const uint8_t brcm_patchram_format;
+#endif /* FW_DATBLOCK_SEPARATE_FROM_APPLICATION */
+
+extern cybt_result_t cybt_platform_hci_set_baudrate(uint32_t baudrate);
 
 /*****************************************************************************
  *                           Function Declarations
  *****************************************************************************/
-static void bt_baudrate_updated_cback (wiced_bt_dev_vendor_specific_command_complete_params_t* p);
 static void bt_fw_download_complete_cback(cybt_prm_status_t status);
 void bt_post_reset_cback(void);
+
+#ifdef COMPONENT_HCI_UART
+static void bt_baudrate_updated_cback (wiced_bt_dev_vendor_specific_command_complete_params_t* p);
+#endif // #ifdef COMPONENT_HCI_UART
+
+#ifdef COMPONENT_BTSS_IPC
 void cybt_platform_hci_wait_for_boot_fully_up(bool is_from_isr);
+#endif /* COMPONENT_BTSS_IPC */
 
 /******************************************************************************
  *                           Function Definitions
  ******************************************************************************/
 static void bt_start_fw_download(void)
 {
-    const cybt_platform_config_t *p_bt_platform_cfg = cybt_platform_get_config();
-    bool download_mini_driver = (p_bt_platform_cfg->hci_config.hci_transport == CYBT_HCI_UART) ? true : false;
-    bool status;
-
     MAIN_TRACE_DEBUG("bt_start_fw_download(): FW ver = %s", (const char *) brcm_patch_version);
 
     bt_fwdl_cb.state = BT_POST_RESET_STATE_FW_DOWNLOADING;
 
+#ifdef FW_DATBLOCK_SEPARATE_FROM_APPLICATION
+    cy_rslt_t   result;
+    /* We need to read the BT FW patch from external flash */
+    /* Read into RAM from external flash */
+    result = cy_ota_fwdb_get_bt_fw(&bt_fw_buffer_info);
+    if (result == CY_RSLT_SUCCESS)
+    {
+        /* Check BT FW Patch version */
+        if (strncmp(brcm_patch_version, (const char *)bt_fw_buffer_info.BT_FW_version, strlen(brcm_patch_version)) != 0)
+        {
+            MAIN_TRACE_ERROR("bt_start_fw_download():                FW ver = %.*s", 128, (const char *)bt_fw_buffer_info.BT_FW_version);
+            MAIN_TRACE_ERROR("bt_start_fw_download(): DOES NOT MATCH FW ver = %.*s", 128, (const char *)brcm_patch_version);
+        }
+
+        MAIN_TRACE_WARNING("bt_start_fw_download() NOT using XIP: FW ver = %*.s", 128, (const char *)bt_fw_buffer_info.BT_FW_version);
+
+        cybt_prm_download(bt_fw_download_complete_cback,
+                          (void*)(bt_fw_buffer_info.BT_FW_buffer),
+                          bt_fw_buffer_info.BT_FW_size,
+                          0,
+                          CYBT_PRM_FORMAT_HCD
+                          );
+    }
+#else
+    bool status;
+
+    // for xx829 and 55500 - No need to send MiniDriver, we can directly start FW load
+#if (defined(COMPONENT_BTSS_IPC) || defined(COMPONENT_55500))
+    bool download_mini_driver = false;
+#else
+    bool download_mini_driver = true;
+#endif // (defined(COMPONENT_BTSS_IPC) || defined(COMPONENT_55500))
+
+#ifdef COMPONENT_BTSS_IPC
     // Avoid sleep while downloading firmware
     cyhal_syspm_lock_deepsleep();
+#endif // #ifdef COMPONENT_BTSS_IPC
 
     status = cybt_prm_download(bt_fw_download_complete_cback,
                       brcm_patchram_buf,
@@ -102,12 +153,19 @@ static void bt_start_fw_download(void)
                       CYBT_PRM_FORMAT_HCD,
                       download_mini_driver
                       );
+
+#ifdef COMPONENT_BTSS_IPC
     if (status == false)
     {
         cyhal_syspm_unlock_deepsleep();
     }
+#else
+    UNUSED_VARIABLE(status);
+#endif // #ifdef COMPONENT_BTSS_IPC    
+#endif /* FW_DATBLOCK_SEPARATE_FROM_APPLICATION */
 }
 
+#ifdef COMPONENT_HCI_UART
 static void bt_update_platform_baudrate(uint32_t baudrate)
 {
     MAIN_TRACE_DEBUG("bt_update_platform_baudrate(): %d", baudrate);
@@ -143,14 +201,15 @@ static void bt_update_controller_baudrate(uint32_t baudrate)
 
 static void bt_baudrate_updated_cback (wiced_bt_dev_vendor_specific_command_complete_params_t* p)
 {
-    const cybt_platform_config_t *p_bt_platform_cfg = cybt_platform_get_config();
+    uint32_t fw_baud_rate = platform_hal_get_fw_download_baud_wrapper();
+    uint32_t feature_baud_rate = platform_hal_get_feature_baud_wrapper();
 
     switch(bt_fwdl_cb.state)
     {
         case BT_POST_RESET_STATE_UPDATE_BAUDRATE_FOR_FW_DL:
         {
             MAIN_TRACE_DEBUG("bt_baudrate_updated_cback(): Baudrate is updated for FW downloading");
-            bt_update_platform_baudrate(p_bt_platform_cfg->hci_config.hci.hci_uart.baud_rate_for_fw_download);
+            bt_update_platform_baudrate(fw_baud_rate);
 
             bt_start_fw_download();
         }
@@ -158,7 +217,7 @@ static void bt_baudrate_updated_cback (wiced_bt_dev_vendor_specific_command_comp
         case BT_POST_RESET_STATE_UPDATE_BAUDRATE_FOR_FEATURE:
         {
             MAIN_TRACE_DEBUG("bt_baudrate_updated_cback(): Baudrate is updated for feature");
-            bt_update_platform_baudrate(p_bt_platform_cfg->hci_config.hci.hci_uart.baud_rate_for_feature);
+            bt_update_platform_baudrate(feature_baud_rate);
 
             MAIN_TRACE_DEBUG("bt_baudrate_updated_cback(): post-reset process is done");
             bt_fwdl_cb.state = BT_POST_RESET_STATE_DONE;
@@ -173,6 +232,7 @@ static void bt_baudrate_updated_cback (wiced_bt_dev_vendor_specific_command_comp
             break;
     }
 }
+#endif // #ifdef COMPONENT_HCI_UART
 
 static void bt_fw_download_complete_cback(cybt_prm_status_t status)
 {
@@ -180,39 +240,45 @@ static void bt_fw_download_complete_cback(cybt_prm_status_t status)
 
     if(CYBT_PRM_STS_COMPLETE == status)
     {
-        const cybt_platform_config_t *p_bt_platform_cfg = cybt_platform_get_config();
+#ifdef COMPONENT_HCI_UART
+        uint32_t fw_baud_rate = platform_hal_get_fw_download_baud_wrapper();
+        uint32_t feature_baud_rate = platform_hal_get_feature_baud_wrapper();
+
         bt_fwdl_cb.state = BT_POST_RESET_STATE_FW_DOWNLOAD_COMPLETED;
 
-        if(CYBT_HCI_UART == p_bt_platform_cfg->hci_config.hci_transport)
+        // After patch ram is launched, the baud rate of BT chip is reset to 115200
+        if(HCI_UART_DEFAULT_BAUDRATE!= fw_baud_rate)
         {
-            // After patch ram is launched, the baud rate of BT chip is reset to 115200
-            if( HCI_UART_DEFAULT_BAUDRATE != p_bt_platform_cfg->hci_config.hci.hci_uart.baud_rate_for_fw_download )
-            {
-                MAIN_TRACE_DEBUG("bt_fw_download_complete_cback(): Reset baudrate to %d",
-                                 HCI_UART_DEFAULT_BAUDRATE);
-                bt_update_platform_baudrate(HCI_UART_DEFAULT_BAUDRATE);
-            }
-
-            if( HCI_UART_DEFAULT_BAUDRATE != p_bt_platform_cfg->hci_config.hci.hci_uart.baud_rate_for_feature )
-            {
-                MAIN_TRACE_DEBUG("bt_fw_download_complete_cback(): Changing baudrate to %d",
-                                 p_bt_platform_cfg->hci_config.hci.hci_uart.baud_rate_for_feature);
-
-                bt_fwdl_cb.state = BT_POST_RESET_STATE_UPDATE_BAUDRATE_FOR_FEATURE;
-                bt_update_controller_baudrate(p_bt_platform_cfg->hci_config.hci.hci_uart.baud_rate_for_feature);
-
-                // Unlock sleep which was invoked before starting FW download
-                cyhal_syspm_unlock_deepsleep();
-                return;
-            }
+            MAIN_TRACE_DEBUG("bt_fw_download_complete_cback(): Reset platform baudrate to %d",
+                             HCI_UART_DEFAULT_BAUDRATE
+                            );
+            bt_update_platform_baudrate(HCI_UART_DEFAULT_BAUDRATE);
         }
 
-        MAIN_TRACE_DEBUG("bt_fw_download_complete_cback(): post-reset process is Done");
+        if(HCI_UART_DEFAULT_BAUDRATE!= feature_baud_rate)
+        {
+            MAIN_TRACE_DEBUG("bt_fw_download_complete_cback(): Changing controller baudrate to %d",
+                            feature_baud_rate
+                            );
+            bt_fwdl_cb.state = BT_POST_RESET_STATE_UPDATE_BAUDRATE_FOR_FEATURE;
+            bt_update_controller_baudrate(feature_baud_rate);
+        }
+        else
+        {
+            MAIN_TRACE_DEBUG("bt_fw_download_complete_cback(): post-reset process is Done");
 
-        bt_fwdl_cb.state = BT_POST_RESET_STATE_DONE;
-        if(CYBT_HCI_IPC == p_bt_platform_cfg->hci_config.hci_transport)
+            bt_fwdl_cb.state = BT_POST_RESET_STATE_DONE;
+            wiced_bt_continue_reset();
+        }
+#else // COMPONENT_BTSS_IPC
+		{
+            MAIN_TRACE_DEBUG("bt_fw_download_complete_cback(): post-reset process is Done");
+
+            bt_fwdl_cb.state = BT_POST_RESET_STATE_DONE;
             cybt_platform_hci_wait_for_boot_fully_up( false );
-        wiced_bt_continue_reset();
+            wiced_bt_continue_reset();
+		}
+#endif // ifdef COMPONENT_HCI_UART
     }
     else
     {
@@ -222,8 +288,19 @@ static void bt_fw_download_complete_cback(cybt_prm_status_t status)
         bt_fwdl_cb.state = BT_POST_RESET_STATE_FAILED;
     }
 
+#ifdef COMPONENT_BTSS_IPC
     // Unlock sleep which was invoked before starting FW download
     cyhal_syspm_unlock_deepsleep();
+#endif // #ifdef COMPONENT_BTSS_IPC
+
+#ifdef FW_DATBLOCK_SEPARATE_FROM_APPLICATION
+    cy_rslt_t result;
+    result = cy_ota_fwdb_free_bt_fw(&bt_fw_buffer_info);
+    if (result != CY_RSLT_SUCCESS)
+    {
+        MAIN_TRACE_ERROR("cy_ota_fwdb_free_bt_fw(): Failed to free RAM (%d)", result);
+    }
+#endif /* FW_DATBLOCK_SEPARATE_FROM_APPLICATION */
 }
 
 void bt_post_reset_cback(void)
@@ -231,26 +308,39 @@ void bt_post_reset_cback(void)
     MAIN_TRACE_DEBUG("bt_post_reset_cback()");
 
     bt_fwdl_cb.state = BT_POST_RESET_STATE_IDLE;
+#ifndef FW_DATBLOCK_SEPARATE_FROM_APPLICATION
     if(0 < brcm_patch_ram_length)
+#else /* !FW_DATBLOCK_SEPARATE_FROM_APPLICATION */
+    cy_rslt_t   result;
+    cy_ota_fwdb_bt_fw_info_t bt_fw_info;
+    /* We need to read the BT FW patch from external flash */
+    result = cy_ota_fwdb_get_bt_fw_info(&bt_fw_info);
+    if ((result == CY_RSLT_SUCCESS) && (0 < bt_fw_info.BT_FW_size))
+#endif /* !FW_DATBLOCK_SEPARATE_FROM_APPLICATION */
     {
-        const cybt_platform_config_t *p_bt_platform_cfg = cybt_platform_get_config();
-
-        if( ( CYBT_HCI_UART == p_bt_platform_cfg->hci_config.hci_transport ) &&
-                ( p_bt_platform_cfg->hci_config.hci.hci_uart.baud_rate_for_fw_download != HCI_UART_DEFAULT_BAUDRATE ))
+#ifdef COMPONENT_HCI_UART
+#ifndef COMPONENT_55500
+        uint32_t fw_baud_rate = platform_hal_get_fw_download_baud_wrapper();
+        if(fw_baud_rate != HCI_UART_DEFAULT_BAUDRATE)
         {
             MAIN_TRACE_DEBUG("bt_post_reset_cback(): Change baudrate (%d) for FW downloading",
-                             p_bt_platform_cfg->hci_config.hci.hci_uart.baud_rate_for_fw_download);
+            fw_baud_rate
+                            );
             bt_fwdl_cb.state = BT_POST_RESET_STATE_UPDATE_BAUDRATE_FOR_FW_DL;
-            bt_update_controller_baudrate(p_bt_platform_cfg->hci_config.hci.hci_uart.baud_rate_for_fw_download);
-            return;
+            bt_update_controller_baudrate(fw_baud_rate);
         }
-
-        MAIN_TRACE_DEBUG("bt_post_reset_cback(): Starting FW download...");
-        bt_start_fw_download();
+        else
+#endif // ifndef COMPONENT_55500
+#endif // ifdef COMPONENT_HCI_UART
+        {
+            MAIN_TRACE_DEBUG("bt_post_reset_cback(): Starting FW download...");
+            bt_start_fw_download();
+        }
     }
     else
     {
         MAIN_TRACE_ERROR("bt_post_reset_cback(): invalid length");
     }
 }
+#endif // #if (defined(COMPONENT_BTSS_IPC) || defined(COMPONENT_HCI_UART))
 

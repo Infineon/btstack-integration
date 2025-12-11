@@ -6,7 +6,9 @@
 *
 ********************************************************************************
 * \copyright
-* Copyright 2018-2019 Cypress Semiconductor Corporation
+* Copyright 2018-2021 Cypress Semiconductor Corporation (an Infineon company) or
+* an affiliate of Cypress Semiconductor Corporation.
+*
 * SPDX-License-Identifier: Apache-2.0
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,6 +23,8 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 *******************************************************************************/
+
+#if (defined(COMPONENT_BTSS_IPC) || defined(COMPONENT_HCI_UART))
 
 #include <string.h>
 #include <stdbool.h>
@@ -41,7 +45,11 @@
 
 /* dest ram location */
 #define CYBT_DEST_RAM_LOCATION           (0x00085D00)
+
+#ifdef COMPONENT_HCI_UART
+#define CYBT_MINIDRV_2_PATCH_RAM_DELAY   (50)
 #define CYBT_END_DELAY                   (250)  /* delay before sending any new command (ms) */
+#endif
 
 #define CYBT_MAX_PRM_LEN                 (250)
 
@@ -210,6 +218,10 @@ static void cybt_prm_command_complete_cback(wiced_bt_dev_vendor_specific_command
             cybt_prm_cb.state = CYBT_PRM_ST_INITIALIZING_DONE;
             PRM_TRACE_DEBUG("CYBT_PRM_ST_INITIALIZING_DONE");
 
+#ifdef COMPONENT_HCI_UART
+            cy_rtos_delay_milliseconds(CYBT_MINIDRV_2_PATCH_RAM_DELAY);
+#endif
+
             if (!cybt_prm_cb.internal_patch)
             {
                 if (cybt_prm_cb.p_cb)
@@ -264,6 +276,10 @@ static void cybt_prm_command_complete_cback(wiced_bt_dev_vendor_specific_command
             }
 
             PRM_TRACE_DEBUG("Launch RAM successful");
+
+#ifdef COMPONENT_HCI_UART
+            cy_rtos_delay_milliseconds(CYBT_END_DELAY);
+#endif
 
             if (cybt_prm_cb.p_cb)
                 (cybt_prm_cb.p_cb)(CYBT_PRM_STS_COMPLETE);
@@ -451,4 +467,6 @@ uint8_t cybt_prm_get_state(void)
 {
     return (cybt_prm_cb.state);
 }
+
+#endif // #if (defined(COMPONENT_BTSS_IPC) || defined(COMPONENT_HCI_UART))
 

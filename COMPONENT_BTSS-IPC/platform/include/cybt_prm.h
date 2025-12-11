@@ -6,7 +6,9 @@
 *
 ********************************************************************************
 * \copyright
-* Copyright 2018-2019 Cypress Semiconductor Corporation
+* Copyright 2018-2021 Cypress Semiconductor Corporation (an Infineon company) or
+* an affiliate of Cypress Semiconductor Corporation.
+*
 * SPDX-License-Identifier: Apache-2.0
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,6 +27,8 @@
 #ifndef CYBT_PRM_H
 #define CYBT_PRM_H
 
+#if (defined(COMPONENT_BTSS_IPC) || defined(COMPONENT_HCI_UART))
+
 /*****************************************************************************
  *                           Type Definitions
  *****************************************************************************/
@@ -39,7 +43,7 @@ enum
 };
 typedef uint8_t cybt_prm_status_t;
 
-/** 
+/**
  * patch ram format type
  */
 #define CYBT_PRM_FORMAT_BIN    0x00
@@ -89,6 +93,8 @@ bool cybt_prm_download (cybt_prm_cback_t *p_cb,
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
+
+#endif //#if (defined(COMPONENT_BTSS_IPC) || defined(COMPONENT_HCI_UART))
 
 #endif
 

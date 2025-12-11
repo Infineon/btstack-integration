@@ -121,4 +121,14 @@ By default, **ENABLE_CREATE_LOCAL_KEYS** MACRO is set to **1**. This allows port
 
 The application can based on its requirements, choose to set **ENABLE_CREATE_LOCAL_KEYS** to **0**. In this case the application needs to invoke these APIs to create, store and initialize local address generation.
 
+## Resolving list management
+btstack-integration v6.3.0 or later allows application to control resolving list.
+
+**ADD_TO_RESOLVING_LIST_ON_SMP_KEY_UPDATE** :
+- This flag is used to control addition of a paired device into the device resolving list. 
+- When enabled, on receiving **BTM_PAIRED_DEVICE_LINK_KEYS_UPDATE_EVT** the porting layer will add the device into the controller resolving list using **wiced_bt_dev_add_device_to_address_resolution_db** API.
+- The application can disable this behaviour by setting ADD_TO_RESOLVING_LIST_ON_SMP_KEY_UPDATE to **0**. The application is then responsible for managing the controller resolving list.
+
+By default, **ADD_TO_RESOLVING_LIST_ON_SMP_KEY_UPDATE** MACRO is set to **1**.
+
 © Infineon Technologies, 2022.

@@ -84,6 +84,8 @@ void host_stack_exception_handler(uint16_t code, void* ptr, uint32_t length)
 
 		/*Initiate WDT. Reset the system*/
 		cyhal_wdt_init(&platform_wdt_obj, PLATFORM_WDT_TIME_OUT_MS);
+
+        UNUSED_VARIABLE(msg);
     }
 }
 

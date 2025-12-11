@@ -5,6 +5,12 @@ AIROC&trade; BT/BLE stack provides Bluetooth&reg; functionality with high perfor
 This release of AIROC&trade; BT/BLE stack solution package includes as following:
 * Platform and Operating system porting layers for P6+43xx, P6+555xx, 20829, 89829 and P6+BLESS.
 
+#### v7.0.0
+btstack-integration v7.0.0 contains below changes:
+* Updated porting layer to support BTSTACK v5.0.0 and later
+* Added macro `ADD_TO_RESOLVING_LIST_ON_SMP_KEY_UPDATE` to allow porting layer to add a paired device into controller resolving list. Application can set `DEFINES +=ADD_TO_RESOLVING_LIST_ON_SMP_KEY_UPDATE=0` to disable default behavior and to manage controller resolving list on its own.
+* Updated FW patch download code to have common source code for required platforms
+
 #### v6.2.1
 btstack-integration v6.2.1 contains below changes:
 * Updated porting layer to support BTSTACK v4.1.4 and later
