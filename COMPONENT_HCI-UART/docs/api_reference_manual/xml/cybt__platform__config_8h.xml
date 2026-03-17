@@ -1,27 +1,27 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.15">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
   <compounddef id="cybt__platform__config_8h" kind="file" language="C++">
     <compoundname>cybt_platform_config.h</compoundname>
     <includes local="no">stdint.h</includes>
     <includes local="no">stdbool.h</includes>
     <incdepgraph>
-      <node id="2">
+      <node id="3">
         <label>stdbool.h</label>
       </node>
-      <node id="1">
+      <node id="2">
         <label>stdint.h</label>
       </node>
-      <node id="0">
+      <node id="1">
         <label>cybt_platform_config.h</label>
         <link refid="cybt__platform__config_8h"/>
-        <childnode refid="1" relation="include">
-        </childnode>
         <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
         </childnode>
       </node>
     </incdepgraph>
       <sectiondef kind="define">
-      <memberdef kind="define" id="group__platform__cfg_1ga71a14bd3046f030353a91683577817a6" prot="public" static="no">
+      <memberdef kind="define" id="cybt__platform__config_8h_1a71a14bd3046f030353a91683577817a6" prot="public" static="no">
         <name>CYBT_SLEEP_MODE_DISABLED</name>
         <initializer>(0)</initializer>
         <briefdescription>

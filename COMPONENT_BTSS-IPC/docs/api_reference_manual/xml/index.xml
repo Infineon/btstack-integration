@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.8.15">
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.8.17">
   <compound refid="structcybt__controller__config__t" kind="struct"><name>cybt_controller_config_t</name>
     <member refid="structcybt__controller__config__t_1a9e5cb5adc8c877db1dac24b1aa4cbe9b" kind="variable"><name>bt_power_pin</name></member>
     <member refid="structcybt__controller__config__t_1a1e78be8859c64969d25bb35569b3d8be" kind="variable"><name>sleep_mode</name></member>
@@ -14,7 +14,7 @@
   <compound refid="structcybt__hci__transport__config__t" kind="struct"><name>cybt_hci_transport_config_t</name>
     <member refid="structcybt__hci__transport__config__t_1a49e2aa2bba549df93cb113ecb293801f" kind="variable"><name>hci_transport</name></member>
     <member refid="structcybt__hci__transport__config__t_1a906d2c4cc61e0cfdff53e7f004ac1396" kind="variable"><name>hci_uart</name></member>
-    <member refid="structcybt__hci__transport__config__t_1a3bafc3651d588022944adae874d66e2a" kind="variable"><name>hci</name></member>
+    <member refid="structcybt__hci__transport__config__t_1acf60a5580298fa132be40701a257f533" kind="variable"><name>hci</name></member>
   </compound>
   <compound refid="structcybt__hci__uart__config__t" kind="struct"><name>cybt_hci_uart_config_t</name>
     <member refid="structcybt__hci__uart__config__t_1aa9fc00eb1a4889f2a526a3175d57c93c" kind="variable"><name>uart_tx_pin</name></member>
@@ -37,7 +37,7 @@
     <member refid="structcybt__platform__trace__cb__t_1aff6cbe7223f753c87f870ff5cab4333d" kind="variable"><name>trace_level</name></member>
   </compound>
   <compound refid="cybt__platform__config_8h" kind="file"><name>cybt_platform_config.h</name>
-    <member refid="group__platform__cfg_1ga71a14bd3046f030353a91683577817a6" kind="define"><name>CYBT_SLEEP_MODE_DISABLED</name></member>
+    <member refid="cybt__platform__config_8h_1a71a14bd3046f030353a91683577817a6" kind="define"><name>CYBT_SLEEP_MODE_DISABLED</name></member>
     <member refid="group__platform__cfg_1gad9d80ecaf5864c704c87bd0cf7490659" kind="define"><name>CYBT_SLEEP_MODE_ENABLED</name></member>
     <member refid="group__platform__cfg_1gaf7d41be05e1c430256f65d1219abd831" kind="define"><name>CYBT_WAKE_ACTIVE_LOW</name></member>
     <member refid="group__platform__cfg_1gad8d6dd4f2d7b07a29af54ebf34d9be6e" kind="define"><name>CYBT_WAKE_ACTIVE_HIGH</name></member>
@@ -52,7 +52,7 @@
     <member refid="group__platform__cfg_1gga5f6850727c86459c4c6c11c84870d308af5ee9474117419b2f07127b9ffd0dc99" kind="enumvalue"><name>CYBT_HCI_UNKNOWN</name></member>
     <member refid="group__platform__cfg_1gga5f6850727c86459c4c6c11c84870d308a154733e718f98e13774fb625df3687f3" kind="enumvalue"><name>CYBT_HCI_UART</name></member>
     <member refid="group__platform__cfg_1gga5f6850727c86459c4c6c11c84870d308a48f801ad425fc5626b5c34098bec2501" kind="enumvalue"><name>CYBT_HCI_IPC</name></member>
-    <member refid="group__platform__cfg_1ga1ff2a9935b27efb9639974d6ddc1894a" kind="function"><name>cybt_platform_config_init</name></member>
+    <member refid="cybt__platform__config_8h_1a1ff2a9935b27efb9639974d6ddc1894a" kind="function"><name>cybt_platform_config_init</name></member>
   </compound>
   <compound refid="cybt__platform__interface_8h" kind="file"><name>cybt_platform_interface.h</name>
     <member refid="cybt__platform__interface_8h_1a9300e0eb9926090bb68420072608f7ae" kind="define"><name>CYBT_TRACE_BUFFER_SIZE</name></member>
@@ -74,7 +74,7 @@
   </compound>
   <compound refid="cybt__platform__trace_8h" kind="file"><name>cybt_platform_trace.h</name>
     <member refid="group__platform__trace_1ga6ee1dced2b4da94270e21bbb3d358600" kind="define"><name>CYBT_PLATFORM_TRACE_ENABLE</name></member>
-    <member refid="group__platform__trace_1ga2d65faaba8a0734aee6126a1ee99eb90" kind="define"><name>INITIAL_TRACE_LEVEL_MAIN</name></member>
+    <member refid="cybt__platform__trace_8h_1a2d65faaba8a0734aee6126a1ee99eb90" kind="define"><name>INITIAL_TRACE_LEVEL_MAIN</name></member>
     <member refid="group__platform__trace_1gab141416369a97c8a0ff5ff5b35734694" kind="define"><name>INITIAL_TRACE_LEVEL_SPIF</name></member>
     <member refid="group__platform__trace_1ga649ea6b26acfafe56b53bbde1d2d1cda" kind="define"><name>INITIAL_TRACE_LEVEL_HCITX_TASK</name></member>
     <member refid="group__platform__trace_1gade2c98e5e3aea412014a0ba170776673" kind="define"><name>INITIAL_TRACE_LEVEL_HCIRX_TASK</name></member>
@@ -85,7 +85,7 @@
     <member refid="group__platform__trace_1ga18134ee925e7e7ea93dfdc543a52c1f7" kind="define"><name>INITIAL_TRACE_LEVEL_STACK</name></member>
     <member refid="group__platform__trace_1gac898c85dfad08061acbbcc299627a347" kind="define"><name>INITIAL_TRACE_LEVEL_APP</name></member>
     <member refid="group__platform__trace_1ga0521dfaba3084df1bb9ad69ac85b94f2" kind="define"><name>INITIAL_TRACE_LEVEL_BT_TASK</name></member>
-    <member refid="group__platform__trace_1ga7171cf6d4882d16a4f8095996de39ab2" kind="define"><name>CYBT_TRACE_ID_MAIN</name></member>
+    <member refid="cybt__platform__trace_8h_1a7171cf6d4882d16a4f8095996de39ab2" kind="define"><name>CYBT_TRACE_ID_MAIN</name></member>
     <member refid="group__platform__trace_1gafe82dd910728cf074689a7c482d1a6f8" kind="define"><name>CYBT_TRACE_ID_SPIF</name></member>
     <member refid="group__platform__trace_1ga2d85554ba330567e69d94ce34a2357a7" kind="define"><name>CYBT_TRACE_ID_HCITX_TASK</name></member>
     <member refid="group__platform__trace_1gad62abb5f816e57051df7b760026c84ea" kind="define"><name>CYBT_TRACE_ID_HCIRX_TASK</name></member>
@@ -164,7 +164,7 @@
     <member refid="group__platform__trace_1ga4d3896459a291d5096506d4bc5987873" kind="typedef"><name>cybt_trace_level_t</name></member>
     <member refid="group__platform__trace_1ga64163a59abafc9e2cb16bb31476aa9f7" kind="variable"><name>trace_cb</name></member>
     <member refid="group__platform__trace_1ga63266c3ba4e8863a8cedf129798dc6cf" kind="function"><name>cybt_platform_log_print</name></member>
-    <member refid="group__platform__trace_1gacff449b9b47250c93eb680a49129d9ec" kind="function"><name>cybt_platform_set_trace_level</name></member>
+    <member refid="cybt__platform__trace_8h_1acff449b9b47250c93eb680a49129d9ec" kind="function"><name>cybt_platform_set_trace_level</name></member>
   </compound>
   <compound refid="cybt__platform__util_8h" kind="file"><name>cybt_platform_util.h</name>
     <member refid="cybt__platform__util_8h_1a4bf80996c9c23df64ffae0939d88173f" kind="function"><name>cybt_platform_get_config</name></member>
@@ -212,8 +212,6 @@
     <member refid="group__platform__cfg_1gga5f6850727c86459c4c6c11c84870d308af5ee9474117419b2f07127b9ffd0dc99" kind="enumvalue"><name>CYBT_HCI_UNKNOWN</name></member>
     <member refid="group__platform__cfg_1gga5f6850727c86459c4c6c11c84870d308a154733e718f98e13774fb625df3687f3" kind="enumvalue"><name>CYBT_HCI_UART</name></member>
     <member refid="group__platform__cfg_1gga5f6850727c86459c4c6c11c84870d308a48f801ad425fc5626b5c34098bec2501" kind="enumvalue"><name>CYBT_HCI_IPC</name></member>
-    <member refid="group__platform__cfg_1ga1ff2a9935b27efb9639974d6ddc1894a" kind="function"><name>cybt_platform_config_init</name></member>
-    <member refid="group__platform__cfg_1ga71a14bd3046f030353a91683577817a6" kind="define"><name>CYBT_SLEEP_MODE_DISABLED</name></member>
     <member refid="group__platform__cfg_1gad9d80ecaf5864c704c87bd0cf7490659" kind="define"><name>CYBT_SLEEP_MODE_ENABLED</name></member>
     <member refid="group__platform__cfg_1gaf7d41be05e1c430256f65d1219abd831" kind="define"><name>CYBT_WAKE_ACTIVE_LOW</name></member>
     <member refid="group__platform__cfg_1gad8d6dd4f2d7b07a29af54ebf34d9be6e" kind="define"><name>CYBT_WAKE_ACTIVE_HIGH</name></member>
@@ -230,9 +228,7 @@
     <member refid="group__platform__trace_1ga4d3896459a291d5096506d4bc5987873" kind="typedef"><name>cybt_trace_level_t</name></member>
     <member refid="group__platform__trace_1ga64163a59abafc9e2cb16bb31476aa9f7" kind="variable"><name>trace_cb</name></member>
     <member refid="group__platform__trace_1ga63266c3ba4e8863a8cedf129798dc6cf" kind="function"><name>cybt_platform_log_print</name></member>
-    <member refid="group__platform__trace_1gacff449b9b47250c93eb680a49129d9ec" kind="function"><name>cybt_platform_set_trace_level</name></member>
     <member refid="group__platform__trace_1ga6ee1dced2b4da94270e21bbb3d358600" kind="define"><name>CYBT_PLATFORM_TRACE_ENABLE</name></member>
-    <member refid="group__platform__trace_1ga2d65faaba8a0734aee6126a1ee99eb90" kind="define"><name>INITIAL_TRACE_LEVEL_MAIN</name></member>
     <member refid="group__platform__trace_1gab141416369a97c8a0ff5ff5b35734694" kind="define"><name>INITIAL_TRACE_LEVEL_SPIF</name></member>
     <member refid="group__platform__trace_1ga649ea6b26acfafe56b53bbde1d2d1cda" kind="define"><name>INITIAL_TRACE_LEVEL_HCITX_TASK</name></member>
     <member refid="group__platform__trace_1gade2c98e5e3aea412014a0ba170776673" kind="define"><name>INITIAL_TRACE_LEVEL_HCIRX_TASK</name></member>
@@ -243,7 +239,6 @@
     <member refid="group__platform__trace_1ga18134ee925e7e7ea93dfdc543a52c1f7" kind="define"><name>INITIAL_TRACE_LEVEL_STACK</name></member>
     <member refid="group__platform__trace_1gac898c85dfad08061acbbcc299627a347" kind="define"><name>INITIAL_TRACE_LEVEL_APP</name></member>
     <member refid="group__platform__trace_1ga0521dfaba3084df1bb9ad69ac85b94f2" kind="define"><name>INITIAL_TRACE_LEVEL_BT_TASK</name></member>
-    <member refid="group__platform__trace_1ga7171cf6d4882d16a4f8095996de39ab2" kind="define"><name>CYBT_TRACE_ID_MAIN</name></member>
     <member refid="group__platform__trace_1gafe82dd910728cf074689a7c482d1a6f8" kind="define"><name>CYBT_TRACE_ID_SPIF</name></member>
     <member refid="group__platform__trace_1ga2d85554ba330567e69d94ce34a2357a7" kind="define"><name>CYBT_TRACE_ID_HCITX_TASK</name></member>
     <member refid="group__platform__trace_1gad62abb5f816e57051df7b760026c84ea" kind="define"><name>CYBT_TRACE_ID_HCIRX_TASK</name></member>

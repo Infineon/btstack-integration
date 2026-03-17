@@ -1,9 +1,8 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.15">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
   <compounddef id="group__platform__trace" kind="group">
     <compoundname>platform_trace</compoundname>
     <title>Bluetooth Platform Trace</title>
-    <innerclass refid="structcybt__platform__trace__cb__t" prot="public">cybt_platform_trace_cb_t</innerclass>
       <sectiondef kind="typedef">
       <memberdef kind="typedef" id="group__platform__trace_1gaed69846bfed5bab2c7db57097c3dcc98" prot="public" static="no">
         <type>uint8_t</type>
@@ -16,7 +15,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_trace.h" line="79" column="1" bodyfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_trace.h" bodystart="79" bodyend="-1"/>
+        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_trace.h" line="79" column="17" bodyfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_trace.h" bodystart="79" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="group__platform__trace_1ga4d3896459a291d5096506d4bc5987873" prot="public" static="no">
         <type>uint8_t</type>
@@ -29,7 +28,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_trace.h" line="91" column="1" bodyfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_trace.h" bodystart="91" bodyend="-1"/>
+        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_trace.h" line="91" column="17" bodyfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_trace.h" bodystart="91" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="var">
@@ -44,7 +43,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_trace.h" line="109" column="1"/>
+        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_trace.h" line="109" column="33" declfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_trace.h" declline="109" declcolumn="33"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="func">
@@ -66,49 +65,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_trace.h" line="111" column="1"/>
-      </memberdef>
-      <memberdef kind="function" id="group__platform__trace_1gacff449b9b47250c93eb680a49129d9ec" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>void</type>
-        <definition>void cybt_platform_set_trace_level</definition>
-        <argsstring>(cybt_trace_id_t id, cybt_trace_level_t level)</argsstring>
-        <name>cybt_platform_set_trace_level</name>
-        <param>
-          <type>cybt_trace_id_t</type>
-          <declname>id</declname>
-        </param>
-        <param>
-          <type>cybt_trace_level_t</type>
-          <declname>level</declname>
-        </param>
-        <briefdescription>
-<para>Set the trace level for trace categories id. </para>
-        </briefdescription>
-        <detaileddescription>
-<para><parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername direction="in">id</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>: trace id, CYBT_TRACE_ID_ALL for all categories </para>
-</parameterdescription>
-</parameteritem>
-<parameteritem>
-<parameternamelist>
-<parametername direction="in">level</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>: trace level</para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-<simplesect kind="return"><para>void </para>
-</simplesect>
-</para>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_trace.h" line="259" column="1"/>
+        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_trace.h" line="111" column="13" declfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_trace.h" declline="111" declcolumn="13"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="define">
@@ -122,17 +79,6 @@
         <inbodydescription>
         </inbodydescription>
         <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_trace.h" line="42" column="9" bodyfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_trace.h" bodystart="42" bodyend="-1"/>
-      </memberdef>
-      <memberdef kind="define" id="group__platform__trace_1ga2d65faaba8a0734aee6126a1ee99eb90" prot="public" static="no">
-        <name>INITIAL_TRACE_LEVEL_MAIN</name>
-        <initializer>(CYBT_TRACE_LEVEL_ERROR)</initializer>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_trace.h" line="48" column="9" bodyfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_trace.h" bodystart="48" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="group__platform__trace_1gab141416369a97c8a0ff5ff5b35734694" prot="public" static="no">
         <name>INITIAL_TRACE_LEVEL_SPIF</name>
@@ -243,18 +189,6 @@
         <inbodydescription>
         </inbodydescription>
         <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_trace.h" line="58" column="9" bodyfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_trace.h" bodystart="58" bodyend="-1"/>
-      </memberdef>
-      <memberdef kind="define" id="group__platform__trace_1ga7171cf6d4882d16a4f8095996de39ab2" prot="public" static="no">
-        <name>CYBT_TRACE_ID_MAIN</name>
-        <initializer>(0)</initializer>
-        <briefdescription>
-<para>trace category id </para>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_trace.h" line="66" column="9" bodyfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BTSS-IPC/platform/include/cybt_platform_trace.h" bodystart="66" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="group__platform__trace_1gafe82dd910728cf074689a7c482d1a6f8" prot="public" static="no">
         <name>CYBT_TRACE_ID_SPIF</name>
@@ -469,7 +403,7 @@
       <memberdef kind="define" id="group__platform__trace_1ga4693027f408219a54e9bdbbd518a1349" prot="public" static="no">
         <name>MAIN_TRACE_ERROR</name>
         <param><defname>...</defname></param>
-        <initializer>{if (trace_cb.trace_level[<ref refid="group__platform__trace_1ga7171cf6d4882d16a4f8095996de39ab2" kindref="member">CYBT_TRACE_ID_MAIN</ref>] &gt;= CYBT_TRACE_LEVEL_ERROR) cybt_platform_log_print(__VA_ARGS__);}</initializer>
+        <initializer>{if (trace_cb.trace_level[CYBT_TRACE_ID_MAIN] &gt;= CYBT_TRACE_LEVEL_ERROR) cybt_platform_log_print(__VA_ARGS__);}</initializer>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -481,7 +415,7 @@
       <memberdef kind="define" id="group__platform__trace_1gaf34780f8606a33e32649aeeec9e0fd8b" prot="public" static="no">
         <name>MAIN_TRACE_WARNING</name>
         <param><defname>...</defname></param>
-        <initializer>{if (trace_cb.trace_level[<ref refid="group__platform__trace_1ga7171cf6d4882d16a4f8095996de39ab2" kindref="member">CYBT_TRACE_ID_MAIN</ref>] &gt;= CYBT_TRACE_LEVEL_WARNING) cybt_platform_log_print(__VA_ARGS__);}</initializer>
+        <initializer>{if (trace_cb.trace_level[CYBT_TRACE_ID_MAIN] &gt;= CYBT_TRACE_LEVEL_WARNING) cybt_platform_log_print(__VA_ARGS__);}</initializer>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -493,7 +427,7 @@
       <memberdef kind="define" id="group__platform__trace_1gafb38a7414371a2c232b111095349a704" prot="public" static="no">
         <name>MAIN_TRACE_API</name>
         <param><defname>...</defname></param>
-        <initializer>{if (trace_cb.trace_level[<ref refid="group__platform__trace_1ga7171cf6d4882d16a4f8095996de39ab2" kindref="member">CYBT_TRACE_ID_MAIN</ref>] &gt;= CYBT_TRACE_LEVEL_API) cybt_platform_log_print(__VA_ARGS__);}</initializer>
+        <initializer>{if (trace_cb.trace_level[CYBT_TRACE_ID_MAIN] &gt;= CYBT_TRACE_LEVEL_API) cybt_platform_log_print(__VA_ARGS__);}</initializer>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -505,7 +439,7 @@
       <memberdef kind="define" id="group__platform__trace_1gac76f1d32c2ff64a8d169feefeb43a361" prot="public" static="no">
         <name>MAIN_TRACE_EVENT</name>
         <param><defname>...</defname></param>
-        <initializer>{if (trace_cb.trace_level[<ref refid="group__platform__trace_1ga7171cf6d4882d16a4f8095996de39ab2" kindref="member">CYBT_TRACE_ID_MAIN</ref>] &gt;= CYBT_TRACE_LEVEL_EVENT) cybt_platform_log_print(__VA_ARGS__);}</initializer>
+        <initializer>{if (trace_cb.trace_level[CYBT_TRACE_ID_MAIN] &gt;= CYBT_TRACE_LEVEL_EVENT) cybt_platform_log_print(__VA_ARGS__);}</initializer>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -517,7 +451,7 @@
       <memberdef kind="define" id="group__platform__trace_1gad79aa89cff23f261b95f94f76c981c51" prot="public" static="no">
         <name>MAIN_TRACE_DEBUG</name>
         <param><defname>...</defname></param>
-        <initializer>{if (trace_cb.trace_level[<ref refid="group__platform__trace_1ga7171cf6d4882d16a4f8095996de39ab2" kindref="member">CYBT_TRACE_ID_MAIN</ref>] &gt;= CYBT_TRACE_LEVEL_DEBUG) cybt_platform_log_print(__VA_ARGS__);}</initializer>
+        <initializer>{if (trace_cb.trace_level[CYBT_TRACE_ID_MAIN] &gt;= CYBT_TRACE_LEVEL_DEBUG) cybt_platform_log_print(__VA_ARGS__);}</initializer>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -1128,9 +1062,9 @@
       </memberdef>
       </sectiondef>
     <briefdescription>
-<para>ENABLE the below definition CYBT_PLATFORM_TRACE_ENABLE to have logging functionality by using trace marcos in this file. </para>
     </briefdescription>
     <detaileddescription>
+<para>ENABLE the below definition CYBT_PLATFORM_TRACE_ENABLE to have logging functionality by using trace marcos in this file. </para>
     </detaileddescription>
   </compounddef>
 </doxygen>

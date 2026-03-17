@@ -103,7 +103,7 @@ static void cybt_prm_send_next_patch(void);
 /* Launching RAM */
 static void cybt_prm_launch_ram_internal(void);
 
-
+BTSTACK_PORTING_SECTION_BEGIN
 /******************************************************************************
  *                           Function Definitions
  ******************************************************************************/
@@ -186,7 +186,9 @@ bool cybt_prm_download (cybt_prm_cback_t *p_cb,
 
     return true;
 }
+BTSTACK_PORTING_SECTION_END
 
+BTSTACK_PORTING_SECTION_BEGIN
 /*******************************************************************************
 **
 ** Function         cybt_prm_command_complete_cback
@@ -291,7 +293,9 @@ static void cybt_prm_command_complete_cback(wiced_bt_dev_vendor_specific_command
             break;
     }
 }
+BTSTACK_PORTING_SECTION_END
 
+BTSTACK_PORTING_SECTION_BEGIN
 /*******************************************************************************
 **
 ** Function         cybt_prm_send_next_patch
@@ -360,8 +364,9 @@ static void cybt_prm_send_next_patch(void)
         cybt_prm_cb.tx_patch_length += len;
     }
 }
+BTSTACK_PORTING_SECTION_END
 
-
+BTSTACK_PORTING_SECTION_BEGIN
 /*******************************************************************************
 **
 ** Function         cybt_prm_load_data
@@ -403,7 +408,9 @@ bool cybt_prm_load_data (uint8_t  *p_patch_data,
 
     return true;
 }
+BTSTACK_PORTING_SECTION_END
 
+BTSTACK_PORTING_SECTION_BEGIN
 /*******************************************************************************
 **
 ** Function         cybt_prm_launch_ram
@@ -430,7 +437,9 @@ bool cybt_prm_launch_ram(void)
 
     return true;
 }
+BTSTACK_PORTING_SECTION_END
 
+BTSTACK_PORTING_SECTION_BEGIN
 /*******************************************************************************
 **
 ** Function         cybt_prm_launch_ram
@@ -450,8 +459,9 @@ static void cybt_prm_launch_ram_internal(void)
                                          cybt_prm_command_complete_cback
                                          );
 }
+BTSTACK_PORTING_SECTION_END
 
-
+BTSTACK_PORTING_SECTION_BEGIN
 /*******************************************************************************
 **
 ** Function         cybt_prm_get_state
@@ -467,6 +477,6 @@ uint8_t cybt_prm_get_state(void)
 {
     return (cybt_prm_cb.state);
 }
-
+BTSTACK_PORTING_SECTION_END
 #endif // #if (defined(COMPONENT_BTSS_IPC) || defined(COMPONENT_HCI_UART))
 

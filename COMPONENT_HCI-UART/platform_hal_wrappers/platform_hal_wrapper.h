@@ -145,6 +145,7 @@ cybt_result_t platform_hal_uart_write_async_wrapper(void *tx, size_t length);
 cybt_result_t platform_hal_uart_read_async_wrapper(void *rx, size_t length);
 cybt_result_t platform_hal_uart_read_abort_wrapper();
 cybt_result_t platform_hal_uart_read_wrapper(void *rx, size_t *rx_length);
+void platform_hal_uart_deinit_wrapper();
 
 /*HAL Deep sleep wrappers*/
 void platform_hal_syspm_lock_deepsleep_wrapper(void);

@@ -99,6 +99,7 @@ static void bt_baudrate_updated_cback (wiced_bt_dev_vendor_specific_command_comp
 void cybt_platform_hci_wait_for_boot_fully_up(bool is_from_isr);
 #endif /* COMPONENT_BTSS_IPC */
 
+BTSTACK_PORTING_SECTION_BEGIN
 /******************************************************************************
  *                           Function Definitions
  ******************************************************************************/
@@ -164,6 +165,7 @@ static void bt_start_fw_download(void)
 #endif // #ifdef COMPONENT_BTSS_IPC    
 #endif /* FW_DATBLOCK_SEPARATE_FROM_APPLICATION */
 }
+BTSTACK_PORTING_SECTION_END
 
 #ifdef COMPONENT_HCI_UART
 static void bt_update_platform_baudrate(uint32_t baudrate)
@@ -234,6 +236,7 @@ static void bt_baudrate_updated_cback (wiced_bt_dev_vendor_specific_command_comp
 }
 #endif // #ifdef COMPONENT_HCI_UART
 
+BTSTACK_PORTING_SECTION_BEGIN
 static void bt_fw_download_complete_cback(cybt_prm_status_t status)
 {
     MAIN_TRACE_DEBUG("bt_patch_download_complete_cback(): status = %d", status);
@@ -302,7 +305,9 @@ static void bt_fw_download_complete_cback(cybt_prm_status_t status)
     }
 #endif /* FW_DATBLOCK_SEPARATE_FROM_APPLICATION */
 }
+BTSTACK_PORTING_SECTION_END
 
+BTSTACK_PORTING_SECTION_BEGIN
 void bt_post_reset_cback(void)
 {
     MAIN_TRACE_DEBUG("bt_post_reset_cback()");
@@ -342,5 +347,6 @@ void bt_post_reset_cback(void)
         MAIN_TRACE_ERROR("bt_post_reset_cback(): invalid length");
     }
 }
+BTSTACK_PORTING_SECTION_END
 #endif // #if (defined(COMPONENT_BTSS_IPC) || defined(COMPONENT_HCI_UART))
 

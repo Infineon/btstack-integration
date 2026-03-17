@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.15">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
   <compounddef id="structcybt__platform__config__t" kind="struct" language="C++" prot="public">
     <compoundname>cybt_platform_config_t</compoundname>
     <includes local="no">cybt_platform_config.h</includes>
@@ -16,7 +16,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_config.h" line="189" column="1" bodyfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_config.h" bodystart="189" bodyend="-1"/>
+        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_config.h" line="189" column="36" bodyfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_config.h" bodystart="189" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structcybt__platform__config__t_1a0ed2b4e529564a9210e5d80c4e59b4bd" prot="public" static="no" mutable="no">
         <type><ref refid="structcybt__controller__config__t" kindref="compound">cybt_controller_config_t</ref></type>
@@ -30,7 +30,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_config.h" line="190" column="1" bodyfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_config.h" bodystart="190" bodyend="-1"/>
+        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_config.h" line="190" column="36" bodyfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_config.h" bodystart="190" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structcybt__platform__config__t_1a31c8f2a35e4006fef44c65bb7dea5d4e" prot="public" static="no" mutable="no">
         <type>uint32_t</type>
@@ -45,7 +45,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_config.h" line="191" column="1" bodyfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_config.h" bodystart="191" bodyend="-1"/>
+        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_config.h" line="191" column="36" bodyfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_config.h" bodystart="191" bodyend="-1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -54,35 +54,35 @@
     <detaileddescription>
     </detaileddescription>
     <collaborationgraph>
-      <node id="15">
+      <node id="5">
         <label>cybt_controller_sleep_config_t</label>
         <link refid="structcybt__controller__sleep__config__t"/>
       </node>
-      <node id="14">
+      <node id="4">
         <label>cybt_controller_config_t</label>
         <link refid="structcybt__controller__config__t"/>
-        <childnode refid="15" relation="usage">
+        <childnode refid="5" relation="usage">
           <edgelabel>sleep_mode</edgelabel>
         </childnode>
       </node>
-      <node id="13">
+      <node id="3">
         <label>cybt_hci_uart_config_t</label>
         <link refid="structcybt__hci__uart__config__t"/>
       </node>
-      <node id="11">
+      <node id="1">
         <label>cybt_platform_config_t</label>
         <link refid="structcybt__platform__config__t"/>
-        <childnode refid="12" relation="usage">
+        <childnode refid="2" relation="usage">
           <edgelabel>hci_config</edgelabel>
         </childnode>
-        <childnode refid="14" relation="usage">
+        <childnode refid="4" relation="usage">
           <edgelabel>controller_config</edgelabel>
         </childnode>
       </node>
-      <node id="12">
+      <node id="2">
         <label>cybt_hci_transport_config_t</label>
         <link refid="structcybt__hci__transport__config__t"/>
-        <childnode refid="13" relation="usage">
+        <childnode refid="3" relation="usage">
           <edgelabel>hci_uart</edgelabel>
         </childnode>
       </node>

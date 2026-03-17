@@ -29,6 +29,8 @@
 
 #if (defined(COMPONENT_BTSS_IPC) || defined(COMPONENT_HCI_UART))
 
+#include "cybt_platform_interface.h"
+
 /*****************************************************************************
  *                           Type Definitions
  *****************************************************************************/

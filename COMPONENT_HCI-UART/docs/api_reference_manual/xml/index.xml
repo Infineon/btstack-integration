@@ -1,17 +1,17 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.8.15">
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.8.17">
   <compound refid="structcybt__platform__trace__cb__t" kind="struct"><name>cybt_platform_trace_cb_t</name>
     <member refid="structcybt__platform__trace__cb__t_1aff6cbe7223f753c87f870ff5cab4333d" kind="variable"><name>trace_level</name></member>
   </compound>
   <compound refid="cybt__platform__config_8h" kind="file"><name>cybt_platform_config.h</name>
-    <member refid="group__platform__cfg_1ga71a14bd3046f030353a91683577817a6" kind="define"><name>CYBT_SLEEP_MODE_DISABLED</name></member>
+    <member refid="cybt__platform__config_8h_1a71a14bd3046f030353a91683577817a6" kind="define"><name>CYBT_SLEEP_MODE_DISABLED</name></member>
     <member refid="group__platform__cfg_1gad9d80ecaf5864c704c87bd0cf7490659" kind="define"><name>CYBT_SLEEP_MODE_ENABLED</name></member>
     <member refid="group__platform__cfg_1gaf7d41be05e1c430256f65d1219abd831" kind="define"><name>CYBT_WAKE_ACTIVE_LOW</name></member>
     <member refid="group__platform__cfg_1gad8d6dd4f2d7b07a29af54ebf34d9be6e" kind="define"><name>CYBT_WAKE_ACTIVE_HIGH</name></member>
   </compound>
   <compound refid="cybt__platform__trace_8h" kind="file"><name>cybt_platform_trace.h</name>
     <member refid="group__platform__trace_1ga6ee1dced2b4da94270e21bbb3d358600" kind="define"><name>CYBT_PLATFORM_TRACE_ENABLE</name></member>
-    <member refid="group__platform__trace_1ga2d65faaba8a0734aee6126a1ee99eb90" kind="define"><name>INITIAL_TRACE_LEVEL_MAIN</name></member>
+    <member refid="cybt__platform__trace_8h_1a2d65faaba8a0734aee6126a1ee99eb90" kind="define"><name>INITIAL_TRACE_LEVEL_MAIN</name></member>
     <member refid="group__platform__trace_1gab141416369a97c8a0ff5ff5b35734694" kind="define"><name>INITIAL_TRACE_LEVEL_SPIF</name></member>
     <member refid="group__platform__trace_1ga649ea6b26acfafe56b53bbde1d2d1cda" kind="define"><name>INITIAL_TRACE_LEVEL_HCITX_TASK</name></member>
     <member refid="group__platform__trace_1gade2c98e5e3aea412014a0ba170776673" kind="define"><name>INITIAL_TRACE_LEVEL_HCIRX_TASK</name></member>
@@ -21,7 +21,7 @@
     <member refid="group__platform__trace_1ga0daa7136b46a98ace2073adbf4c36098" kind="define"><name>INITIAL_TRACE_LEVEL_PRM</name></member>
     <member refid="group__platform__trace_1ga18134ee925e7e7ea93dfdc543a52c1f7" kind="define"><name>INITIAL_TRACE_LEVEL_STACK</name></member>
     <member refid="group__platform__trace_1gac898c85dfad08061acbbcc299627a347" kind="define"><name>INITIAL_TRACE_LEVEL_APP</name></member>
-    <member refid="group__platform__trace_1ga7171cf6d4882d16a4f8095996de39ab2" kind="define"><name>CYBT_TRACE_ID_MAIN</name></member>
+    <member refid="cybt__platform__trace_8h_1a7171cf6d4882d16a4f8095996de39ab2" kind="define"><name>CYBT_TRACE_ID_MAIN</name></member>
     <member refid="group__platform__trace_1gafe82dd910728cf074689a7c482d1a6f8" kind="define"><name>CYBT_TRACE_ID_SPIF</name></member>
     <member refid="group__platform__trace_1ga2d85554ba330567e69d94ce34a2357a7" kind="define"><name>CYBT_TRACE_ID_HCITX_TASK</name></member>
     <member refid="group__platform__trace_1gad62abb5f816e57051df7b760026c84ea" kind="define"><name>CYBT_TRACE_ID_HCIRX_TASK</name></member>
@@ -94,10 +94,9 @@
     <member refid="group__platform__trace_1ga4d3896459a291d5096506d4bc5987873" kind="typedef"><name>cybt_trace_level_t</name></member>
     <member refid="group__platform__trace_1ga64163a59abafc9e2cb16bb31476aa9f7" kind="variable"><name>trace_cb</name></member>
     <member refid="group__platform__trace_1ga63266c3ba4e8863a8cedf129798dc6cf" kind="function"><name>cybt_platform_log_print</name></member>
-    <member refid="group__platform__trace_1gacff449b9b47250c93eb680a49129d9ec" kind="function"><name>cybt_platform_set_trace_level</name></member>
+    <member refid="cybt__platform__trace_8h_1acff449b9b47250c93eb680a49129d9ec" kind="function"><name>cybt_platform_set_trace_level</name></member>
   </compound>
   <compound refid="group__platform__cfg" kind="group"><name>platform_cfg</name>
-    <member refid="group__platform__cfg_1ga71a14bd3046f030353a91683577817a6" kind="define"><name>CYBT_SLEEP_MODE_DISABLED</name></member>
     <member refid="group__platform__cfg_1gad9d80ecaf5864c704c87bd0cf7490659" kind="define"><name>CYBT_SLEEP_MODE_ENABLED</name></member>
     <member refid="group__platform__cfg_1gaf7d41be05e1c430256f65d1219abd831" kind="define"><name>CYBT_WAKE_ACTIVE_LOW</name></member>
     <member refid="group__platform__cfg_1gad8d6dd4f2d7b07a29af54ebf34d9be6e" kind="define"><name>CYBT_WAKE_ACTIVE_HIGH</name></member>
@@ -107,9 +106,7 @@
     <member refid="group__platform__trace_1ga4d3896459a291d5096506d4bc5987873" kind="typedef"><name>cybt_trace_level_t</name></member>
     <member refid="group__platform__trace_1ga64163a59abafc9e2cb16bb31476aa9f7" kind="variable"><name>trace_cb</name></member>
     <member refid="group__platform__trace_1ga63266c3ba4e8863a8cedf129798dc6cf" kind="function"><name>cybt_platform_log_print</name></member>
-    <member refid="group__platform__trace_1gacff449b9b47250c93eb680a49129d9ec" kind="function"><name>cybt_platform_set_trace_level</name></member>
     <member refid="group__platform__trace_1ga6ee1dced2b4da94270e21bbb3d358600" kind="define"><name>CYBT_PLATFORM_TRACE_ENABLE</name></member>
-    <member refid="group__platform__trace_1ga2d65faaba8a0734aee6126a1ee99eb90" kind="define"><name>INITIAL_TRACE_LEVEL_MAIN</name></member>
     <member refid="group__platform__trace_1gab141416369a97c8a0ff5ff5b35734694" kind="define"><name>INITIAL_TRACE_LEVEL_SPIF</name></member>
     <member refid="group__platform__trace_1ga649ea6b26acfafe56b53bbde1d2d1cda" kind="define"><name>INITIAL_TRACE_LEVEL_HCITX_TASK</name></member>
     <member refid="group__platform__trace_1gade2c98e5e3aea412014a0ba170776673" kind="define"><name>INITIAL_TRACE_LEVEL_HCIRX_TASK</name></member>
@@ -119,7 +116,6 @@
     <member refid="group__platform__trace_1ga0daa7136b46a98ace2073adbf4c36098" kind="define"><name>INITIAL_TRACE_LEVEL_PRM</name></member>
     <member refid="group__platform__trace_1ga18134ee925e7e7ea93dfdc543a52c1f7" kind="define"><name>INITIAL_TRACE_LEVEL_STACK</name></member>
     <member refid="group__platform__trace_1gac898c85dfad08061acbbcc299627a347" kind="define"><name>INITIAL_TRACE_LEVEL_APP</name></member>
-    <member refid="group__platform__trace_1ga7171cf6d4882d16a4f8095996de39ab2" kind="define"><name>CYBT_TRACE_ID_MAIN</name></member>
     <member refid="group__platform__trace_1gafe82dd910728cf074689a7c482d1a6f8" kind="define"><name>CYBT_TRACE_ID_SPIF</name></member>
     <member refid="group__platform__trace_1ga2d85554ba330567e69d94ce34a2357a7" kind="define"><name>CYBT_TRACE_ID_HCITX_TASK</name></member>
     <member refid="group__platform__trace_1gad62abb5f816e57051df7b760026c84ea" kind="define"><name>CYBT_TRACE_ID_HCIRX_TASK</name></member>

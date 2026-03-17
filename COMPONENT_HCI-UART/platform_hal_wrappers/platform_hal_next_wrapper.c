@@ -572,6 +572,11 @@ void cybsb_bt_uart_interrupt_handler(void)
     mw_uart_process_interrupt(&hci_uart_cb.CYBSP_BT_UART_hal_obj);
 }
 
+void platform_hal_uart_deinit_wrapper(void)
+{
+    // Nothing to do
+}
+
 /******************************************************************************
 *                           HAL NEXT Deep sleep wrappers
 ******************************************************************************/

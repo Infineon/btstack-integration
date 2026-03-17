@@ -168,8 +168,6 @@ cybt_result_t cybt_platform_task_deinit(void)
         return result;
     }
 
-    cybt_platform_task_mempool_deinit();
-
     return CYBT_SUCCESS;
 }
 

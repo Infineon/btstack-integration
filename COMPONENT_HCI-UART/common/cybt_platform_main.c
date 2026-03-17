@@ -411,6 +411,8 @@ wiced_result_t wiced_bt_stack_deinit( void )
 
         cybt_platform_terminate_hci_tx_thread();
 
+        cybt_platform_task_mempool_deinit();
+
     #if( configUSE_TICKLESS_IDLE != 0 )
         cybt_platform_terminate_sleep_thread();
     #endif

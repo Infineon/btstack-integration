@@ -1,20 +1,9 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.15">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
   <compounddef id="group__platform__cfg" kind="group">
     <compoundname>platform_cfg</compoundname>
     <title>Bluetooth Platform Configuration</title>
       <sectiondef kind="define">
-      <memberdef kind="define" id="group__platform__cfg_1ga71a14bd3046f030353a91683577817a6" prot="public" static="no">
-        <name>CYBT_SLEEP_MODE_DISABLED</name>
-        <initializer>(0)</initializer>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_HCI-UART/include/cybt_platform_config.h" line="52" column="9" bodyfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_HCI-UART/include/cybt_platform_config.h" bodystart="52" bodyend="-1"/>
-      </memberdef>
       <memberdef kind="define" id="group__platform__cfg_1gad9d80ecaf5864c704c87bd0cf7490659" prot="public" static="no">
         <name>CYBT_SLEEP_MODE_ENABLED</name>
         <initializer>(1)</initializer>
@@ -50,9 +39,9 @@
       </memberdef>
       </sectiondef>
     <briefdescription>
-<para>The Bluetooth platform-specific configurations, including hardware pin assignment, HCI (Host Controller Interface) format, sleep mode settings and memory pool size for OS tasks. </para>
     </briefdescription>
     <detaileddescription>
+<para>The Bluetooth platform-specific configurations, including hardware pin assignment, HCI (Host Controller Interface) format, sleep mode settings and memory pool size for OS tasks. </para>
     </detaileddescription>
   </compounddef>
 </doxygen>

@@ -635,6 +635,7 @@ cybt_result_t cybt_platform_hci_close(void)
 
     platform_hal_uart_register_callback_wrapper(false);
     platform_hal_uart_enable_event_wrapper(false);
+    platform_hal_uart_deinit_wrapper();
 
     if(CYBT_SLEEP_MODE_ENABLED == platform_hal_get_sleep_mode_enabled_wrapper())
     {

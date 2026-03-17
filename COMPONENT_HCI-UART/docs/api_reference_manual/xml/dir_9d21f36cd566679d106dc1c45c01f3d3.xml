@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.15">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
   <compounddef id="dir_9d21f36cd566679d106dc1c45c01f3d3" kind="dir">
     <compoundname>btstack-integration</compoundname>
     <innerdir refid="dir_36f4dfcac3c4171921d0db2582485cf0">COMPONENT_HCI-UART</innerdir>

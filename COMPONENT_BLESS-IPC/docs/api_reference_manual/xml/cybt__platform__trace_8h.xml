@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.15">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
   <compounddef id="cybt__platform__trace_8h" kind="file" language="C++">
     <compoundname>cybt_platform_trace.h</compoundname>
     <includes local="no">stdio.h</includes>
@@ -7,23 +7,23 @@
     <includes local="yes">wiced_data_types.h</includes>
     <includes refid="cybt__platform__config_8h" local="yes">cybt_platform_config.h</includes>
     <incdepgraph>
-      <node id="14">
+      <node id="3">
         <label>stdint.h</label>
       </node>
-      <node id="15">
+      <node id="4">
         <label>wiced_data_types.h</label>
       </node>
-      <node id="12">
+      <node id="1">
         <label>cybt_platform_trace.h</label>
         <link refid="cybt__platform__trace_8h"/>
-        <childnode refid="13" relation="include">
+        <childnode refid="2" relation="include">
         </childnode>
-        <childnode refid="14" relation="include">
+        <childnode refid="3" relation="include">
         </childnode>
-        <childnode refid="15" relation="include">
+        <childnode refid="4" relation="include">
         </childnode>
       </node>
-      <node id="13">
+      <node id="2">
         <label>stdio.h</label>
       </node>
     </incdepgraph>
@@ -40,7 +40,7 @@
         </inbodydescription>
         <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_trace.h" line="42" column="9" bodyfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_trace.h" bodystart="42" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="define" id="group__platform__trace_1ga2d65faaba8a0734aee6126a1ee99eb90" prot="public" static="no">
+      <memberdef kind="define" id="cybt__platform__trace_8h_1a2d65faaba8a0734aee6126a1ee99eb90" prot="public" static="no">
         <name>INITIAL_TRACE_LEVEL_MAIN</name>
         <initializer>(CYBT_TRACE_LEVEL_ERROR)</initializer>
         <briefdescription>
@@ -161,7 +161,7 @@
         </inbodydescription>
         <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_trace.h" line="58" column="9" bodyfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_trace.h" bodystart="58" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="define" id="group__platform__trace_1ga7171cf6d4882d16a4f8095996de39ab2" prot="public" static="no">
+      <memberdef kind="define" id="cybt__platform__trace_8h_1a7171cf6d4882d16a4f8095996de39ab2" prot="public" static="no">
         <name>CYBT_TRACE_ID_MAIN</name>
         <initializer>(0)</initializer>
         <briefdescription>
@@ -386,7 +386,7 @@
       <memberdef kind="define" id="group__platform__trace_1ga4693027f408219a54e9bdbbd518a1349" prot="public" static="no">
         <name>MAIN_TRACE_ERROR</name>
         <param><defname>...</defname></param>
-        <initializer>{if (trace_cb.trace_level[<ref refid="group__platform__trace_1ga7171cf6d4882d16a4f8095996de39ab2" kindref="member">CYBT_TRACE_ID_MAIN</ref>] &gt;= CYBT_TRACE_LEVEL_ERROR) cybt_platform_log_print(__VA_ARGS__);}</initializer>
+        <initializer>{if (trace_cb.trace_level[CYBT_TRACE_ID_MAIN] &gt;= CYBT_TRACE_LEVEL_ERROR) cybt_platform_log_print(__VA_ARGS__);}</initializer>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -398,7 +398,7 @@
       <memberdef kind="define" id="group__platform__trace_1gaf34780f8606a33e32649aeeec9e0fd8b" prot="public" static="no">
         <name>MAIN_TRACE_WARNING</name>
         <param><defname>...</defname></param>
-        <initializer>{if (trace_cb.trace_level[<ref refid="group__platform__trace_1ga7171cf6d4882d16a4f8095996de39ab2" kindref="member">CYBT_TRACE_ID_MAIN</ref>] &gt;= CYBT_TRACE_LEVEL_WARNING) cybt_platform_log_print(__VA_ARGS__);}</initializer>
+        <initializer>{if (trace_cb.trace_level[CYBT_TRACE_ID_MAIN] &gt;= CYBT_TRACE_LEVEL_WARNING) cybt_platform_log_print(__VA_ARGS__);}</initializer>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -410,7 +410,7 @@
       <memberdef kind="define" id="group__platform__trace_1gafb38a7414371a2c232b111095349a704" prot="public" static="no">
         <name>MAIN_TRACE_API</name>
         <param><defname>...</defname></param>
-        <initializer>{if (trace_cb.trace_level[<ref refid="group__platform__trace_1ga7171cf6d4882d16a4f8095996de39ab2" kindref="member">CYBT_TRACE_ID_MAIN</ref>] &gt;= CYBT_TRACE_LEVEL_API) cybt_platform_log_print(__VA_ARGS__);}</initializer>
+        <initializer>{if (trace_cb.trace_level[CYBT_TRACE_ID_MAIN] &gt;= CYBT_TRACE_LEVEL_API) cybt_platform_log_print(__VA_ARGS__);}</initializer>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -422,7 +422,7 @@
       <memberdef kind="define" id="group__platform__trace_1gac76f1d32c2ff64a8d169feefeb43a361" prot="public" static="no">
         <name>MAIN_TRACE_EVENT</name>
         <param><defname>...</defname></param>
-        <initializer>{if (trace_cb.trace_level[<ref refid="group__platform__trace_1ga7171cf6d4882d16a4f8095996de39ab2" kindref="member">CYBT_TRACE_ID_MAIN</ref>] &gt;= CYBT_TRACE_LEVEL_EVENT) cybt_platform_log_print(__VA_ARGS__);}</initializer>
+        <initializer>{if (trace_cb.trace_level[CYBT_TRACE_ID_MAIN] &gt;= CYBT_TRACE_LEVEL_EVENT) cybt_platform_log_print(__VA_ARGS__);}</initializer>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -434,7 +434,7 @@
       <memberdef kind="define" id="group__platform__trace_1gad79aa89cff23f261b95f94f76c981c51" prot="public" static="no">
         <name>MAIN_TRACE_DEBUG</name>
         <param><defname>...</defname></param>
-        <initializer>{if (trace_cb.trace_level[<ref refid="group__platform__trace_1ga7171cf6d4882d16a4f8095996de39ab2" kindref="member">CYBT_TRACE_ID_MAIN</ref>] &gt;= CYBT_TRACE_LEVEL_DEBUG) cybt_platform_log_print(__VA_ARGS__);}</initializer>
+        <initializer>{if (trace_cb.trace_level[CYBT_TRACE_ID_MAIN] &gt;= CYBT_TRACE_LEVEL_DEBUG) cybt_platform_log_print(__VA_ARGS__);}</initializer>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -1056,7 +1056,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_trace.h" line="79" column="1" bodyfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_trace.h" bodystart="79" bodyend="-1"/>
+        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_trace.h" line="79" column="17" bodyfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_trace.h" bodystart="79" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="group__platform__trace_1ga4d3896459a291d5096506d4bc5987873" prot="public" static="no">
         <type>uint8_t</type>
@@ -1069,7 +1069,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_trace.h" line="91" column="1" bodyfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_trace.h" bodystart="91" bodyend="-1"/>
+        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_trace.h" line="91" column="17" bodyfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_trace.h" bodystart="91" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="var">
@@ -1084,7 +1084,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_trace.h" line="109" column="1"/>
+        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_trace.h" line="109" column="33" declfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_trace.h" declline="109" declcolumn="33"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="func">
@@ -1106,9 +1106,9 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_trace.h" line="111" column="1"/>
+        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_trace.h" line="111" column="13" declfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_trace.h" declline="111" declcolumn="13"/>
       </memberdef>
-      <memberdef kind="function" id="group__platform__trace_1gacff449b9b47250c93eb680a49129d9ec" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="cybt__platform__trace_8h_1acff449b9b47250c93eb680a49129d9ec" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void cybt_platform_set_trace_level</definition>
         <argsstring>(cybt_trace_id_t id, cybt_trace_level_t level)</argsstring>
@@ -1148,7 +1148,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_trace.h" line="259" column="1"/>
+        <location file="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_trace.h" line="259" column="6" declfile="/builds/repo/btstack-port-cyal/deploy/btstack-integration/COMPONENT_BLESS-IPC/platform/include/cybt_platform_trace.h" declline="259" declcolumn="6"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -1389,7 +1389,7 @@
 <codeline lineno="248"><highlight class="normal"></highlight><highlight class="comment">/*****************************************************************************</highlight></codeline>
 <codeline lineno="249"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Function<sp/>Declarations</highlight></codeline>
 <codeline lineno="250"><highlight class="comment"><sp/>****************************************************************************/</highlight></codeline>
-<codeline lineno="259"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="group__platform__trace_1gacff449b9b47250c93eb680a49129d9ec" kindref="member">cybt_platform_set_trace_level</ref>(cybt_trace_id_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="259"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>cybt_platform_set_trace_level(cybt_trace_id_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,</highlight></codeline>
 <codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cybt_trace_level_t<sp/>level</highlight></codeline>
 <codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
 <codeline lineno="262"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>

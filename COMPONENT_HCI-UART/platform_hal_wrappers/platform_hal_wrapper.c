@@ -659,6 +659,11 @@ cybt_result_t platform_hal_uart_read_wrapper(void *rx, size_t *rx_length)
     return CYBT_SUCCESS;
 }
 
+void platform_hal_uart_deinit_wrapper(void)
+{
+	cyhal_uart_free(&hci_uart_cb.hal_obj);
+}
+
 /******************************************************************************
 *                           HAL Deep sleep wrappers
 ******************************************************************************/
