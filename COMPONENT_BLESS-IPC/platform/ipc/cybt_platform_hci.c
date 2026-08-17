@@ -179,7 +179,7 @@ void HciIpcFreePktBuffer(unsigned char type, uint32_t bufferPtr, uint16_t length
 	}while(status!=CYBT_SUCCESS);
 }
 
-bt_task_event_t *get_rx_free_event_buffer()
+bt_task_event_t *get_rx_free_event_buffer(void)
 {
     if (allotted_buffs == BT_TASK_EVENT_BUFFERS_CNT)
     {

@@ -331,7 +331,7 @@ void host_stack_platform_interface_init(void)
     }
 }
 
-wiced_result_t host_stack_platform_smp_adapter_init()
+wiced_result_t host_stack_platform_smp_adapter_init(void)
 {
 	wiced_result_t result = WICED_ERROR;
 

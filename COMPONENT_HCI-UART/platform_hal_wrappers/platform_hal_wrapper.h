@@ -138,14 +138,14 @@ uint32_t platform_hal_get_feature_baud_wrapper(void);
 /*HAL UART wrappers*/
 cybt_result_t platform_hal_uart_init_wrapper(void);
 cybt_result_t platform_hal_uart_set_baud_wrapper(uint32_t baudrate);
-cybt_result_t platform_hal_uart_enable_flow_control_wrapper();
+cybt_result_t platform_hal_uart_enable_flow_control_wrapper(void);
 void platform_hal_uart_register_callback_wrapper(uint8_t hci_state);
 void platform_hal_uart_enable_event_wrapper(uint8_t hci_state);
 cybt_result_t platform_hal_uart_write_async_wrapper(void *tx, size_t length);
 cybt_result_t platform_hal_uart_read_async_wrapper(void *rx, size_t length);
-cybt_result_t platform_hal_uart_read_abort_wrapper();
+cybt_result_t platform_hal_uart_read_abort_wrapper(void);
 cybt_result_t platform_hal_uart_read_wrapper(void *rx, size_t *rx_length);
-void platform_hal_uart_deinit_wrapper();
+void platform_hal_uart_deinit_wrapper(void);
 
 /*HAL Deep sleep wrappers*/
 void platform_hal_syspm_lock_deepsleep_wrapper(void);

@@ -77,7 +77,7 @@ wiced_result_t cybt_core_management_cback( wiced_bt_management_evt_t event, wice
 
 pf_wiced_exception pf_platform_exception = NULL;
 
-extern wiced_result_t host_stack_platform_smp_adapter_init();
+extern wiced_result_t host_stack_platform_smp_adapter_init(void);
 extern wiced_result_t app_initialize_btstack_modules(void);
 #ifdef COMPONENT_BLESS_IPC
 int g_host_rpa_gen = 1;
